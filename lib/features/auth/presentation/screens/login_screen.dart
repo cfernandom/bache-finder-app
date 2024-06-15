@@ -8,26 +8,22 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthController authController = Get.find();
-    
+
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('Login Screen'),
-            Obx(() {
-              if (authController.isAuth.value) {
-                Future.microtask(() => Get.offAllNamed('/home'));
-              }
-
-              return FilledButton(
-                  onPressed: () {
-                    // TODO: Login
-                    const token = 'testToken';
-                    authController.login(token);
-                  },
-                  child: const Text('Login'));
-            }),
+            FilledButton(
+              onPressed: () async {
+                // TODO: Login
+                const token = 'testToken';
+                await authController.login(token);
+                Get.offAllNamed('/home');
+              },
+              child: const Text('Login'),
+            ),
           ],
         ),
       ),

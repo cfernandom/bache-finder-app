@@ -7,7 +7,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthController authController = Get.find();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Page'),
@@ -21,19 +20,13 @@ class HomeScreen extends StatelessWidget {
               },
               child: const Text('Go to Profile'),
             ),
-            Obx(() {
-              if (!authController.isAuth.value) {
-                Future.microtask(() => Get.toNamed('/login'));
-              }
-
-              return ElevatedButton(
-                onPressed: () {
-                  // logout
-                  Get.find<AuthController>().logout();
-                },
-                child: const Text('Logout'),
-              );
-            }),
+            ElevatedButton(
+              onPressed: () {
+                Get.find<AuthController>().logout();
+                Get.offAllNamed('/login');
+              },
+              child: const Text('Logout'),
+            ),
           ],
         ),
       ),

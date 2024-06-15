@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         Get.put(AuthController());
       }),
       getPages: [
-        GetPage(name: '/home', page: () => const HomeScreen()),
+        GetPage(name: '/home', page: () => const HomeScreen(), middlewares: [AuthMiddleware()]),
         GetPage(name: '/login', page: () => const LoginScreen()),
         GetPage(name: '/authCheck', page: () => const AuthCheckScreen()),
         GetPage(name: '/register', page: () => const RegisterScreen()),

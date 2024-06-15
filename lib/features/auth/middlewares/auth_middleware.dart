@@ -7,7 +7,7 @@ class AuthMiddleware extends GetMiddleware {
   @override
   RouteSettings? redirect(String? route) {
     final AuthController authController = Get.find();
-    if (!authController.isAuth.value) {
+    if (!authController.isAuth.value && route != '/login' && route != '/register') {
       return const RouteSettings(name: '/login');
     }
     return null;
