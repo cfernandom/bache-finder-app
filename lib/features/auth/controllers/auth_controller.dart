@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 
 class AuthController extends GetxController {
   final _isAuth = false.obs; // always false at first
+  final _isAuthLoading = true.obs; // always true at first
   final storageService = StorageServiceImpl();
 
   RxBool get isAuth => _isAuth;
+  RxBool get isAuthLoading => _isAuthLoading;
 
   @override
   void onInit() {
@@ -13,7 +15,7 @@ class AuthController extends GetxController {
     checkAuth();
   }
 
-  void checkAuth() async {
+  void checkAuth() async {    
     final isValidSession = await verifySession();
     
     if (!isValidSession) {
@@ -22,7 +24,7 @@ class AuthController extends GetxController {
       return;
     }
     setAuth();
-    Get.offAllNamed('/home');
+    Get.offAllNamed('/');
   }
 
   Future<bool> verifySession() async {
@@ -55,9 +57,11 @@ class AuthController extends GetxController {
 
   setAuth() {
     _isAuth.value = true;
+    _isAuthLoading.value = false;
   }
 
   setUnAuth() {
     _isAuth.value = false;
+    _isAuthLoading.value = false;
   }
 }

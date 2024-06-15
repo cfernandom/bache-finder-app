@@ -24,12 +24,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: '/authCheck',
+      initialRoute: '/',
       initialBinding: BindingsBuilder(() {
         Get.put(AuthController());
       }),
       getPages: [
-        GetPage(name: '/home', page: () => const HomeScreen(), middlewares: [AuthMiddleware()]),
+        GetPage(name: '/', page: () => const HomeScreen(), middlewares: [AuthMiddleware()]),
         GetPage(name: '/login', page: () => const LoginScreen()),
         GetPage(name: '/authCheck', page: () => const AuthCheckScreen()),
         GetPage(name: '/register', page: () => const RegisterScreen()),

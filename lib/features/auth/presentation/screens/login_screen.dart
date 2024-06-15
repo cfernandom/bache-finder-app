@@ -20,7 +20,7 @@ class LoginScreen extends StatelessWidget {
                 // TODO: Login
                 const token = 'testToken';
                 await authController.login(token);
-                Get.offAllNamed('/home');
+                Get.offAllNamed('/');
               },
               child: const Text('Login'),
             ),
