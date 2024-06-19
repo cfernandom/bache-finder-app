@@ -1,13 +1,22 @@
-import 'package:bache_finder_app/features/auth/controllers/auth_controller.dart';
+import 'package:bache_finder_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends GetView<AuthController> {
   const LoginScreen({super.key});
+  
+
+  void _login() async {
+    final result = await controller.login('fernando@example.com', 'password2024#');
+    if (result) {
+      Get.offAllNamed('/');
+    } else {
+      Get.snackbar('Error', 'Failed to login');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final AuthController authController = Get.find();
 
     return Scaffold(
       body: Center(
@@ -16,12 +25,7 @@ class LoginScreen extends StatelessWidget {
           children: [
             const Text('Login Screen'),
             FilledButton(
-              onPressed: () async {
-                // TODO: Login
-                const token = 'testToken';
-                await authController.login(token);
-                Get.offAllNamed('/');
-              },
+              onPressed: _login,
               child: const Text('Login'),
             ),
           ],

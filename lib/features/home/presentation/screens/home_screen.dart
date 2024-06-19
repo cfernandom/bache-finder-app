@@ -1,8 +1,8 @@
-import 'package:bache_finder_app/features/auth/controllers/auth_controller.dart';
+import 'package:bache_finder_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends GetView<AuthController> {
   const HomeScreen({super.key});
 
   @override
@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Get.find<AuthController>().logout();
+                controller.logout();
                 Get.offAllNamed('/login');
               },
               child: const Text('Logout'),
