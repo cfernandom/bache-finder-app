@@ -1,4 +1,4 @@
-import 'package:bache_finder_app/features/auth/controllers/auth_controller.dart';
+import 'package:bache_finder_app/core/constants/enviroment.dart';
 import 'package:bache_finder_app/features/auth/middlewares/auth_middleware.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/auth_check_screen.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/login_screen.dart';
@@ -9,7 +9,8 @@ import 'package:bache_finder_app/features/user/presentation/screens/profile_scre
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void main() {
+void main() async {
+  await Enviroment.initEnviroment();
   runApp(const MyApp());
 }
 
