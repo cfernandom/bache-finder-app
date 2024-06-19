@@ -5,6 +5,7 @@ import 'package:bache_finder_app/features/auth/presentation/screens/login_screen
 import 'package:bache_finder_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:bache_finder_app/features/home/presentation/screens/home_screen.dart';
 import 'package:bache_finder_app/features/report/presentation/screens/report_screen.dart';
+import 'package:bache_finder_app/features/shared/main_binding.dart';
 import 'package:bache_finder_app/features/user/presentation/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,10 +26,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: '/',
-      initialBinding: BindingsBuilder(() {
-        Get.put(AuthController());
-      }),
+      initialRoute: '/authCheck',
+      initialBinding: MainBinding(),
       getPages: [
         GetPage(name: '/', page: () => const HomeScreen(), middlewares: [AuthMiddleware()]),
         GetPage(name: '/login', page: () => const LoginScreen()),
