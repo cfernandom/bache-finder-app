@@ -1,3 +1,4 @@
+import 'package:bache_finder_app/core/router/app_router.dart';
 import 'package:bache_finder_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,14 +17,14 @@ class HomeScreen extends GetView<AuthController> {
           children: [
             ElevatedButton(
               onPressed: () {
-                Get.toNamed('/profile');
+                Get.toNamed(AppRoutes.profile);
               },
               child: const Text('Go to Profile'),
             ),
             ElevatedButton(
               onPressed: () {
                 controller.logout();
-                Get.offAllNamed('/login');
+                Get.offAllNamed(AppRoutes.login);
               },
               child: const Text('Logout'),
             ),
