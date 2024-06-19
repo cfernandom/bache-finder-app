@@ -1,5 +1,5 @@
 import 'package:bache_finder_app/core/constants/enviroment.dart';
-import 'package:bache_finder_app/features/auth/middlewares/auth_middleware.dart';
+import 'package:bache_finder_app/features/auth/auth_binding.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/auth_check_screen.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/register_screen.dart';
@@ -29,15 +29,14 @@ class MyApp extends StatelessWidget {
       initialRoute: '/authCheck',
       initialBinding: MainBinding(),
       getPages: [
-        GetPage(name: '/', page: () => const HomeScreen(), middlewares: [AuthMiddleware()]),
-        GetPage(name: '/login', page: () => const LoginScreen()),
-        GetPage(name: '/authCheck', page: () => const AuthCheckScreen()),
-        GetPage(name: '/register', page: () => const RegisterScreen()),
+        GetPage(name: '/', page: () => const HomeScreen(), binding: AuthBinding()),
+        GetPage(name: '/login', page: () => const LoginScreen(), binding: AuthBinding()),
+        GetPage(name: '/authCheck', page: () => const AuthCheckScreen(), binding: AuthBinding()),
+        GetPage(name: '/register', page: () => const RegisterScreen(), binding: AuthBinding()),
         GetPage(name: '/report', page: () => const ReportScreen()),
         GetPage(
           name: '/profile',
           page: () => const ProfileScreen(),
-          middlewares: [AuthMiddleware()],
         ),
       ],
     );
