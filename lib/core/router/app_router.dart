@@ -1,3 +1,4 @@
+import 'package:bache_finder_app/features/auth/auth_binding.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/auth_check_screen.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/register_screen.dart';
@@ -11,7 +12,7 @@ class AppRoutes {
   static const register = '/register';
   static const authCheck = '/authCheck';
   static const report = '/report';
-  static const home = '/home';
+  static const home = '/';
   static const profile = '/profile';
 }
 
@@ -20,14 +21,17 @@ class AppPages {
     GetPage(
       name: AppRoutes.login,
       page: () => const LoginScreen(),
+      binding: AuthBinding(),
     ),
     GetPage(
       name: AppRoutes.register,
       page: () => const RegisterScreen(),
+      binding: AuthBinding(),
     ),
     GetPage(
       name: AppRoutes.authCheck,
       page: () => const AuthCheckScreen(),
+      binding: AuthBinding(),
     ),
     GetPage(
       name: AppRoutes.report,
@@ -36,6 +40,7 @@ class AppPages {
     GetPage(
       name: AppRoutes.home,
       page: () => const HomeScreen(),
+      binding: AuthBinding(),
     ),
     GetPage(
       name: AppRoutes.profile,
