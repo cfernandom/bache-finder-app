@@ -1,6 +1,6 @@
 import 'package:bache_finder_app/features/auth/domain/entities/user.dart';
 import 'package:bache_finder_app/features/auth/domain/repositories/auth_repository.dart';
-import 'package:bache_finder_app/features/auth/infraestructure/auth_data_source.dart';
+import 'package:bache_finder_app/features/auth/infraestructure/data_sources/auth_remote_data_source.dart';
 import 'package:fpdart/fpdart.dart';
 
 class AuthRepositoryImpl implements AuthRepository {

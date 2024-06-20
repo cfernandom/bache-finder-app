@@ -2,7 +2,7 @@ import 'package:bache_finder_app/features/auth/domain/repositories/auth_reposito
 import 'package:bache_finder_app/features/auth/domain/use_cases/login.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/logout.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/validate_session.dart';
-import 'package:bache_finder_app/features/auth/infraestructure/auth_data_source.dart';
+import 'package:bache_finder_app/features/auth/infraestructure/data_sources/auth_remote_data_source.dart';
 import 'package:bache_finder_app/features/auth/infraestructure/auth_repository_impl.dart';
 import 'package:bache_finder_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:get/get.dart';
