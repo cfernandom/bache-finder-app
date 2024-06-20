@@ -1,4 +1,4 @@
-import 'package:bache_finder_app/features/auth/auth_binding.dart';
+import 'package:bache_finder_app/features/auth/presentation/bindings/auth_binding.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/auth_check_screen.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/register_screen.dart';
