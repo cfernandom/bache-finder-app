@@ -32,7 +32,7 @@ class AuthDataSource {
     }
   }
 
-  Future<UserModel> validateSession() async {
+  Future<UserModel> getUserData() async {
     try {
       final token = await _getLocalToken();
       if (token == null) {

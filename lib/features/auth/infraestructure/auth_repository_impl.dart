@@ -31,7 +31,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Exception, User>> validateSession() async {
     try {
-      final response = await authDataSource.validateSession();
+      final response = await authDataSource.getUserData();
       return Right(response);
     } catch (e) {
       return Left(Exception(e));
