@@ -4,14 +4,14 @@ import 'package:bache_finder_app/features/auth/infraestructure/auth_data_source.
 import 'package:fpdart/fpdart.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthDataSource authDataSource;
+  final AuthRemoteDataSource authRemoteDataSource;
 
-  AuthRepositoryImpl({required this.authDataSource});
+  AuthRepositoryImpl({required this.authRemoteDataSource});
 
   @override
   Future<Either<Exception, User>> login(String email, password) async {
     try {
-      final response = await authDataSource.login(email, password);
+      final response = await authRemoteDataSource.login(email, password);
       return Right(response);
     } catch (e) {
       return Left(Exception(e));
@@ -21,7 +21,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Exception, void>> logout() async {
     try {
-      final response = await authDataSource.logout();
+      final response = await authRemoteDataSource.logout();
       return Right(response);
     } catch (e) {
       return Left(Exception(e));
@@ -31,7 +31,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Exception, User>> validateSession() async {
     try {
-      final response = await authDataSource.getUserData();
+      final response = await authRemoteDataSource.getUserData();
       return Right(response);
     } catch (e) {
       return Left(Exception(e));

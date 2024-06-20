@@ -3,11 +3,11 @@ import 'package:bache_finder_app/features/auth/infraestructure/models/user_model
 import 'package:bache_finder_app/features/shared/services/storage_service.dart';
 import 'package:dio/dio.dart';
 
-class AuthDataSource {
+class AuthRemoteDataSource {
   final Dio dio;
   final StorageService storageService;
 
-  AuthDataSource({
+  AuthRemoteDataSource({
     required this.dio,
     required this.storageService,
   }) {

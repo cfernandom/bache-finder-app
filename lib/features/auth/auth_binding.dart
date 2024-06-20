@@ -10,11 +10,11 @@ import 'package:get/get.dart';
 class AuthBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => AuthDataSource(
+    Get.lazyPut(() => AuthRemoteDataSource(
           dio: Get.find(),
           storageService: Get.find(),
         ));
-    Get.lazyPut<AuthRepository>(() => AuthRepositoryImpl(authDataSource: Get.find()));
+    Get.lazyPut<AuthRepository>(() => AuthRepositoryImpl(authRemoteDataSource: Get.find()));
     Get.lazyPut(() => Login(Get.find()));
     Get.lazyPut(() => Logout(Get.find()));
     Get.lazyPut(() => ValidateSession(Get.find()));
