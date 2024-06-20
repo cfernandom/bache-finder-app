@@ -1,3 +1,4 @@
+import 'package:bache_finder_app/features/auth/domain/entities/session.dart';
 import 'package:bache_finder_app/features/auth/domain/entities/user.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/login.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/logout.dart';
@@ -41,6 +42,8 @@ void main() {
     name: password,
   );
 
+  final session = Session(token: 'token123');
+
   group('AuthController', () {
     test('initial value are correct', () {
       expect(controller.user.value, isNull);
@@ -80,14 +83,14 @@ void main() {
     test('login sets user correctly when succeeds', () async {
       // arrange
       when(() => mockLogin.call(any<String>(), any<String>()))
-          .thenAnswer((_) async => Right(user));
+          .thenAnswer((_) async => Right(session));
       // act
       final result = controller.login(email, password);
       expect(controller.isLoading.value, isTrue);
       final resultValue = await result;
       // assert
       expect(resultValue, isTrue);
-      expect(controller.user.value, user);
+      expect(controller.session.value, session);
       expect(controller.isLoading.value, isFalse);
       verify(() => mockLogin.call(email, password)).called(1);
       verifyNoMoreInteractions(mockLogin);

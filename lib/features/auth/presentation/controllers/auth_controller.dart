@@ -1,3 +1,4 @@
+import 'package:bache_finder_app/features/auth/domain/entities/session.dart';
 import 'package:bache_finder_app/features/auth/domain/entities/user.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/login.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/logout.dart';
@@ -15,6 +16,7 @@ class AuthController extends GetxController {
     required this.validateSessionUseCase,
   });
 
+  var session = Rxn<Session>();
   var user = Rxn<User>();
   var isLoading = true.obs;
 
@@ -41,7 +43,7 @@ class AuthController extends GetxController {
     final result = await loginUseCase.call(email, password);
     result.fold(
       (failure) => print(failure),
-      (user) => this.user.value = user,
+      (session) => this.session.value = session,
     );
     isLoading.value = false;
 
