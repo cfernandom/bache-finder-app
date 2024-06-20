@@ -22,7 +22,7 @@ class AuthDataSource {
         'v1/login',
         data: {'email': email, 'password': password},
       );
-      _setLocalToken(response.data['data']['token']);
+      await _setLocalToken(response.data['data']['token']);
 
       return UserModel.fromJson(response.data['data']);
     } on DioException catch (e) {
