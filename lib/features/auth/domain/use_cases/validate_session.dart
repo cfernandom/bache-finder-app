@@ -7,7 +7,7 @@ class ValidateSession {
 
   ValidateSession(this.authRepository);
   
-  Future<Either<Exception, User?>> call() {
+  Future<Either<Exception, User>> call() {
     return authRepository.validateSession();
   }
 }

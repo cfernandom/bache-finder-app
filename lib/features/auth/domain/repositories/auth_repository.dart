@@ -4,5 +4,5 @@ import 'package:fpdart/fpdart.dart';
 abstract class AuthRepository {
   Future<Either<Exception, User>> login(String email, String password);
   Future<Either<Exception, void>> logout();
-  Future<Either<Exception, User?>> validateSession();
+  Future<Either<Exception, User>> validateSession();
 }

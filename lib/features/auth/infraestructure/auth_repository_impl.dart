@@ -29,7 +29,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
   
   @override
-  Future<Either<Exception, User?>> validateSession() async {
+  Future<Either<Exception, User>> validateSession() async {
     try {
       final response = await authDataSource.validateSession();
       return Right(response);

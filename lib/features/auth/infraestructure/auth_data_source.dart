@@ -32,11 +32,11 @@ class AuthDataSource {
     }
   }
 
-  Future<UserModel?> validateSession() async {
+  Future<UserModel> validateSession() async {
     try {
       final token = await _getLocalToken();
       if (token == null) {
-        return null;
+        throw Exception('No token found');
       }
       dio.options.headers['Authorization'] = 'Bearer $token';
       final response = await dio.get('v1/user');
