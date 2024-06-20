@@ -50,6 +50,7 @@ class AuthController extends GetxController {
 
   Future<void> logout() async {
     isLoading.value = true;
+    user.value = null;
     await logoutUseCase.call();
     isLoading.value = false;
   }
