@@ -7,15 +7,6 @@ class AuthCheckScreen extends GetView<AuthController> {
   const AuthCheckScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    controller.isLoading.listen((isLoading) {
-      if (!isLoading) {
-        if (controller.user.value == null) {
-          Get.offAllNamed(AppRoutes.login);
-        } else {
-          Get.offAllNamed(AppRoutes.home);
-        }
-      }
-    });
 
     return const Scaffold(
       body: Center(

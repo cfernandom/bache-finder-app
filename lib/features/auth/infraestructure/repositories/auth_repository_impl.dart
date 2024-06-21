@@ -1,5 +1,4 @@
 import 'package:bache_finder_app/features/auth/domain/entities/session.dart';
-import 'package:bache_finder_app/features/auth/domain/entities/user.dart';
 import 'package:bache_finder_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:bache_finder_app/features/auth/infraestructure/data_sources/auth_local_data_source.dart';
 import 'package:bache_finder_app/features/auth/infraestructure/data_sources/auth_remote_data_source.dart';
@@ -41,14 +40,14 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Exception, User>> validateSession() async {
+  Future<Either<Exception, Session>> validateSession() async {
     try {
       final token = await authLocalDataSource.getToken();
       if (token == null) {
         return Left(Exception('No token found'));
       }
-      final response = await authRemoteDataSource.getUserData(token);
-      return Right(response);
+      await authRemoteDataSource.getUserData(token);
+      return Right(Session(token: token));
     } catch (e) {
       return Left(Exception(e));
     }
