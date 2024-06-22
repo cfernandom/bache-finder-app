@@ -1,5 +1,5 @@
 import 'package:bache_finder_app/core/constants/enviroment.dart';
-import 'package:bache_finder_app/core/router/app_router.dart';
+import 'package:bache_finder_app/core/router/app_pages.dart';
 import 'package:bache_finder_app/features/shared/main_binding.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: AppRoutes.home,
       initialBinding: MainBinding(),
-      getPages: AppPages.pages
+      getPages: AppPages.routes,
     );
   }
 }

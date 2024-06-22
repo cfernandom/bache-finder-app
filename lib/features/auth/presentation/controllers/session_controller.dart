@@ -1,4 +1,4 @@
-import 'package:bache_finder_app/core/router/app_router.dart';
+import 'package:bache_finder_app/core/router/app_pages.dart';
 import 'package:bache_finder_app/features/auth/domain/entities/session.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/validate_session.dart';
 import 'package:get/get.dart';

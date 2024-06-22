@@ -1,4 +1,4 @@
-import 'package:bache_finder_app/core/router/app_router.dart';
+import 'package:bache_finder_app/core/router/app_pages.dart';
 import 'package:bache_finder_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
