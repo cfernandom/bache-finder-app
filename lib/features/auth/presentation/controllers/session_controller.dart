@@ -3,23 +3,23 @@ import 'package:bache_finder_app/features/auth/domain/entities/session.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/validate_session.dart';
 import 'package:get/get.dart';
 
-class SessionController extends GetxController {
+class SessionController extends GetxService {
   final ValidateSession validateSessionUseCase;
-  
+
   SessionController({
     required this.validateSessionUseCase,
   });
-  
+
   var session = Rxn<Session>();
   var isLoading = true.obs;
 
-  @override
-  void onInit() async {
-    super.onInit();
+  Future<SessionController> init() async {
     final isValid = await validateSession();
     if (!isValid) {
       Get.offAllNamed(AppRoutes.login);
     }
+
+    return this;
   }
 
   Future<bool> validateSession() async {

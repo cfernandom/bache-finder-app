@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 
 class MainBinding extends Bindings {
   @override
-  void dependencies() {
+  void dependencies() async {
     Get.put(Dio(), permanent: true);
     Get.put<StorageService>(StorageServiceImpl(), permanent: true);
     Get.put(AuthRemoteDataSource(dio: Get.find()));
@@ -21,7 +21,7 @@ class MainBinding extends Bindings {
       authLocalDataSource: Get.find(),
     ));
     Get.put(ValidateSession(Get.find()));
-    Get.put(SessionController(validateSessionUseCase: Get.find()),
+    await Get.putAsync(() =>SessionController(validateSessionUseCase: Get.find()).init(),
         permanent: true);
   }
 }
