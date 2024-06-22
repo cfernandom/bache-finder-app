@@ -30,7 +30,7 @@ void main() {
       // assert
       expect(result, isTrue);
       expect(controller.session.value, session);
-      expect(controller.isLoading.value, isFalse);
+      expect(controller.status.value, SessionStatus.loggedIn);
       verify(() => mockValidateSession.call()).called(1);
       verifyNoMoreInteractions(mockValidateSession);
     });
@@ -41,12 +41,12 @@ void main() {
           .thenAnswer((_) async => Left(Exception('Session invalid')));
       // act
       final result = controller.validateSession();
-      expect(controller.isLoading.value, isTrue);
+      expect(controller.status.value, SessionStatus.checking);
       final resultValue = await result;
       // assert
       expect(resultValue, isFalse);
       expect(controller.session.value, isNull);
-      expect(controller.isLoading.value, isFalse);
+      expect(controller.status.value, SessionStatus.loggedOut);
       verify(() => mockValidateSession.call()).called(1);
       verifyNoMoreInteractions(mockValidateSession);
     });

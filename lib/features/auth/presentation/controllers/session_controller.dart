@@ -3,6 +3,12 @@ import 'package:bache_finder_app/features/auth/domain/entities/session.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/validate_session.dart';
 import 'package:get/get.dart';
 
+enum SessionStatus {
+  loggedOut,
+  loggedIn,
+  checking,
+}
+
 class SessionController extends GetxService {
   final ValidateSession validateSessionUseCase;
 
@@ -11,7 +17,7 @@ class SessionController extends GetxService {
   });
 
   var session = Rxn<Session>();
-  var isLoading = true.obs;
+  var status = SessionStatus.checking.obs;
 
   Future<SessionController> init() async {
     final isValid = await validateSession();
@@ -23,13 +29,13 @@ class SessionController extends GetxService {
   }
 
   Future<bool> validateSession() async {
-    isLoading.value = true;
     final result = await validateSessionUseCase.call();
     result.fold(
       (failure) => print(failure),
       (session) => this.session.value = session,
     );
-    isLoading.value = false;
+    
+    status.value = result.isRight() ? SessionStatus.loggedIn : SessionStatus.loggedOut;
 
     return result.isRight();
   }
