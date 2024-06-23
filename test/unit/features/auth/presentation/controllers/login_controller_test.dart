@@ -1,52 +1,60 @@
 import 'package:bache_finder_app/features/auth/domain/entities/session.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/login.dart';
-import 'package:bache_finder_app/features/auth/domain/use_cases/logout.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:bache_finder_app/features/auth/presentation/controllers/login_controller.dart';
+import 'package:bache_finder_app/features/auth/presentation/controllers/session_controller.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:bache_finder_app/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 class MockLogin extends Mock implements Login {}
 
-class MockLogout extends Mock implements Logout {}
+class MockSessionController extends GetxService
+    with Mock
+    implements SessionController {}
 
 void main() {
+  late MockSessionController mockSessionController;
   late MockLogin mockLogin;
-  late MockLogout mockLogout;
-
-  late AuthController controller;
+  late LoginController controller;
 
   setUp(() {
+    mockSessionController = MockSessionController();
+
+    Get.put<SessionController>(mockSessionController);
+    
     mockLogin = MockLogin();
-    mockLogout = MockLogout();
-    controller = AuthController(
+    controller = LoginController(
       loginUseCase: mockLogin,
-      logoutUseCase: mockLogout,
     );
   });
 
   const email = 'LpJp4@example.com';
   const password = 'password123';
-  
+
   final session = Session(token: 'token123');
 
-  group('AuthController', () {
+  group('LoginController', () {
     test('initial value are correct', () {
       expect(controller.isLoading.value, isTrue);
     });
 
     test('login sets user correctly when succeeds', () async {
       // arrange
-      when(() => mockLogin.call(any<String>(), any<String>()))
+      when(() => mockLogin.call(email, password))
           .thenAnswer((_) async => Right(session));
+      when(() => mockSessionController.status)
+          .thenReturn(Rx<SessionStatus>(SessionStatus.checking));
+      when(() => mockSessionController.session).thenReturn(Rxn<Session>(null));
       // act
       final result = controller.login(email, password);
       expect(controller.isLoading.value, isTrue);
-      final resultValue = await result;
+      final resolvedResult = await result;
       // assert
-      expect(resultValue, isTrue);
       expect(controller.isLoading.value, isFalse);
+      expect(controller.sessionController.session.value, session);
+      expect(controller.sessionController.status.value, SessionStatus.loggedIn);
+      expect(resolvedResult, true);
       verify(() => mockLogin.call(email, password)).called(1);
       verifyNoMoreInteractions(mockLogin);
     });
@@ -55,32 +63,25 @@ void main() {
       // arrange
       when(() => mockLogin.call(any<String>(), any<String>()))
           .thenAnswer((_) async => Left(Exception('Invalid credentials')));
+      when(() => mockSessionController.status)
+          .thenReturn(Rx<SessionStatus>(SessionStatus.checking));
+      when(() => mockSessionController.session).thenReturn(Rxn<Session>(null));
       // act
       final result = controller.login(email, password);
       expect(controller.isLoading.value, isTrue);
-      final resultValue = await result;
+      final resolvedResult = await result;
       // assert
-      expect(resultValue, isFalse);
       expect(controller.isLoading.value, isFalse);
+      expect(controller.sessionController.session.value, null);
+      expect(
+          controller.sessionController.status.value, SessionStatus.loggedOut);
+      expect(resolvedResult, false);
       verify(() => mockLogin.call(email, password)).called(1);
       verifyNoMoreInteractions(mockLogin);
     });
 
-    test('logout sets user correctly when succeeds', () async {
-      // arrange
-      when(() => mockLogout.call()).thenAnswer((_) async => const Right(null));
-      // act
-      final result = controller.logout();
-      expect(controller.isLoading.value, isTrue);
-      await result;
-      // assert
-      expect(controller.isLoading.value, isFalse);
-      verify(() => mockLogout.call()).called(1);
-      verifyNoMoreInteractions(mockLogout);
+    tearDown(() {
+      Get.reset();
     });
-  });
-
-  tearDown(() {
-    Get.reset();
   });
 }
