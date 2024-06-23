@@ -4,9 +4,9 @@ import 'package:bache_finder_app/features/shared/main_binding.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+Future<void> main() async {
   await Enviroment.initEnviroment();
+  await MainBinding.setupDependencies();
   runApp(const MyApp());
 }
 
@@ -21,9 +21,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: AppRoutes.home,
-      initialBinding: MainBinding(),
-      getPages: AppPages.routes,
+      initialRoute: AppPaths.authCheck,
+      getPages: AppRouter.routes,
     );
   }
 }

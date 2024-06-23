@@ -13,15 +13,17 @@ class AuthController extends GetxController {
   });
 
   var isLoading = true.obs;
+  final sessionController = Get.find<SessionController>();
 
   Future<bool> login(String email, String password) async {
     isLoading.value = true;
     final result = await loginUseCase.call(email, password);
     result.fold(
       (failure) => print(failure),
-      (session) => Get.find<SessionController>().session.value = session,
+      (session) => sessionController.session.value = session,
     );
     isLoading.value = false;
+    sessionController.status.value = result.isRight() ? SessionStatus.loggedIn : SessionStatus.loggedOut;
 
     return result.isRight();
   }
@@ -29,6 +31,8 @@ class AuthController extends GetxController {
   Future<void> logout() async {
     isLoading.value = true;
     await logoutUseCase.call();
+    sessionController.session.value = null;
+    sessionController.status.value = SessionStatus.loggedOut;
     isLoading.value = false;
   }
 }

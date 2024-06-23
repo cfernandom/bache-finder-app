@@ -17,14 +17,13 @@ class HomeScreen extends GetView<AuthController> {
           children: [
             ElevatedButton(
               onPressed: () {
-                Get.toNamed(AppRoutes.profile);
+                Get.toNamed(AppPaths.profile);
               },
               child: const Text('Go to Profile'),
             ),
             ElevatedButton(
               onPressed: () {
                 controller.logout();
-                Get.offAllNamed(AppRoutes.login);
               },
               child: const Text('Logout'),
             ),

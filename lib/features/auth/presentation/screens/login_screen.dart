@@ -10,9 +10,7 @@ class LoginScreen extends GetView<AuthController> {
 
   void _login() async {
     final result = await controller.login('fernando@example.com', 'password2024#');
-    if (result) {
-      Get.offAllNamed(AppRoutes.home);
-    } else {
+    if (!result) {
       Get.snackbar('Error', 'Failed to login');
     }
   }

@@ -19,15 +19,6 @@ class SessionController extends GetxService {
   var session = Rxn<Session>();
   var status = SessionStatus.checking.obs;
 
-  Future<SessionController> init() async {
-    final isValid = await validateSession();
-    if (!isValid) {
-      Get.offAllNamed(AppRoutes.login);
-    }
-
-    return this;
-  }
-
   Future<bool> validateSession() async {
     final result = await validateSessionUseCase.call();
     result.fold(

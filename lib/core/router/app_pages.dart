@@ -1,3 +1,4 @@
+import 'package:bache_finder_app/core/middlewares/auth_middleware.dart';
 import 'package:bache_finder_app/features/auth/presentation/bindings/auth_binding.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/auth_check_screen.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/login_screen.dart';
@@ -7,44 +8,49 @@ import 'package:bache_finder_app/features/report/presentation/screens/report_scr
 import 'package:bache_finder_app/features/user/presentation/screens/profile_screen.dart';
 import 'package:get/get.dart';
 
-class AppRoutes {
-  static const login = '/login';
-  static const register = '/register';
-  static const authCheck = '/authCheck';
-  static const report = '/report';
-  static const home = '/';
-  static const profile = '/profile';
+class AppPaths {
+  static const String login = '/login';
+  static const String register = '/register';
+  static const String authCheck = '/authCheck';
+  static const String report = '/report';
+  static const String home = '/';
+  static const String profile = '/profile';
 }
 
-class AppPages {
-  static final routes = [
+class AppRouter {
+  static final List<GetPage> routes = [
     GetPage(
-      name: AppRoutes.login,
+      name: AppPaths.login,
       page: () => const LoginScreen(),
       binding: AuthBinding(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
-      name: AppRoutes.register,
+      name: AppPaths.register,
       page: () => const RegisterScreen(),
-      binding: AuthBinding(),
+
     ),
     GetPage(
-      name: AppRoutes.authCheck,
+      name: AppPaths.authCheck,
       page: () => const AuthCheckScreen(),
       binding: AuthBinding(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
-      name: AppRoutes.report,
+      name: AppPaths.report,
       page: () => const ReportScreen(),
     ),
     GetPage(
-      name: AppRoutes.home,
+      name: AppPaths.home,
       page: () => const HomeScreen(),
       binding: AuthBinding(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
-      name: AppRoutes.profile,
+      name: AppPaths.profile,
       page: () => const ProfileScreen(),
+      binding: AuthBinding(),
+      middlewares: [AuthMiddleware()],
     ),
   ];
 }
