@@ -10,7 +10,7 @@ import 'package:bache_finder_app/features/shared/services/storage_service_impl.d
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
-class MainBinding extends Bindings {
+class RootBinding extends Bindings {
   @override
   void dependencies() async {}
 

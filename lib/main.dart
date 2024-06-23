@@ -1,12 +1,12 @@
 import 'package:bache_finder_app/core/constants/enviroment.dart';
 import 'package:bache_finder_app/core/router/app_pages.dart';
-import 'package:bache_finder_app/features/shared/main_binding.dart';
+import 'package:bache_finder_app/core/bindings/root_binding.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 Future<void> main() async {
   await Enviroment.initEnviroment();
-  await MainBinding.setupDependencies();
+  await RootBinding.setupDependencies();
   runApp(const MyApp());
 }
 
