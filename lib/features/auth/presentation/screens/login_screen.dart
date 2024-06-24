@@ -1,3 +1,4 @@
+import 'package:bache_finder_app/features/auth/presentation/controllers/forms/login_form_controller.dart';
 import 'package:bache_finder_app/features/auth/presentation/controllers/login_controller.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
@@ -45,27 +46,39 @@ class _LoginForm extends GetView<LoginController> {
   }
 }
 
-class _EmailField extends StatelessWidget {
+class _EmailField extends GetView<LoginFormController> {
   const _EmailField();
 
   @override
   Widget build(BuildContext context) {
-    return const TextFieldWidget(
-      label: 'Correo Electrónico',
-      keyboardType: TextInputType.emailAddress,
+    return Obx(
+      () => TextFieldWidget(
+        label: 'Correo Electrónico',
+        keyboardType: TextInputType.emailAddress,
+        onChanged: controller.onEmailChanged,
+        errorMessage: controller.isPosted.value
+            ? controller.email.value.errorMessage
+            : null,
+      ),
     );
   }
 }
 
-class _PasswordField extends StatelessWidget {
+class _PasswordField extends GetView<LoginFormController> {
   const _PasswordField();
 
   @override
   Widget build(BuildContext context) {
-    return const TextFieldWidget(
-      label: 'Contraseña',
-      isObscure: true,
-      keyboardType: TextInputType.visiblePassword,
+    return Obx(
+      () => TextFieldWidget(
+        label: 'Contraseña',
+        isObscure: true,
+        keyboardType: TextInputType.visiblePassword,
+        onChanged: controller.onPasswordChanged,
+        errorMessage: controller.isPosted.value
+            ? controller.password.value.errorMessage
+            : null,
+      ),
     );
   }
 }
@@ -82,7 +95,7 @@ class _RecoveryPassword extends StatelessWidget {
   }
 }
 
-class _LoginButton extends GetView<LoginController> {
+class _LoginButton extends GetView<LoginFormController> {
   const _LoginButton();
 
   void _login() async {
@@ -97,9 +110,11 @@ class _LoginButton extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: FilledButton(
-        onPressed: _login,
-        child: const Text('Iniciar Sesión'),
+      child: Obx(
+        () => FilledButton(
+          onPressed: controller.isPosting.value ? null : controller.submit,
+          child: const Text('Iniciar Sesión'),
+        ),
       ),
     );
   }
