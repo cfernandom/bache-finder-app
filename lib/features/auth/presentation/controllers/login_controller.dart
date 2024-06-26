@@ -7,20 +7,22 @@ class LoginController extends GetxController {
 
   LoginController({required Login loginUseCase}) : _loginUseCase = loginUseCase;
 
-  var isLoading = true.obs;
-  final sessionController = Get.find<SessionController>();
+  final _isLoading = true.obs;
+  final _sessionController = Get.find<SessionController>();
+
+  bool get isLoading => _isLoading.value;
 
   Future<bool> login(String email, String password) async {
-    isLoading.value = true;
+    _isLoading.value = true;
     final result = await _loginUseCase.call(email, password);
 
     result.fold(
       (failure) => print(failure),
-      (session) => sessionController.session.value = session,
+      (session) => _sessionController.session.value = session,
     );
 
-    isLoading.value = false;
-    sessionController.status.value =
+    _isLoading.value = false;
+    _sessionController.status.value =
         result.isRight() ? SessionStatus.loggedIn : SessionStatus.loggedOut;
 
     return result.isRight();

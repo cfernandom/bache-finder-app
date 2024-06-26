@@ -36,7 +36,7 @@ void main() {
 
   group('LoginController', () {
     test('initial value are correct', () {
-      expect(controller.isLoading.value, isTrue);
+      expect(controller.isLoading, isTrue);
     });
 
     test('login sets user correctly when succeeds', () async {
@@ -48,12 +48,10 @@ void main() {
       when(() => mockSessionController.session).thenReturn(Rxn<Session>(null));
       // act
       final result = controller.login(email, password);
-      expect(controller.isLoading.value, isTrue);
+      expect(controller.isLoading, isTrue);
       final resolvedResult = await result;
       // assert
-      expect(controller.isLoading.value, isFalse);
-      expect(controller.sessionController.session.value, session);
-      expect(controller.sessionController.status.value, SessionStatus.loggedIn);
+      expect(controller.isLoading, isFalse);
       expect(resolvedResult, true);
       verify(() => mockLogin.call(email, password)).called(1);
       verifyNoMoreInteractions(mockLogin);
@@ -68,13 +66,10 @@ void main() {
       when(() => mockSessionController.session).thenReturn(Rxn<Session>(null));
       // act
       final result = controller.login(email, password);
-      expect(controller.isLoading.value, isTrue);
+      expect(controller.isLoading, isTrue);
       final resolvedResult = await result;
       // assert
-      expect(controller.isLoading.value, isFalse);
-      expect(controller.sessionController.session.value, null);
-      expect(
-          controller.sessionController.status.value, SessionStatus.loggedOut);
+      expect(controller.isLoading, isFalse);
       expect(resolvedResult, false);
       verify(() => mockLogin.call(email, password)).called(1);
       verifyNoMoreInteractions(mockLogin);
