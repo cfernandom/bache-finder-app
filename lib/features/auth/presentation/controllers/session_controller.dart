@@ -9,17 +9,17 @@ enum SessionStatus {
 }
 
 class SessionController extends GetxService {
-  final ValidateSession validateSessionUseCase;
+  final ValidateSession _validateSessionUseCase;
 
   SessionController({
-    required this.validateSessionUseCase,
-  });
+    required ValidateSession validateSessionUseCase,
+  }) : _validateSessionUseCase = validateSessionUseCase;
 
   var session = Rxn<Session>();
   var status = SessionStatus.checking.obs;
 
   Future<bool> validateSession() async {
-    final result = await validateSessionUseCase.call();
+    final result = await _validateSessionUseCase.call();
     result.fold(
       (failure) => print(failure),
       (session) => this.session.value = session,

@@ -3,16 +3,16 @@ import 'package:bache_finder_app/features/auth/presentation/controllers/session_
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
-  final Login loginUseCase;
+  final Login _loginUseCase;
 
-  LoginController({required this.loginUseCase});
+  LoginController({required Login loginUseCase}) : _loginUseCase = loginUseCase;
 
   var isLoading = true.obs;
   final sessionController = Get.find<SessionController>();
 
   Future<bool> login(String email, String password) async {
     isLoading.value = true;
-    final result = await loginUseCase.call(email, password);
+    final result = await _loginUseCase.call(email, password);
 
     result.fold(
       (failure) => print(failure),

@@ -1,5 +1,4 @@
 import 'package:bache_finder_app/features/auth/presentation/controllers/forms/login_form_controller.dart';
-import 'package:bache_finder_app/features/auth/presentation/controllers/login_controller.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,7 +22,7 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-class _LoginForm extends GetView<LoginController> {
+class _LoginForm extends StatelessWidget {
   const _LoginForm();
 
   @override
@@ -56,8 +55,8 @@ class _EmailField extends GetView<LoginFormController> {
         label: 'Correo Electrónico',
         keyboardType: TextInputType.emailAddress,
         onChanged: controller.onEmailChanged,
-        errorMessage: controller.isPosted.value
-            ? controller.email.value.errorMessage
+        errorMessage: controller.isPosted
+            ? controller.email.errorMessage
             : null,
       ),
     );
@@ -75,8 +74,8 @@ class _PasswordField extends GetView<LoginFormController> {
         isObscure: true,
         keyboardType: TextInputType.visiblePassword,
         onChanged: controller.onPasswordChanged,
-        errorMessage: controller.isPosted.value
-            ? controller.password.value.errorMessage
+        errorMessage: controller.isPosted
+            ? controller.password.errorMessage
             : null,
       ),
     );
@@ -98,13 +97,13 @@ class _RecoveryPassword extends StatelessWidget {
 class _LoginButton extends GetView<LoginFormController> {
   const _LoginButton();
 
-  void _login() async {
-    final result =
-        await controller.login('fernando@example.com', 'password2024#');
-    if (!result) {
-      Get.snackbar('Error', 'Failed to login');
-    }
-  }
+  // void _login() async {
+  //   final result =
+  //       await controller.login('fernando@example.com', 'password2024#');
+  //   if (!result) {
+  //     Get.snackbar('Error', 'Failed to login');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +111,7 @@ class _LoginButton extends GetView<LoginFormController> {
       width: double.infinity,
       child: Obx(
         () => FilledButton(
-          onPressed: controller.isPosting.value ? null : controller.submit,
+          onPressed: controller.isPosting ? null : controller.submit,
           child: const Text('Iniciar Sesión'),
         ),
       ),
