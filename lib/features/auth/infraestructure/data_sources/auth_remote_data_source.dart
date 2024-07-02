@@ -29,7 +29,7 @@ class AuthRemoteDataSource {
     }
   }
 
-  Future<UserModel> getUserData(String token) async {
+  Future<UserModel> requestUserData(String token) async {
     try {
       dio.options.headers['Authorization'] = 'Bearer $token';
       final response = await dio.get('v1/user');
