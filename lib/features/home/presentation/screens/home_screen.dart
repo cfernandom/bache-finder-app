@@ -1,9 +1,9 @@
 import 'package:bache_finder_app/core/router/app_pages.dart';
-import 'package:bache_finder_app/features/auth/presentation/controllers/logout_controller.dart';
+import 'package:bache_finder_app/features/auth/presentation/controllers/session_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomeScreen extends GetView<LogoutController> {
+class HomeScreen extends GetView<SessionController> {
   const HomeScreen({super.key});
 
   @override

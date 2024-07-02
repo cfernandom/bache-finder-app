@@ -1,6 +1,5 @@
 import 'package:bache_finder_app/core/middlewares/auth_middleware.dart';
 import 'package:bache_finder_app/features/auth/presentation/bindings/login_binding.dart';
-import 'package:bache_finder_app/features/auth/presentation/bindings/logout_binding.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/auth_check_screen.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/register_screen.dart';
@@ -43,7 +42,6 @@ class AppRouter {
     GetPage(
       name: AppPaths.home,
       page: () => const HomeScreen(),
-      binding: LogoutBinding(),
       middlewares: [AuthMiddleware()],
     ),
     GetPage(

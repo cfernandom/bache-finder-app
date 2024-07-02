@@ -1,8 +1,6 @@
-import 'package:bache_finder_app/features/auth/presentation/controllers/logout_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-class AuthCheckScreen extends GetView<LogoutController> {
+class AuthCheckScreen extends StatelessWidget {
   const AuthCheckScreen({super.key});
   @override
   Widget build(BuildContext context) {

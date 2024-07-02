@@ -1,24 +1,13 @@
-import 'package:bache_finder_app/features/auth/domain/use_cases/login.dart';
 import 'package:bache_finder_app/features/auth/presentation/controllers/forms/login_form_controller.dart';
-import 'package:bache_finder_app/features/auth/presentation/controllers/login_controller.dart';
+import 'package:bache_finder_app/features/auth/presentation/controllers/session_controller.dart';
 import 'package:get/get.dart';
 
 class LoginBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<Login>(
-      () => Login(Get.find()),
-    );
-
-    Get.lazyPut<LoginController>(
-      () => LoginController(
-        loginUseCase: Get.find(),
-      ),
-    );
-
     Get.lazyPut(
       () => LoginFormController(
-        login: Get.find<LoginController>().login,
+        login: Get.find<SessionController>().login,
       ),
     );
   }
