@@ -46,7 +46,7 @@ class AuthRepositoryImpl implements AuthRepository {
       if (token == null) {
         return Left(Exception('No token found'));
       }
-      await authRemoteDataSource.requestUserData(token);
+      await authRemoteDataSource.fetchUserData(token);
       return Right(Session(token: token));
     } catch (e) {
       return Left(Exception(e));
