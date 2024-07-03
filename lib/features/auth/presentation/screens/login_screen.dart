@@ -1,13 +1,30 @@
 import 'package:bache_finder_app/features/auth/presentation/controllers/forms/login_form_controller.dart';
+import 'package:bache_finder_app/features/auth/presentation/controllers/session_controller.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends GetView<SessionController> {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    controller.isLoading.listen((status) {
+      final errorMessage = controller.errorMessage.value;
+      if (status == false) {
+        if (errorMessage != null) {
+          controller.errorMessage.value = null;
+          Get.snackbar(
+            'Error',
+            errorMessage,
+            backgroundGradient:
+                LinearGradient(colors: [Colors.red[300]!, Colors.red[100]!]),
+            margin: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+          );
+        }
+      }
+    });
+
     return const Scaffold(
       body: Center(
         child: Column(
@@ -55,9 +72,8 @@ class _EmailField extends GetView<LoginFormController> {
         label: 'Correo Electrónico',
         keyboardType: TextInputType.emailAddress,
         onChanged: controller.onEmailChanged,
-        errorMessage: controller.isPosted
-            ? controller.email.errorMessage
-            : null,
+        errorMessage:
+            controller.isPosted ? controller.email.errorMessage : null,
       ),
     );
   }
@@ -74,9 +90,8 @@ class _PasswordField extends GetView<LoginFormController> {
         isObscure: true,
         keyboardType: TextInputType.visiblePassword,
         onChanged: controller.onPasswordChanged,
-        errorMessage: controller.isPosted
-            ? controller.password.errorMessage
-            : null,
+        errorMessage:
+            controller.isPosted ? controller.password.errorMessage : null,
       ),
     );
   }
