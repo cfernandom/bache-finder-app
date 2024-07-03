@@ -20,12 +20,13 @@ class SessionController extends GetxService {
     required Login loginUseCase,
     required Logout logoutUseCase,
   })  : _validateSessionUseCase = validateSessionUseCase,
-        _loginUseCase = loginUseCase, 
+        _loginUseCase = loginUseCase,
         _logoutUseCase = logoutUseCase;
 
   final _session = Rxn<Session>();
   final _status = SessionStatus.checking.obs;
   final _isLoading = true.obs;
+  final errorMessage = Rxn<String>();
 
   Session? get session => _session.value;
   Rx<SessionStatus> get status => _status;
@@ -34,7 +35,7 @@ class SessionController extends GetxService {
   Future<bool> validateSession() async {
     final result = await _validateSessionUseCase.call();
     result.fold(
-      (failure) => print(failure),
+      (failure) => errorMessage.value = failure.message,
       (session) => _session.value = session,
     );
 
@@ -49,7 +50,7 @@ class SessionController extends GetxService {
     final result = await _loginUseCase.call(email, password);
 
     result.fold(
-      (failure) => print(failure),
+      (failure) => errorMessage.value = failure.message,
       (session) => _session.value = session,
     );
 
@@ -62,7 +63,13 @@ class SessionController extends GetxService {
 
   Future<void> logout() async {
     _isLoading.value = true;
-    await _logoutUseCase.call();
+    final result = await _logoutUseCase.call();
+
+    result.fold(
+      (failure) => errorMessage.value = failure.message,
+      (_) => (){},
+    );
+
     _session.value = null;
     _status.value = SessionStatus.loggedOut;
     _isLoading.value = false;

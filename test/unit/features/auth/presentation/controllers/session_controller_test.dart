@@ -1,3 +1,4 @@
+import 'package:bache_finder_app/core/errors/failures/network_failure.dart';
 import 'package:bache_finder_app/features/auth/domain/entities/session.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/login.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/logout.dart';
@@ -59,7 +60,7 @@ void main() {
     test('validateSession handles failure correctly', () async {
       // arrange
       when(() => mockValidateSession.call())
-          .thenAnswer((_) async => Left(Exception('Session invalid')));
+          .thenAnswer((_) async => const Left(NetworkFailure('Network error')));
       // act
       final result = controller.validateSession();
       expect(controller.status, Rx(SessionStatus.checking));
@@ -106,7 +107,7 @@ void main() {
     test('login handles failure correctly', () async {
       // arrange
       when(() => mockLogin.call(any<String>(), any<String>()))
-          .thenAnswer((_) async => Left(Exception('Invalid credentials')));
+          .thenAnswer((_) async => const Left(NetworkFailure('Network error')));
       // act
       final result = controller.login('email', 'password');
       expect(controller.isLoading.value, isTrue);

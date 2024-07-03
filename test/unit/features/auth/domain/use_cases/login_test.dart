@@ -1,3 +1,4 @@
+import 'package:bache_finder_app/core/errors/failures/network_failure.dart';
 import 'package:bache_finder_app/features/auth/domain/entities/session.dart';
 import 'package:bache_finder_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/login.dart';
@@ -35,10 +36,10 @@ void main() {
     verifyNoMoreInteractions(mockAuthRepository);
   });
 
-  test('should return an exception when login fails', () async {
+  test('should return an exception when login fails with NetworkException', () async {
     // arrange
     when(() => mockAuthRepository.login(any<String>(), any<String>()))
-        .thenAnswer((_) async => Left(Exception("Invalid credentials")));
+        .thenAnswer((_) async => const Left(NetworkFailure('Network error')));
 
     // act
     final result = await login.call(email, password);
