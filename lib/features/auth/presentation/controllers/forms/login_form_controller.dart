@@ -4,9 +4,9 @@ import 'package:formz/formz.dart';
 import 'package:get/get.dart';
 
 class LoginFormController extends GetxController {
-  final Function(String, String) _login;
+  final Future<bool> Function(String email, String password) _login;
 
-  LoginFormController({required dynamic Function(String, String) login}) : _login = login;
+  LoginFormController({required login}) : _login = login;
 
   final _isPosted = false.obs;
   final _isPosting = false.obs;
@@ -27,7 +27,7 @@ class LoginFormController extends GetxController {
 
   void onPasswordChanged(String value) {
     final password = PasswordInput.dirty(value);
-    
+
     _password.value = password;
     _isValid.value = Formz.validate([_email.value, password]);
   }
@@ -35,7 +35,7 @@ class LoginFormController extends GetxController {
   _touchAllFields() {
     final email = EmailInput.dirty(_email.value.value);
     final password = PasswordInput.dirty(_password.value.value);
-    
+
     _email.value = email;
     _password.value = password;
     _isValid.value = Formz.validate([email, password]);
