@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ImageViewerWidget extends StatelessWidget {
@@ -15,13 +16,12 @@ class ImageViewerWidget extends StatelessWidget {
         child: Image.asset(
           'assets/images/no-image.jpg',
           fit: BoxFit.cover,
-          height: 250,
         ),
       );
     }
 
     late ImageProvider imageProvider;
-    if (image.startsWith('http')) {
+    if (image.startsWith('http') || (image.contains('http') && kIsWeb) ) {
       imageProvider = NetworkImage(image);
     } else {
       imageProvider = FileImage(File(image));
