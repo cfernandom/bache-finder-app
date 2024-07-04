@@ -9,7 +9,6 @@ import 'package:bache_finder_app/features/auth/infraestructure/repositories/auth
 import 'package:bache_finder_app/features/auth/presentation/controllers/session_controller.dart';
 import 'package:bache_finder_app/features/shared/services/storage_service.dart';
 import 'package:bache_finder_app/features/shared/services/storage_service_impl.dart';
-import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
 class RootBinding extends Bindings {
@@ -17,16 +16,12 @@ class RootBinding extends Bindings {
   void dependencies() async {}
 
   static setupDependencies() async {
-    Get.put<Dio>(
-      Dio(),
-    );
-
     Get.put<StorageService>(
       StorageServiceImpl(),
     );
 
     Get.put<AuthRemoteDataSource>(
-      AuthRemoteDataSource(dio: Get.find()),
+      AuthRemoteDataSource(),
     );
 
     Get.put<AuthLocalDataSource>(
