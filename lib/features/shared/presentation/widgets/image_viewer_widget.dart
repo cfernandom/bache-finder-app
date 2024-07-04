@@ -1,0 +1,38 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+
+class ImageViewerWidget extends StatelessWidget {
+  final String image;
+
+  const ImageViewerWidget(this.image, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    if (image == '') {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Image.asset(
+          'assets/images/no-image.jpg',
+          fit: BoxFit.cover,
+          height: 250,
+        ),
+      );
+    }
+
+    late ImageProvider imageProvider;
+    if (image.startsWith('http')) {
+      imageProvider = NetworkImage(image);
+    } else {
+      imageProvider = FileImage(File(image));
+    }
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: FadeInImage(
+        image: imageProvider,
+        fit: BoxFit.cover,
+        placeholder: const AssetImage('assets/images/Spinner-1s-264px.gif'),
+      ),
+    );
+  }
+}
