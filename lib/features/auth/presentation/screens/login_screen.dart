@@ -10,10 +10,10 @@ class LoginScreen extends GetView<SessionController> {
   @override
   Widget build(BuildContext context) {
     controller.isLoading.listen((status) {
-      final errorMessage = controller.errorMessage.value;
+      final errorMessage = controller.errorMessage;
       if (status == false) {
-        if (errorMessage != null) {
-          controller.errorMessage.value = null;
+        if (errorMessage != '') {
+          controller.resetErrorMessage();
           Get.snackbar(
             'Error',
             errorMessage,
