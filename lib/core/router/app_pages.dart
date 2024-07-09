@@ -4,6 +4,8 @@ import 'package:bache_finder_app/features/auth/presentation/screens/auth_check_s
 import 'package:bache_finder_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:bache_finder_app/features/home/presentation/screens/home_screen.dart';
+import 'package:bache_finder_app/features/pothole/presentation/bindings/pothole_binding.dart';
+import 'package:bache_finder_app/features/pothole/presentation/screens/pothole_screen.dart';
 import 'package:bache_finder_app/features/report/presentation/screens/report_screen.dart';
 import 'package:bache_finder_app/features/user/presentation/screens/profile_screen.dart';
 import 'package:get/get.dart';
@@ -15,6 +17,7 @@ class AppPaths {
   static const String report = '/report';
   static const String home = '/';
   static const String profile = '/profile';
+  static const String pothole = '/pothole';
 }
 
 class AppRouter {
@@ -48,6 +51,13 @@ class AppRouter {
       name: AppPaths.profile,
       page: () => const ProfileScreen(),
       middlewares: [AuthMiddleware()],
+    ),
+    GetPage(
+      name: AppPaths.pothole,
+      page: () => const PotholeScreen(),
+      bindings: [
+        PotholeBinding(),
+      ]
     ),
   ];
 }

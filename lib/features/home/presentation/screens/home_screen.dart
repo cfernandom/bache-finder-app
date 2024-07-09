@@ -14,18 +14,25 @@ class HomeScreen extends GetView<SessionController> {
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            ElevatedButton(
+              onPressed: () {
+                Get.toNamed(AppPaths.pothole, arguments: {'id': 'new'});
+              },
+              child: const Text('Reportar Bache'),
+            ),
             ElevatedButton(
               onPressed: () {
                 Get.toNamed(AppPaths.profile);
               },
-              child: const Text('Go to Profile'),
+              child: const Text('Ir a mi perfil'),
             ),
             ElevatedButton(
               onPressed: () {
                 controller.logout();
               },
-              child: const Text('Logout'),
+              child: const Text('Cerrar sesión'),
             ),
           ],
         ),
