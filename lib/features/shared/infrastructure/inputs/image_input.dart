@@ -3,7 +3,7 @@ import 'package:formz/formz.dart';
 enum ImageValidationError { empty, format }
 
 class ImageInput extends FormzInput<String, ImageValidationError> {
-  const ImageInput.pure() : super.pure('');
+  const ImageInput.pure(super.value) : super.pure();
   const ImageInput.dirty(super.value) : super.dirty();
   
   @override

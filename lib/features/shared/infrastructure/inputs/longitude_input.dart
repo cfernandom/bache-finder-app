@@ -3,7 +3,7 @@ import 'package:formz/formz.dart';
 enum LongitudeValidationError { empty, invalid, formatted }
 
 class LongitudeInput extends FormzInput<String, LongitudeValidationError> {
-  const LongitudeInput.pure() : super.pure('');
+  const LongitudeInput.pure(super.value) : super.pure();
   const LongitudeInput.dirty(super.value) : super.dirty();
 
   @override

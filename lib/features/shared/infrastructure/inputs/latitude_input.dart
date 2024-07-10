@@ -3,7 +3,7 @@ import 'package:formz/formz.dart';
 enum LatitudeValidationError { empty, invalid, formatted }
 
 class LatitudeInput extends FormzInput<String, LatitudeValidationError> {
-  const LatitudeInput.pure() : super.pure('');
+  const LatitudeInput.pure(super.value) : super.pure();
   const LatitudeInput.dirty(super.value) : super.dirty();
 
   @override
