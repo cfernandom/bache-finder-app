@@ -1,3 +1,4 @@
+import 'package:bache_finder_app/core/router/app_pages.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/potholes_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/widgets/pothole_card_widget.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,20 @@ class PotholesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: _MainView(),
+      floatingActionButton: _AddPotholeButton(),
     );
+  }
+}
+
+class _AddPotholeButton extends StatelessWidget {
+  const _AddPotholeButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton.extended(
+        onPressed: () {Get.toNamed(AppPaths.pothole, arguments: {'id': 'new'});},
+        icon: const Icon(Icons.add),
+        label: const Text('Reportar bache'));
   }
 }
 
