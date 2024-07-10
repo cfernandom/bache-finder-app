@@ -20,8 +20,8 @@ class PotholeFormController extends GetxController {
   })  : _onSubmitCallback = onSubmitCallback,
         _address = TextInput.dirty(pothole?.address ?? '').obs,
         _image = ImageInput.dirty(pothole?.image ?? '').obs,
-        _latitude = LatitudeInput.dirty(pothole?.latitude).obs,
-        _longitude = LatitudeInput.dirty(pothole?.longitude).obs;
+        _latitude = LatitudeInput.dirty(pothole?.latitude.toString() ?? '').obs,
+        _longitude = LatitudeInput.dirty(pothole?.longitude.toString() ?? '').obs;
 
   final _isPosted = false.obs;
   final _isPosting = false.obs;
@@ -56,7 +56,7 @@ class PotholeFormController extends GetxController {
     ]);
   }
 
-  void onLatitudeChanged(double? value) {
+  void onLatitudeChanged(String value) {
     final latitude = LatitudeInput.dirty(value);
     _latitude.value = latitude;
     _isValid.value = Formz.validate([
@@ -67,7 +67,7 @@ class PotholeFormController extends GetxController {
     ]);
   }
 
-  void onLongitudeChanged(double? value) {
+  void onLongitudeChanged(String value) {
     final longitude = LatitudeInput.dirty(value);
     _longitude.value = longitude;
     _isValid.value = Formz.validate([

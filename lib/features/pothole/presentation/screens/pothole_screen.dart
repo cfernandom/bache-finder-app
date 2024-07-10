@@ -93,7 +93,7 @@ class _LatitudeInput extends GetView<PotholeFormController> {
         initialValue: controller.latitude.value.value?.toString() ?? '',
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         onChanged: (value) =>
-            controller.onLatitudeChanged(double.tryParse(value)),
+            controller.onLatitudeChanged(value),
         errorMessage:
             controller.isPosted ? controller.latitude.value.errorMessage : null,
       ),
@@ -112,7 +112,7 @@ class _LongitudeInput extends GetView<PotholeFormController> {
         initialValue: controller.longitude.value.value?.toString() ?? '',
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         onChanged: (value) =>
-            controller.onLongitudeChanged(double.tryParse(value)),
+            controller.onLongitudeChanged(value),
         errorMessage: controller.isPosted
             ? controller.longitude.value.errorMessage
             : null,

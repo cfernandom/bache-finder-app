@@ -20,7 +20,7 @@ class TextInput extends FormzInput<String, TextInputValidationError> {
   String? get errorMessage {
     final error = this.error;
     if (error == null) return null;
-    if (error == TextInputValidationError.empty) return 'El texto es obligatorio';
+    if (error == TextInputValidationError.empty) return 'Este campo es obligatorio';
     if (error == TextInputValidationError.longLenght) return 'El texto no puede ser mayor a 250 caracteres';
     return null;
   }

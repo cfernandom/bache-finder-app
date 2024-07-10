@@ -1,17 +1,24 @@
 import 'package:formz/formz.dart';
 
-enum LongitudeValidationError { empty, invalid }
+enum LongitudeValidationError { empty, invalid, formatted }
 
-class LongitudeInput extends FormzInput<double?, LongitudeValidationError> {
-  const LongitudeInput.pure() : super.pure(null);
+class LongitudeInput extends FormzInput<String, LongitudeValidationError> {
+  const LongitudeInput.pure() : super.pure('');
   const LongitudeInput.dirty(super.value) : super.dirty();
 
   @override
-  LongitudeValidationError? validator(double? value) {
-    if (value == null || value == 0) {
+  LongitudeValidationError? validator(String value) {
+    if (value == '') {
       return LongitudeValidationError.empty;
     }
-    if (value < -180 || value > 180) {
+
+    if (value.contains(',')) {
+      return LongitudeValidationError.formatted;
+    }
+
+    final valueAsDouble = double.tryParse(value);
+
+    if (valueAsDouble == null || valueAsDouble < -180 || valueAsDouble > 180) {
       return LongitudeValidationError.invalid;
     }
     return null;
@@ -21,6 +28,7 @@ class LongitudeInput extends FormzInput<double?, LongitudeValidationError> {
     final error = this.error;
     if (error == null) return null;
     if (error == LongitudeValidationError.empty) return 'La longitud es obligatoria';
+    if (error == LongitudeValidationError.formatted) return 'El formato no es válido';
     if (error == LongitudeValidationError.invalid) return 'La longitud debe estar entre -180 y 180';
     return null;
   }

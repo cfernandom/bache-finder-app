@@ -1,17 +1,23 @@
 import 'package:formz/formz.dart';
 
-enum LatitudeValidationError { empty, invalid }
+enum LatitudeValidationError { empty, invalid, formatted }
 
-class LatitudeInput extends FormzInput<double?, LatitudeValidationError> {
-  const LatitudeInput.pure() : super.pure(null);
+class LatitudeInput extends FormzInput<String, LatitudeValidationError> {
+  const LatitudeInput.pure() : super.pure('');
   const LatitudeInput.dirty(super.value) : super.dirty();
 
   @override
-  LatitudeValidationError? validator(double? value) {
-    if (value == null || value == 0) {
+  LatitudeValidationError? validator(String value) {
+    if (value == '') {
       return LatitudeValidationError.empty;
     }
-    if (value < -90 || value > 90) {
+
+    if (value.contains(',')) {
+      return LatitudeValidationError.formatted;
+    }
+    final valueAsDouble = double.tryParse(value);
+
+    if ( valueAsDouble == null || valueAsDouble < -90 || valueAsDouble > 90) {
       return LatitudeValidationError.invalid;
     }
     return null;
@@ -21,6 +27,7 @@ class LatitudeInput extends FormzInput<double?, LatitudeValidationError> {
     final error = this.error;
     if (error == null) return null;
     if (error == LatitudeValidationError.empty) return 'La latitud es obligatoria';
+    if (error == LatitudeValidationError.formatted) return 'El formato no es válido';
     if (error == LatitudeValidationError.invalid) return 'La latitud debe estar entre -90 y 90';
     return null;
   }
