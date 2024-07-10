@@ -32,6 +32,7 @@ class PotholeFormController extends GetxController {
 
   bool get isPosted => _isPosted.value;
   bool get isPosting => _isPosting.value;
+  bool get isModifed => _isModifed.value;
   Rx<ImageInput> get image => _image;
   Rx<TextInput> get address => _address;
   Rx<LatitudeInput> get latitude => _latitude;

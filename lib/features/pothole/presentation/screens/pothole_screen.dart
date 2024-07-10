@@ -7,13 +7,41 @@ import 'package:bache_finder_app/features/shared/services/camera_gallery_service
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class PotholeScreen extends StatelessWidget {
+class PotholeScreen extends GetView<PotholeController> {
   const PotholeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: _MainView(),
+    return Scaffold(
+      body: const _MainView(),
+      floatingActionButton: Obx(
+        () => controller.isLoading.value
+            ? const SizedBox.shrink()
+            : const _SaveButton(),
+      ),
+    );
+  }
+}
+
+class _SaveButton extends GetView<PotholeFormController> {
+  const _SaveButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => FloatingActionButton.extended(
+        onPressed: controller.isModifed
+            ? () async {
+                final result = await controller.onSubmit();
+                // TODO: Handle messages 
+              }
+            : null,
+        icon: controller.isPosting
+            ? const CircularProgressIndicator()
+            : const Icon(Icons.save, color: Colors.white),
+        label: const Text('Guardar bache', style: TextStyle(color: Colors.white)),
+        backgroundColor: controller.isModifed ? Theme.of(context).colorScheme.primary : Colors.grey[300],
+      ),
     );
   }
 }
