@@ -1,4 +1,3 @@
-import 'package:bache_finder_app/core/constants/enviroment.dart';
 import 'package:bache_finder_app/features/pothole/domain/entities/pothole.dart';
 
 class PotholeModel extends Pothole {
@@ -25,7 +24,7 @@ class PotholeModel extends Pothole {
       address: json['address'],
       latitude: double.parse(json['latitude']),
       longitude: double.parse(json['longitude']),
-      image: Enviroment.bacheFinderPublicStorageUrl() + json['image'],
+      image: json['image'],
       status: json['status'],
       userId: json['user_id'].toString(),
       createdAt: json['created_at'],
