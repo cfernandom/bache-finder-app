@@ -8,4 +8,8 @@ class Enviroment {
   static String bacheFinderApiUrl() {
     return dotenv.env['BACHE_FINDER_API_URL']!;
   }
+
+  static String bacheFinderPublicStorageUrl() {
+    return dotenv.env['BACHE_FINDER_PUBLIC_STORAGE_URL']!;
+  }
 }
