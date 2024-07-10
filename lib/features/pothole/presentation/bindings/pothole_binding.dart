@@ -43,7 +43,11 @@ class PotholeBinding extends Bindings {
       ),
     );
 
-    Get.lazyPut(() => PotholeFormController(Get.arguments['id'],
-        onSubmitCallback: Get.find<PotholeController>().savePothole));
+    Get.lazyPut(
+      () => PotholeFormController(
+        Get.find<PotholeController>().pothole.value,
+        onSubmitCallback: Get.find<PotholeController>().savePothole,
+      ),
+    );
   }
 }

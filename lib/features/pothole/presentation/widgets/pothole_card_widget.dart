@@ -1,4 +1,4 @@
-import 'package:bache_finder_app/core/constants/enviroment.dart';
+import 'package:bache_finder_app/core/router/app_pages.dart';
 import 'package:bache_finder_app/features/pothole/domain/entities/pothole.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/potholes_controller.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/image_viewer_widget.dart';
@@ -15,32 +15,35 @@ class PotholeCardWidget extends GetView<PotholesController> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: Colors.black,
+    return GestureDetector(
+      onTap: () => Get.toNamed(AppPaths.pothole, arguments: {'id': pothole.id}),
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Colors.black,
+            ),
           ),
         ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(pothole.address),
-              const Text('Ubicación'),
-              Text('${pothole.latitude}, ${pothole.longitude}'),
-              const Text('Tipo'),
-              Text(pothole.type),
-            ],
-          ),
-          _Image(
-            path: Enviroment.bacheFinderPublicStorageUrl() + pothole.image,
-          ),
-        ],
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(pothole.address),
+                const Text('Ubicación'),
+                Text('${pothole.latitude}, ${pothole.longitude}'),
+                const Text('Tipo'),
+                Text(pothole.type),
+              ],
+            ),
+            _Image(
+              path: pothole.image,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:bache_finder_app/features/pothole/domain/entities/pothole.dart';
 import 'package:bache_finder_app/features/shared/infrastructure/inputs/image_input.dart';
 import 'package:bache_finder_app/features/shared/infrastructure/inputs/latitude_input.dart';
 import 'package:bache_finder_app/features/shared/infrastructure/inputs/text_input.dart';
@@ -8,23 +9,30 @@ class PotholeFormController extends GetxController {
   final Future<bool> Function(Map<String, dynamic> potholeLike)
       _onSubmitCallback;
 
-  PotholeFormController(String potholeId, {required onSubmitCallback})
-      : _onSubmitCallback = onSubmitCallback;
-      
+  final Rx<TextInput> _address;
+  final Rx<ImageInput> _image;
+  final Rx<LatitudeInput> _latitude;
+  final Rx<LatitudeInput> _longitude;
+
+  PotholeFormController(
+    Pothole? pothole, {
+    required onSubmitCallback,
+  })  : _onSubmitCallback = onSubmitCallback,
+        _address = TextInput.dirty(pothole?.address ?? '').obs,
+        _image = ImageInput.dirty(pothole?.image ?? '').obs,
+        _latitude = LatitudeInput.dirty(pothole?.latitude).obs,
+        _longitude = LatitudeInput.dirty(pothole?.longitude).obs;
+
   final _isPosted = false.obs;
   final _isPosting = false.obs;
   final _isValid = false.obs;
-  final _address = const TextInput.pure().obs;
-  final _image = const ImageInput.pure().obs;
-  final _latitude = const LatitudeInput.pure().obs;
-  final _longitude = const LatitudeInput.pure().obs;
 
   bool get isPosted => _isPosted.value;
   bool get isPosting => _isPosting.value;
   Rx<ImageInput> get image => _image;
-  TextInput get address => _address.value;
-  LatitudeInput get latitude => _latitude.value;
-  LatitudeInput get longitude => _longitude.value;
+  Rx<TextInput> get address => _address;
+  Rx<LatitudeInput> get latitude => _latitude;
+  Rx<LatitudeInput> get longitude => _longitude;
 
   void onAddressChanged(String value) {
     final address = TextInput.dirty(value);

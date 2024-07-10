@@ -1,4 +1,5 @@
 import 'package:bache_finder_app/features/pothole/presentation/controllers/forms/pothole_form_controller.dart';
+import 'package:bache_finder_app/features/pothole/presentation/controllers/pothole_controller.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/icon_button_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/image_viewer_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/text_field_widget.dart';
@@ -17,19 +18,23 @@ class PotholeScreen extends StatelessWidget {
   }
 }
 
-class _MainView extends StatelessWidget {
+class _MainView extends GetView<PotholeController> {
   const _MainView();
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
+    return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Text('Reportar Bache'),
-              _FormView(),
+              const Text('Formulario de bache'),
+              Obx(
+                () => controller.isLoading.value
+                    ? const Center(child: CircularProgressIndicator())
+                    : const _FormView(),
+              ),
             ],
           ),
         ),
@@ -67,10 +72,11 @@ class _AddressInput extends GetView<PotholeFormController> {
     return Obx(
       () => TextFieldWidget(
         label: 'Dirección*',
+        initialValue: controller.address.value.value,
         keyboardType: TextInputType.text,
         onChanged: controller.onAddressChanged,
         errorMessage:
-            controller.isPosted ? controller.address.errorMessage : null,
+            controller.isPosted ? controller.address.value.errorMessage : null,
       ),
     );
   }
@@ -84,11 +90,12 @@ class _LatitudeInput extends GetView<PotholeFormController> {
     return Obx(
       () => TextFieldWidget(
         label: 'Latitud*',
+        initialValue: controller.latitude.value.value?.toString() ?? '',
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         onChanged: (value) =>
             controller.onLatitudeChanged(double.tryParse(value)),
         errorMessage:
-            controller.isPosted ? controller.latitude.errorMessage : null,
+            controller.isPosted ? controller.latitude.value.errorMessage : null,
       ),
     );
   }
@@ -102,11 +109,13 @@ class _LongitudeInput extends GetView<PotholeFormController> {
     return Obx(
       () => TextFieldWidget(
         label: 'Longitud*',
+        initialValue: controller.longitude.value.value?.toString() ?? '',
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         onChanged: (value) =>
             controller.onLongitudeChanged(double.tryParse(value)),
-        errorMessage:
-            controller.isPosted ? controller.longitude.errorMessage : null,
+        errorMessage: controller.isPosted
+            ? controller.longitude.value.errorMessage
+            : null,
       ),
     );
   }
@@ -169,9 +178,9 @@ class _SubmitButton extends GetView<PotholeFormController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => IconButtonWidget(
-      onPressed: controller.isPosting ? null : controller.onSubmit,
-      label: 'Enviar',
-      icon: Icons.send,
-    ));
+          onPressed: controller.isPosting ? null : controller.onSubmit,
+          label: 'Enviar',
+          icon: Icons.send,
+        ));
   }
 }

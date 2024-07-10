@@ -19,6 +19,7 @@ class PotholeController extends GetxController {
   final _isLoading = true.obs;
   var _errorMessage = '';
 
+  Rxn<Pothole> get pothole => _pothole;
   Rx<bool> get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
 
@@ -43,7 +44,6 @@ class PotholeController extends GetxController {
       (failure) => _errorMessage = failure.message,
       (pothole) => _pothole.value = pothole,
     );
-
     _isLoading.value = false;
   }
 
