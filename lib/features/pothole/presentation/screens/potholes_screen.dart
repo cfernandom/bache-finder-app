@@ -36,8 +36,15 @@ class _PotholesView extends GetView<PotholesController> {
     return CustomScrollView(
       controller: controller.scrollController,
       physics: const BouncingScrollPhysics(),
-      slivers: const [
-        _PotholesList(),
+      slivers: [
+        const SliverToBoxAdapter(child: Text('Lista de baches')),
+        const _PotholesList(),
+        Obx(
+          () => controller.isLoading.value
+              ? const SliverToBoxAdapter(
+                  child: Center(child: CircularProgressIndicator()))
+              : const SliverToBoxAdapter(child: SizedBox.shrink()),
+        ),
       ],
     );
   }
