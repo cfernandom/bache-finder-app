@@ -61,24 +61,25 @@ class PotholeRemoteDataSource {
     final url = potholeId == 'new' ? 'v1/potholes' : 'v1/potholes/$potholeId';
 
     try {
-      if (!potholeLike.containsKey('image') || potholeLike['image'] == '') {
-        throw ApiDataException(
-            'Error al cargar imagen. La imagen es obligatoria');
-      }
-
-      final mimeType = lookupMimeType(potholeLike['image']);
-
-      if (mimeType == null) {
-        throw ApiDataException(
-            'Error al cargar imagen. El formato de la imagen no es valido.');
-      }
-
-      Uint8List image = File(potholeLike['image']).readAsBytesSync();
-      final imageBase64 = base64Encode(image);
-
       var data = potholeLike;
-      data['image'] = imageBase64;
 
+      if (potholeLike.containsKey('image') && potholeLike['image'] != '') {
+        final mimeType = lookupMimeType(potholeLike['image']);
+
+        if (mimeType == null) {
+          throw ApiDataException(
+              'Error al cargar imagen. El formato de la imagen no es valido.');
+        }
+        Uint8List image = File(potholeLike['image']).readAsBytesSync();
+        final imageBase64 = base64Encode(image);
+
+        data['image'] = imageBase64;     
+      } else {
+        if (method == 'POST') {
+          throw ApiDataException(
+              'Error al cargar imagen. La imagen es obligatoria');
+        }
+      }
       final response =
           await _dio.request(url, data: data, options: Options(method: method));
 
