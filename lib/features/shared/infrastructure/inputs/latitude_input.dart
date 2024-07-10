@@ -11,13 +11,12 @@ class LatitudeInput extends FormzInput<String, LatitudeValidationError> {
     if (value == '') {
       return LatitudeValidationError.empty;
     }
-
     if (value.contains(',')) {
       return LatitudeValidationError.formatted;
     }
     final valueAsDouble = double.tryParse(value);
 
-    if ( valueAsDouble == null || valueAsDouble < -90 || valueAsDouble > 90) {
+    if (valueAsDouble == null || valueAsDouble < -90 || valueAsDouble > 90) {
       return LatitudeValidationError.invalid;
     }
     return null;

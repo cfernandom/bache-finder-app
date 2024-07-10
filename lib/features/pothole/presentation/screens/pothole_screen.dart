@@ -90,10 +90,9 @@ class _LatitudeInput extends GetView<PotholeFormController> {
     return Obx(
       () => TextFieldWidget(
         label: 'Latitud*',
-        initialValue: controller.latitude.value.value?.toString() ?? '',
+        initialValue: controller.latitude.value.value.toString(),
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        onChanged: (value) =>
-            controller.onLatitudeChanged(value),
+        onChanged: (value) => controller.onLatitudeChanged(value),
         errorMessage:
             controller.isPosted ? controller.latitude.value.errorMessage : null,
       ),
@@ -109,10 +108,9 @@ class _LongitudeInput extends GetView<PotholeFormController> {
     return Obx(
       () => TextFieldWidget(
         label: 'Longitud*',
-        initialValue: controller.longitude.value.value?.toString() ?? '',
+        initialValue: controller.longitude.value.value.toString(),
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        onChanged: (value) =>
-            controller.onLongitudeChanged(value),
+        onChanged: (value) => controller.onLongitudeChanged(value),
         errorMessage: controller.isPosted
             ? controller.longitude.value.errorMessage
             : null,

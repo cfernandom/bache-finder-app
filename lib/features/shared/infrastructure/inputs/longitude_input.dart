@@ -11,7 +11,6 @@ class LongitudeInput extends FormzInput<String, LongitudeValidationError> {
     if (value == '') {
       return LongitudeValidationError.empty;
     }
-
     if (value.contains(',')) {
       return LongitudeValidationError.formatted;
     }
