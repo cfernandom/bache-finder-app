@@ -41,4 +41,18 @@ class PotholeRepositoryImpl implements PotholeRepository {
       return Left(UnknownFailure(e.toString()));
     }
   }
+  
+  @override
+  Future<Either<Failure, List<Pothole>>> getPotholes(int page) async {
+    try {
+      final potholes = await potholeRemoteDataSource.getPotholes(page);
+      return Right(potholes);
+    } on ApiDataException catch (e) {
+      return Left(ApiDataFailure(e.toString()));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.toString()));
+    } catch (e) {
+      return Left(UnknownFailure(e.toString()));
+    }
+  }
 }
