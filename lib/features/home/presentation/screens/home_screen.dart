@@ -18,6 +18,12 @@ class HomeScreen extends GetView<SessionController> {
           children: [
             ElevatedButton(
               onPressed: () {
+                Get.toNamed(AppPaths.potholes);
+              },
+              child: const Text('Mostrar Baches'),
+            ),
+            ElevatedButton(
+              onPressed: () {
                 Get.toNamed(AppPaths.pothole, arguments: {'id': 'new'});
               },
               child: const Text('Reportar Bache'),

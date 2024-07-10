@@ -5,7 +5,9 @@ import 'package:bache_finder_app/features/auth/presentation/screens/login_screen
 import 'package:bache_finder_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:bache_finder_app/features/home/presentation/screens/home_screen.dart';
 import 'package:bache_finder_app/features/pothole/presentation/bindings/pothole_binding.dart';
+import 'package:bache_finder_app/features/pothole/presentation/bindings/potholes_binding.dart';
 import 'package:bache_finder_app/features/pothole/presentation/screens/pothole_screen.dart';
+import 'package:bache_finder_app/features/pothole/presentation/screens/potholes_screen.dart';
 import 'package:bache_finder_app/features/report/presentation/screens/report_screen.dart';
 import 'package:bache_finder_app/features/user/presentation/screens/profile_screen.dart';
 import 'package:get/get.dart';
@@ -18,6 +20,7 @@ class AppPaths {
   static const String home = '/';
   static const String profile = '/profile';
   static const String pothole = '/pothole';
+  static const String potholes = '/potholes';
 }
 
 class AppRouter {
@@ -57,6 +60,13 @@ class AppRouter {
       page: () => const PotholeScreen(),
       bindings: [
         PotholeBinding(),
+      ]
+    ),
+    GetPage(
+      name: AppPaths.potholes,
+      page: () => const PotholesScreen(),
+      bindings: [
+        PotholesBinding(),
       ]
     ),
   ];
