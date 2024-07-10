@@ -37,18 +37,35 @@ class PotholeRemoteDataSource {
     }
   }
 
+  Future<List<PotholeModel>> getPotholes(int page) async {
+    try {
+      final response = await _dio.get('v1/potholes?page=$page');
+      if (response.data['data']['potholes'] == null) {
+        throw ApiDataException(
+            'Error al recuperar datos. No se encontraron datos de potholes.');
+      }
+      return (response.data['data']['potholes'] as List)
+          .map((pothole) => PotholeModel.fromJson(pothole))
+          .toList();
+    } on DioException catch (e) {
+      final errorMessage = DioErrorHandler.getErrorMessage(e);
+      throw NetworkException(errorMessage);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   Future<PotholeModel> savePotholeById(
       String potholeId, Map<String, dynamic> potholeLike) async {
     final method = potholeId == 'new' ? 'POST' : 'PATCH';
     final url = potholeId == 'new' ? 'v1/potholes' : 'v1/potholes/$potholeId';
 
     try {
-
       if (!potholeLike.containsKey('image') || potholeLike['image'] == '') {
         throw ApiDataException(
             'Error al cargar imagen. La imagen es obligatoria');
       }
-      
+
       final mimeType = lookupMimeType(potholeLike['image']);
 
       if (mimeType == null) {
@@ -61,10 +78,10 @@ class PotholeRemoteDataSource {
 
       var data = potholeLike;
       data['image'] = imageBase64;
-      
 
-      final response = await _dio.request(url,
-          data: data, options: Options(method: method));
+      final response =
+          await _dio.request(url, data: data, options: Options(method: method));
+
       if (response.data['data']['pothole'] == null) {
         throw ApiDataException(
             'Error al recuperar datos. No se encontraron datos de pothole.');
