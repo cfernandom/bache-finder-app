@@ -56,6 +56,7 @@ class PotholeController extends GetxController {
       (failure) => _errorMessage = failure.message,
       (pothole) => _pothole.value = pothole, 
     );
+    _isLoading.value = false;
 
     return result.isRight();
   }
