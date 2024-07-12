@@ -33,14 +33,33 @@ class _SaveButton extends GetView<PotholeFormController> {
         onPressed: controller.isModifed
             ? () async {
                 final result = await controller.onSubmit();
-                // TODO: Handle messages 
+                if (result) {
+                  Get.snackbar(
+                    'Bache guardado',
+                    'Se ha guardado el bache correctamente',
+                    snackPosition: SnackPosition.BOTTOM,
+                    backgroundColor: Colors.green,
+                    colorText: Colors.white,
+                  );
+                } else {
+                  Get.snackbar(
+                    'Error',
+                    'No se ha podido guardar el bache. Revisa tu conexión a internet',
+                    snackPosition: SnackPosition.BOTTOM,
+                    backgroundColor: Colors.red,
+                    colorText: Colors.white,
+                  );
+                }
               }
             : null,
         icon: controller.isPosting
             ? const CircularProgressIndicator()
             : const Icon(Icons.save, color: Colors.white),
-        label: const Text('Guardar bache', style: TextStyle(color: Colors.white)),
-        backgroundColor: controller.isModifed ? Theme.of(context).colorScheme.primary : Colors.grey[300],
+        label:
+            const Text('Guardar bache', style: TextStyle(color: Colors.white)),
+        backgroundColor: controller.isModifed
+            ? Theme.of(context).colorScheme.primary
+            : Colors.grey[300],
       ),
     );
   }
