@@ -37,17 +37,21 @@ class _SaveButton extends GetView<PotholeFormController> {
                   Get.snackbar(
                     'Bache guardado',
                     'Se ha guardado el bache correctamente',
-                    snackPosition: SnackPosition.BOTTOM,
-                    backgroundColor: Colors.green,
-                    colorText: Colors.white,
+                    snackPosition: SnackPosition.TOP,
+                    backgroundGradient: LinearGradient(
+                        colors: [Colors.green[300]!, Colors.green[100]!]),
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 32, horizontal: 16),
                   );
                 } else {
                   Get.snackbar(
                     'Error',
-                    'No se ha podido guardar el bache. Revisa tu conexión a internet',
-                    snackPosition: SnackPosition.BOTTOM,
-                    backgroundColor: Colors.red,
-                    colorText: Colors.white,
+                    'No se ha podido guardar el bache.',
+                    snackPosition: SnackPosition.TOP,          
+                    backgroundGradient: LinearGradient(
+                        colors: [Colors.red[300]!, Colors.red[100]!]),
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 32, horizontal: 16),
                   );
                 }
               }
