@@ -1,6 +1,7 @@
 import 'package:bache_finder_app/features/pothole/domain/entities/pothole.dart';
 import 'package:bache_finder_app/features/shared/infrastructure/inputs/image_input.dart';
 import 'package:bache_finder_app/features/shared/infrastructure/inputs/latitude_input.dart';
+import 'package:bache_finder_app/features/shared/infrastructure/inputs/locality_input.dart';
 import 'package:bache_finder_app/features/shared/infrastructure/inputs/longitude_input.dart';
 import 'package:bache_finder_app/features/shared/infrastructure/inputs/text_input.dart';
 import 'package:formz/formz.dart';
@@ -14,6 +15,7 @@ class PotholeFormController extends GetxController {
   final Rx<ImageInput> _image;
   final Rx<LatitudeInput> _latitude;
   final Rx<LongitudeInput> _longitude;
+  final Rx<LocalityInput> _locality;
 
   PotholeFormController(
     Pothole? pothole, {
@@ -23,7 +25,8 @@ class PotholeFormController extends GetxController {
         _image = ImageInput.pure(pothole?.image ?? '').obs,
         _latitude = LatitudeInput.pure(pothole?.latitude.toString() ?? '').obs,
         _longitude =
-            LongitudeInput.pure(pothole?.longitude.toString() ?? '').obs;
+            LongitudeInput.pure(pothole?.longitude.toString() ?? '').obs,
+        _locality = LocalityInput.pure(pothole?.locality).obs;
 
   final _isPosted = false.obs;
   final _isPosting = false.obs;
@@ -37,6 +40,7 @@ class PotholeFormController extends GetxController {
   Rx<TextInput> get address => _address;
   Rx<LatitudeInput> get latitude => _latitude;
   Rx<LongitudeInput> get longitude => _longitude;
+  Rx<LocalityInput> get locality => _locality;
 
   void onAddressChanged(String value) {
     _isModifed.value = true;
@@ -44,6 +48,20 @@ class PotholeFormController extends GetxController {
     _address.value = address;
     _isValid.value = Formz.validate([
       address,
+      _locality.value,
+      _image.value,
+      _latitude.value,
+      _longitude.value,
+    ]);
+  }
+
+  void onLocalityChanged(String? value) {
+    _isModifed.value = true;
+    final locality = LocalityInput.dirty(value);
+    _locality.value = locality;
+    _isValid.value = Formz.validate([
+      _address.value,
+      locality,
       _image.value,
       _latitude.value,
       _longitude.value,
@@ -56,6 +74,7 @@ class PotholeFormController extends GetxController {
     _image.value = image;
     _isValid.value = Formz.validate([
       _address.value,
+      _locality.value,
       image,
       _latitude.value,
       _longitude.value,
@@ -68,6 +87,7 @@ class PotholeFormController extends GetxController {
     _latitude.value = latitude;
     _isValid.value = Formz.validate([
       _address.value,
+      _locality.value,
       _image.value,
       latitude,
       _longitude.value,
@@ -80,6 +100,7 @@ class PotholeFormController extends GetxController {
     _longitude.value = longitude;
     _isValid.value = Formz.validate([
       _address.value,
+      _locality.value,
       _image.value,
       _latitude.value,
       longitude,
@@ -92,6 +113,7 @@ class PotholeFormController extends GetxController {
     // _description.value = description;
     _isValid.value = Formz.validate([
       _address.value,
+      _locality.value,
       _image.value,
       _latitude.value,
       _longitude.value,
@@ -119,6 +141,7 @@ class PotholeFormController extends GetxController {
     if (!_image.value.isPure) potholeLike['image'] = _image.value.value;
     if (!_latitude.value.isPure) potholeLike['latitude'] = _latitude.value.value;
     if (!_longitude.value.isPure) potholeLike['longitude'] = _longitude.value.value;
+    if (!_locality.value.isPure) potholeLike['locality'] = _locality.value.value;
 
     _isPosting.value = true;
     try {

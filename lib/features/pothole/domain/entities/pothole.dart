@@ -2,6 +2,7 @@ class Pothole {
   final String id;
   final String type;
   final String address;
+  final String locality;
   final String image;
   final String status;
   final String createdAt;
@@ -17,6 +18,7 @@ class Pothole {
     required this.id,
     required this.type,
     required this.address,
+    required this.locality,
     required this.image,
     required this.status,
     required this.createdAt,

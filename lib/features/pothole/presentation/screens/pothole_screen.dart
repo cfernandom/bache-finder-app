@@ -1,5 +1,6 @@
 import 'package:bache_finder_app/features/pothole/presentation/controllers/forms/pothole_form_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/pothole_controller.dart';
+import 'package:bache_finder_app/features/pothole/presentation/widgets/locality_selector_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/icon_button_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/image_viewer_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/text_field_widget.dart';
@@ -105,6 +106,7 @@ class _FormView extends StatelessWidget {
         _AddressInput(),
         _LatitudeInput(),
         _LongitudeInput(),
+        _LocalitySelector(),
         Text('Imagen del bache'),
         _ImageViewer(),
         _UploadPhotoButton(),
@@ -128,6 +130,20 @@ class _AddressInput extends GetView<PotholeFormController> {
         onChanged: controller.onAddressChanged,
         errorMessage:
             controller.isPosted ? controller.address.value.errorMessage : null,
+      ),
+    );
+  }
+}
+
+class _LocalitySelector extends GetView<PotholeFormController> {
+  const _LocalitySelector();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => LocalitySelectorWidget(
+        onChanged: controller.onLocalityChanged,
+        initialValue: controller.locality.value.value,
       ),
     );
   }
