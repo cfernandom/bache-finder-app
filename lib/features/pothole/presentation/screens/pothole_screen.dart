@@ -48,7 +48,7 @@ class _SaveButton extends GetView<PotholeFormController> {
                   Get.snackbar(
                     'Error',
                     'No se ha podido guardar el bache.',
-                    snackPosition: SnackPosition.TOP,          
+                    snackPosition: SnackPosition.TOP,
                     backgroundGradient: LinearGradient(
                         colors: [Colors.red[300]!, Colors.red[100]!]),
                     margin: const EdgeInsets.symmetric(
@@ -102,16 +102,19 @@ class _FormView extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Column(
       children: [
+        Text('Foto del bache'),
+        _ImageViewer(),
+        Row(
+          children: [
+            Expanded(child: _UploadPhotoButton()),
+            Expanded(child: _TakePhotoButton()),
+          ],
+        ),
         Text('Ubicación del bache'),
+        _LocalitySelector(),
         _AddressInput(),
         _LatitudeInput(),
         _LongitudeInput(),
-        _LocalitySelector(),
-        Text('Imagen del bache'),
-        _ImageViewer(),
-        _UploadPhotoButton(),
-        _TakePhotoButton(),
-        _SubmitButton(),
       ],
     );
   }
@@ -237,15 +240,15 @@ class _TakePhotoButton extends GetView<PotholeFormController> {
   }
 }
 
-class _SubmitButton extends GetView<PotholeFormController> {
-  const _SubmitButton();
+// class _SubmitButton extends GetView<PotholeFormController> {
+//   const _SubmitButton();
 
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() => IconButtonWidget(
-          onPressed: controller.isPosting ? null : controller.onSubmit,
-          label: 'Enviar',
-          icon: Icons.send,
-        ));
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Obx(() => IconButtonWidget(
+//           onPressed: controller.isPosting ? null : controller.onSubmit,
+//           label: 'Enviar',
+//           icon: Icons.send,
+//         ));
+//   }
+// }
