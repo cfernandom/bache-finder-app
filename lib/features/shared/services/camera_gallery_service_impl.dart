@@ -5,29 +5,33 @@ class CameraGalleryServiceImpl implements CameraGalleryService {
   final ImagePicker _picker = ImagePicker();
 
   @override
-  Future<String?> selectPhoto() async {
+  Future<XFile?> selectPhoto() async {
     final XFile? photo = await _picker.pickImage(
       source: ImageSource.gallery,
       imageQuality: 90,
     );
 
-    if (photo != null) {
-      return photo.path;
+    final format = photo?.mimeType ?? photo?.path.split('.').last;
+
+    if (format != null) {
+      return photo;
     }
 
     return null;
   }
 
   @override
-  Future<String?> takePhoto() async {
+  Future<XFile?> takePhoto() async {
     final XFile? photo = await _picker.pickImage(
       source: ImageSource.camera,
       imageQuality: 90,
       preferredCameraDevice: CameraDevice.rear,
     );
 
-    if (photo != null) {
-      return photo.path;
+    final format = photo?.mimeType ?? photo?.name.split('.').last;
+
+    if (format != null) {
+      return photo;
     }
 
     return null;

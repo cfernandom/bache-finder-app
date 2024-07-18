@@ -6,6 +6,7 @@ import 'package:bache_finder_app/features/shared/infrastructure/inputs/longitude
 import 'package:bache_finder_app/features/shared/infrastructure/inputs/text_input.dart';
 import 'package:formz/formz.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PotholeFormController extends GetxController {
   final Future<bool> Function(Map<String, dynamic> potholeLike)
@@ -22,7 +23,7 @@ class PotholeFormController extends GetxController {
     required onSubmitCallback,
   })  : _onSubmitCallback = onSubmitCallback,
         _address = TextInput.pure(pothole?.address ?? '').obs,
-        _image = ImageInput.pure(pothole?.image ?? '').obs,
+        _image = ImageInput.pure(XFile(pothole?.image ?? '')).obs,
         _latitude = LatitudeInput.pure(pothole?.latitude.toString() ?? '').obs,
         _longitude =
             LongitudeInput.pure(pothole?.longitude.toString() ?? '').obs,
@@ -68,7 +69,7 @@ class PotholeFormController extends GetxController {
     ]);
   }
 
-  void onImageChanged(String value) {
+  void onImageChanged(XFile value) {
     _isModifed.value = true;
     final image = ImageInput.dirty(value);
     _image.value = image;

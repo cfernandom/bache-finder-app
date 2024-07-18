@@ -196,7 +196,7 @@ class _ImageViewer extends GetView<PotholeFormController> {
   Widget build(BuildContext context) {
     return Container(
       constraints: const BoxConstraints(minHeight: 250, maxHeight: 500),
-      child: Obx(() => ImageViewerWidget(controller.image.value.value)),
+      child: Obx(() => ImageViewerWidget(controller.image.value.value.path)),
     );
   }
 }
@@ -205,9 +205,9 @@ class _UploadPhotoButton extends GetView<PotholeFormController> {
   const _UploadPhotoButton();
 
   void onPressed() async {
-    final photoPath = await CameraGalleryServiceImpl().selectPhoto();
-    if (photoPath == null) return;
-    controller.onImageChanged(photoPath);
+    final photo = await CameraGalleryServiceImpl().selectPhoto();
+    if (photo == null) return;
+    controller.onImageChanged(photo);
   }
 
   @override
@@ -224,10 +224,10 @@ class _TakePhotoButton extends GetView<PotholeFormController> {
   const _TakePhotoButton();
 
   void onPressed() async {
-    final photoPath = await CameraGalleryServiceImpl().takePhoto();
-    if (photoPath == null) return;
+    final photo = await CameraGalleryServiceImpl().takePhoto();
+    if (photo == null) return;
 
-    controller.onImageChanged(photoPath);
+    controller.onImageChanged(photo);
   }
 
   @override

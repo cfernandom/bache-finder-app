@@ -1,17 +1,24 @@
 import 'package:formz/formz.dart';
+import 'package:image_picker/image_picker.dart';
 
 enum ImageValidationError { empty, format }
 
-class ImageInput extends FormzInput<String, ImageValidationError> {
+class ImageInput extends FormzInput<XFile, ImageValidationError> {
   const ImageInput.pure(super.value) : super.pure();
   const ImageInput.dirty(super.value) : super.dirty();
-  
+
   @override
-  ImageValidationError? validator(String value) {
-    if (value.isEmpty || value.trim().isEmpty) {
+  ImageValidationError? validator(XFile value) {
+    if (value.path.trim().isEmpty) {
       return ImageValidationError.empty;
     }
-    if (!value.endsWith('.jpg') && !value.endsWith('.jpeg') && !value.endsWith('.png')) {
+
+    final format = value.path.split('.').last;
+    final formatFromMimeType = value.mimeType?.split('/')[1];
+
+    final validFormats = ['jpg', 'jpeg', 'png'];
+    if (!validFormats.contains(format) &&
+        !validFormats.contains(formatFromMimeType)) {
       return ImageValidationError.format;
     }
     return null;

@@ -1,4 +1,6 @@
+import 'package:image_picker/image_picker.dart';
+
 abstract class CameraGalleryService {
-  Future<String?> takePhoto();
-  Future<String?> selectPhoto();
+  Future<XFile?> takePhoto();
+  Future<XFile?> selectPhoto();
 }

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:bache_finder_app/core/constants/enviroment.dart';
@@ -8,7 +7,7 @@ import 'package:bache_finder_app/core/errors/dio_error_handler.dart';
 import 'package:bache_finder_app/core/errors/network_exception.dart';
 import 'package:bache_finder_app/features/pothole/infrastructure/models/pothole_model.dart';
 import 'package:dio/dio.dart';
-import 'package:mime/mime.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PotholeRemoteDataSource {
   late final Dio _dio;
@@ -60,17 +59,12 @@ class PotholeRemoteDataSource {
     final method = potholeId == 'new' ? 'POST' : 'PATCH';
     final url = potholeId == 'new' ? 'v1/potholes' : 'v1/potholes/$potholeId';
 
+    var data = potholeLike;
     try {
-      var data = potholeLike;
 
-      if (potholeLike.containsKey('image') && potholeLike['image'] != '') {
-        final mimeType = lookupMimeType(potholeLike['image']);
+      if (potholeLike.containsKey('image') && potholeLike['image'].path != '') {
 
-        if (mimeType == null) {
-          throw ApiDataException(
-              'Error al cargar imagen. El formato de la imagen no es valido.');
-        }
-        Uint8List image = File(potholeLike['image']).readAsBytesSync();
+        Uint8List image = await (potholeLike['image'] as XFile).readAsBytes();
         final imageBase64 = base64Encode(image);
 
         data['image'] = imageBase64;     
@@ -81,11 +75,11 @@ class PotholeRemoteDataSource {
         }
       }
       final response =
-          await _dio.request(url, data: data, options: Options(method: method));
+          await _dio.request(url, data: data, options: Options(method: method), );
 
       if (response.data['data']['pothole'] == null) {
         throw ApiDataException(
-            'Error al recuperar datos. No se encontraron datos de pothole.');
+            'Error al recuperar datos. No se encontraron datos del bache.');
       }
       return PotholeModel.fromJson(response.data['data']['pothole']);
     } on DioException catch (e) {
