@@ -112,21 +112,13 @@ class _RecoveryPassword extends StatelessWidget {
 class _LoginButton extends GetView<LoginFormController> {
   const _LoginButton();
 
-  // void _login() async {
-  //   final result =
-  //       await controller.login('fernando@example.com', 'password2024#');
-  //   if (!result) {
-  //     Get.snackbar('Error', 'Failed to login');
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: Obx(
         () => FilledButton(
-          onPressed: controller.isPosting ? null : controller.submit,
+          onPressed: controller.isPosting ? null : controller.onSubmit,
           child: const Text('Iniciar Sesión'),
         ),
       ),

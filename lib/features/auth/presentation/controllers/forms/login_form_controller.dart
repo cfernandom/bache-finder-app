@@ -4,9 +4,9 @@ import 'package:formz/formz.dart';
 import 'package:get/get.dart';
 
 class LoginFormController extends GetxController {
-  final Future<bool> Function(String email, String password) _login;
+  final Future<bool> Function(String email, String password) _loginCallback;
 
-  LoginFormController({required login}) : _login = login;
+  LoginFormController({required loginCallback}) : _loginCallback = loginCallback;
 
   final _isPosted = false.obs;
   final _isPosting = false.obs;
@@ -42,12 +42,12 @@ class LoginFormController extends GetxController {
     _isPosted.value = true;
   }
 
-  void submit() async {
+  void onSubmit() async {
     _touchAllFields();
 
     if (_isValid.value) {
       _isPosting.value = true;
-      await _login(_email.value.value, _password.value.value);
+      await _loginCallback(_email.value.value, _password.value.value);
       _isPosting.value = false;
     }
   }

@@ -7,7 +7,7 @@ class LoginBinding extends Bindings {
   void dependencies() {
     Get.lazyPut(
       () => LoginFormController(
-        login: Get.find<SessionController>().login,
+        loginCallback: Get.find<SessionController>().login,
       ),
     );
   }
