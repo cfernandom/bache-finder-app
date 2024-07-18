@@ -1,19 +1,20 @@
+import 'package:bache_finder_app/core/errors/failures/failure.dart';
 import 'package:bache_finder_app/features/pothole/domain/entities/pothole.dart';
 import 'package:bache_finder_app/features/pothole/domain/use_cases/get_pothole.dart';
-import 'package:bache_finder_app/features/pothole/domain/use_cases/save_pothole.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
 
 class PotholeController extends GetxController {
+  final Future<Either<Failure, Pothole>> Function(String potholeId, Map<String, dynamic> potholeLike) _savePotholeCallback;
   final String _potholeId;
   final GetPothole _getPotholeUseCase;
-  final SavePothole _savePotholeUseCase;
 
   PotholeController(
     this._potholeId, {
+    required savePotholeCallback,
     required GetPothole getPotholeUseCase,
-    required SavePothole savePotholeUseCase,
-  })  : _getPotholeUseCase = getPotholeUseCase,
-        _savePotholeUseCase = savePotholeUseCase;
+  })  : _savePotholeCallback = savePotholeCallback, 
+  _getPotholeUseCase = getPotholeUseCase;
 
   final _pothole = Rxn<Pothole>();
   final _isLoading = true.obs;
@@ -50,7 +51,7 @@ class PotholeController extends GetxController {
   Future<bool> savePothole(Map<String, dynamic> potholeLike) async {
     _isLoading.value = true;
 
-    final result = await _savePotholeUseCase.call(_potholeId, potholeLike);
+    final result = await _savePotholeCallback(_potholeId, potholeLike);
 
     result.fold(
       (failure) => _errorMessage = failure.message,
