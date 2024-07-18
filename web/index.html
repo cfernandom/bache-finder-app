@@ -31,6 +31,8 @@
 
   <title>bache_finder_app</title>
   <link rel="manifest" href="manifest.json">
+  <script src="https://bache-finder-backend-api.cfernandom.dev/api/v1/google-maps-proxy/js?libraries=core,places,geocoding" async></script>
+  <!-- Warning: Despite using a proxy to avoid exposing the API key, the Google Maps script makes requests that may expose the key. It is recommended to configure restrictions for the API key. -->
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>

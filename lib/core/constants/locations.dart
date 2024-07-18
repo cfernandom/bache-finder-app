@@ -1,3 +1,5 @@
+import 'package:map_location_picker/map_location_picker.dart';
+
 class Locations {
   static List<String> bogotaLocalities = [
     'Antonio Nariño',
@@ -21,4 +23,6 @@ class Locations {
     'Usaquén',
     'Usme'
   ];
+
+  static LatLng bogotaLatLng = const LatLng(4.60971, -74.08175);
 }

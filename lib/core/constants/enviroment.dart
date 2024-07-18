@@ -12,4 +12,12 @@ class Enviroment {
   static String bacheFinderPublicStorageUrl() {
     return dotenv.env['BACHE_FINDER_PUBLIC_STORAGE_URL']!;
   }
+
+  static String googleMapsApiKey() {
+    return dotenv.env['GOOGLE_MAPS_API_KEY']!;
+  }
+
+  static String googleMapsApiProxyUrl() {
+    return dotenv.env['GOOGLE_MAPS_API_PROXY_URL']!;
+  }
 }

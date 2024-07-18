@@ -38,10 +38,11 @@ android {
         applicationId = "com.example.bache_finder_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdk = flutter.minSdkVersion
+        minSdk = 20
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
+        resValue "string", "google_maps_api_key", System.getenv("GOOGLE_MAPS_API_KEY") ?: "" 
     }
 
     buildTypes {

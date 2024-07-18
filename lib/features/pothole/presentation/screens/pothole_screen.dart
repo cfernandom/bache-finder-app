@@ -1,12 +1,14 @@
 import 'package:bache_finder_app/features/pothole/presentation/controllers/forms/pothole_form_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/pothole_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/widgets/locality_selector_widget.dart';
+import 'package:bache_finder_app/features/pothole/presentation/widgets/location_picker_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/icon_button_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/image_viewer_widget.dart';
-import 'package:bache_finder_app/features/shared/presentation/widgets/text_field_widget.dart';
+import 'package:bache_finder_app/features/shared/presentation/widgets/text_field_rx_widget.dart';
 import 'package:bache_finder_app/features/shared/services/camera_gallery_service_impl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:map_location_picker/map_location_picker.dart';
 
 class PotholeScreen extends GetView<PotholeController> {
   const PotholeScreen({super.key});
@@ -81,7 +83,7 @@ class _MainView extends GetView<PotholeController> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              const Text('Formulario de bache'),
+              Text('Formulario de bache', style: Theme.of(context).textTheme.titleLarge),
               Obx(
                 () => controller.isLoading.value
                     ? const Center(child: CircularProgressIndicator())
@@ -100,22 +102,62 @@ class _FormView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
-        Text('Foto del bache'),
-        _ImageViewer(),
-        Row(
+        Text('Foto del bache', style: Theme.of(context).textTheme.titleMedium),
+        const _ImageViewer(),
+        const Row(
           children: [
             Expanded(child: _UploadPhotoButton()),
             Expanded(child: _TakePhotoButton()),
           ],
         ),
-        Text('Ubicación del bache'),
-        _LocalitySelector(),
-        _AddressInput(),
-        _LatitudeInput(),
-        _LongitudeInput(),
+        Text('Ubicación del bache', style: Theme.of(context).textTheme.titleMedium),
+        const _LocationPickerButton(),
+        const _LatitudeInput(),
+        const _LongitudeInput(),
+        const _AddressInput(),
+        const _LocalitySelector(),
       ],
+    );
+  }
+}
+
+class _LocationPickerButton extends GetView<PotholeFormController> {
+  const _LocationPickerButton();
+
+  void _onLocationChanged(
+    LatLng? latLng,
+    String address,
+    String? locality,
+  ) {
+    if (latLng != null) {
+      controller.onLatitudeChanged(latLng.latitude.toString());
+      controller.onLongitudeChanged(latLng.longitude.toString());
+      controller.onAddressChanged(address);
+      controller.onLocalityChanged(locality);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton(
+        child: const Text('Seleccionar ubicación'),
+        onPressed: () async {
+          final currentLat = double.tryParse(controller.latitude.value.value);
+          final currentLng = double.tryParse(controller.longitude.value.value);
+          final currentLatLng = currentLat != null && currentLng != null
+              ? LatLng(currentLat, currentLng)
+              : null;
+      
+          Get.to(() => LocationPickerScreen(
+                onChanged: _onLocationChanged,
+                currentLatLng: currentLatLng,
+              ));
+        },
+      ),
     );
   }
 }
@@ -126,7 +168,7 @@ class _AddressInput extends GetView<PotholeFormController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => TextFieldWidget(
+      () => TextFieldRxWidget(
         label: 'Dirección*',
         initialValue: controller.address.value.value,
         keyboardType: TextInputType.text,
@@ -158,14 +200,7 @@ class _LatitudeInput extends GetView<PotholeFormController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => TextFieldWidget(
-        label: 'Latitud*',
-        initialValue: controller.latitude.value.value.toString(),
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        onChanged: (value) => controller.onLatitudeChanged(value),
-        errorMessage:
-            controller.isPosted ? controller.latitude.value.errorMessage : null,
-      ),
+      () => Text('Latitud: ${controller.latitude.value.value}'),
     );
   }
 }
@@ -176,15 +211,7 @@ class _LongitudeInput extends GetView<PotholeFormController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => TextFieldWidget(
-        label: 'Longitud*',
-        initialValue: controller.longitude.value.value.toString(),
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        onChanged: (value) => controller.onLongitudeChanged(value),
-        errorMessage: controller.isPosted
-            ? controller.longitude.value.errorMessage
-            : null,
-      ),
+      () => Text('Longitud: ${controller.longitude.value.value}'),
     );
   }
 }
