@@ -29,15 +29,17 @@ class PotholeCardWidget extends GetView<PotholesController> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(pothole.address),
-                const Text('Ubicación'),
-                Text('${pothole.latitude}, ${pothole.longitude}'),
-                const Text('Tipo'),
-                Text(pothole.type),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(pothole.address, overflow: TextOverflow.ellipsis),
+                  const Text('Ubicación'),
+                  Text('${pothole.latitude}, ${pothole.longitude}'),
+                  const Text('Tipo'),
+                  Text(pothole.type),
+                ],
+              ),
             ),
             _Image(
               path: pothole.image,
