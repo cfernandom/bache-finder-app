@@ -6,6 +6,7 @@ import 'package:bache_finder_app/features/shared/presentation/widgets/icon_butto
 import 'package:bache_finder_app/features/shared/presentation/widgets/image_viewer_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/text_field_rx_widget.dart';
 import 'package:bache_finder_app/features/shared/services/camera_gallery_service_impl.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:map_location_picker/map_location_picker.dart';
@@ -109,7 +110,7 @@ class _FormView extends StatelessWidget {
         const Row(
           children: [
             Expanded(child: _UploadPhotoButton()),
-            Expanded(child: _TakePhotoButton()),
+            kIsWeb ? SizedBox.shrink() : Expanded(child: _TakePhotoButton()),
           ],
         ),
         Text('Ubicación del bache', style: Theme.of(context).textTheme.titleMedium),
@@ -151,7 +152,7 @@ class _LocationPickerButton extends GetView<PotholeFormController> {
           final currentLatLng = currentLat != null && currentLng != null
               ? LatLng(currentLat, currentLng)
               : null;
-      
+
           Get.to(() => LocationPickerScreen(
                 onChanged: _onLocationChanged,
                 currentLatLng: currentLatLng,
