@@ -18,7 +18,9 @@ class PotholeScreen extends GetView<PotholeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const _MainView(),
+      body: Obx(() => controller.isLoading.value
+          ? const Center(child: CircularProgressIndicator())
+          : const _MainView()),
       floatingActionButton: Obx(
         () => controller.isLoading.value
             ? const SizedBox.shrink()
@@ -84,14 +86,13 @@ class _MainView extends GetView<PotholeController> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Formulario de bache',
                   style: Theme.of(context).textTheme.titleLarge),
-              Obx(
-                () => controller.isLoading.value
-                    ? const Center(child: CircularProgressIndicator())
-                    : const _FormView(),
-              ),
+              const _BasicFormView(),
+              const _AdditionalFormView(),
+              const GapWidget(size: 64.0),
             ],
           ),
         ),
@@ -100,8 +101,8 @@ class _MainView extends GetView<PotholeController> {
   }
 }
 
-class _FormView extends StatelessWidget {
-  const _FormView();
+class _BasicFormView extends StatelessWidget {
+  const _BasicFormView();
 
   @override
   Widget build(BuildContext context) {
@@ -132,9 +133,26 @@ class _FormView extends StatelessWidget {
         const _LocationPickerButton(),
         const _LatitudeInput(),
         const _LongitudeInput(),
-        const GapWidget(size: 16.0),
+        const GapWidget(size: 8.0),
         const _AddressInput(),
         const _LocalitySelector(),
+      ],
+    );
+  }
+}
+
+class _AdditionalFormView extends StatelessWidget {
+  const _AdditionalFormView();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const GapWidget(size: 16.0),
+        Text('Información adicional',
+            style: Theme.of(context).textTheme.titleMedium),
+        const GapWidget(size: 8.0),
       ],
     );
   }
