@@ -11,6 +11,7 @@ class TextFieldRxWidget extends StatefulWidget {
     this.onChanged,
     this.prefix = '',
     this.suffix = '',
+    this.maxLines = 1,
   });
 
   final String label;
@@ -21,6 +22,7 @@ class TextFieldRxWidget extends StatefulWidget {
   final void Function(String)? onChanged;
   final String prefix;
   final String suffix;
+  final int maxLines;
 
   @override
   State<TextFieldRxWidget> createState() => _TextFieldRxWidgetState();
@@ -50,6 +52,8 @@ class _TextFieldRxWidgetState extends State<TextFieldRxWidget> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: widget.maxLines,
+      minLines: 1,
       controller: _controller,
       obscureText: widget.isObscure,
       keyboardType: widget.keyboardType,

@@ -136,6 +136,11 @@ class _BasicFormView extends StatelessWidget {
         const GapWidget(size: 8.0),
         const _AddressInput(),
         const _LocalitySelector(),
+        const GapWidget(size: 16.0),
+        Text('Detalles del bache',
+            style: Theme.of(context).textTheme.titleSmall),
+        const GapWidget(size: 8.0),
+        const _DescriptionInput(),
       ],
     );
   }
@@ -212,6 +217,26 @@ class _AddressInput extends GetView<PotholeFormController> {
         onChanged: controller.onAddressChanged,
         errorMessage:
             controller.isPosted ? controller.address.value.errorMessage : null,
+      ),
+    );
+  }
+}
+
+class _DescriptionInput extends GetView<PotholeFormController> {
+  const _DescriptionInput();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => TextFieldRxWidget(
+        label: 'Descripción*',
+        maxLines: 6,
+        initialValue: controller.description.value.value,
+        keyboardType: TextInputType.text,
+        onChanged: controller.onDescriptionChanged,
+        errorMessage: controller.isPosted
+            ? controller.description.value.errorMessage
+            : null,
       ),
     );
   }
