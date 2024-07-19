@@ -2,8 +2,9 @@ import 'package:bache_finder_app/features/pothole/presentation/controllers/forms
 import 'package:bache_finder_app/features/pothole/presentation/controllers/pothole_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/widgets/locality_selector_widget.dart';
 import 'package:bache_finder_app/features/pothole/presentation/widgets/location_picker_widget.dart';
-import 'package:bache_finder_app/features/shared/presentation/widgets/icon_button_widget.dart';
+import 'package:bache_finder_app/features/shared/presentation/widgets/gap_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/image_viewer_widget.dart';
+import 'package:bache_finder_app/features/shared/presentation/widgets/outlined_button_icon_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/text_field_rx_widget.dart';
 import 'package:bache_finder_app/features/shared/services/camera_gallery_service_impl.dart';
 import 'package:flutter/foundation.dart';
@@ -81,10 +82,11 @@ class _MainView extends GetView<PotholeController> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Column(
             children: [
-              Text('Formulario de bache', style: Theme.of(context).textTheme.titleLarge),
+              Text('Formulario de bache',
+                  style: Theme.of(context).textTheme.titleLarge),
               Obx(
                 () => controller.isLoading.value
                     ? const Center(child: CircularProgressIndicator())
@@ -104,19 +106,33 @@ class _FormView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Foto del bache', style: Theme.of(context).textTheme.titleMedium),
+        const GapWidget(size: 16.0),
+        Text('Información básica del bache',
+            style: Theme.of(context).textTheme.titleMedium),
+        const GapWidget(size: 8.0),
+        Text('Foto del bache', style: Theme.of(context).textTheme.titleSmall),
+        const GapWidget(size: 8.0),
         const _ImageViewer(),
+        const GapWidget(size: 8.0),
         const Row(
           children: [
             Expanded(child: _UploadPhotoButton()),
-            kIsWeb ? SizedBox.shrink() : Expanded(child: _TakePhotoButton()),
+            if (!kIsWeb) ...[
+              GapWidget(size: 8.0),
+              Expanded(child: _TakePhotoButton()),
+            ],
           ],
         ),
-        Text('Ubicación del bache', style: Theme.of(context).textTheme.titleMedium),
+        const GapWidget(size: 16.0),
+        Text('Ubicación del bache',
+            style: Theme.of(context).textTheme.titleSmall),
+        const GapWidget(size: 8.0),
         const _LocationPickerButton(),
         const _LatitudeInput(),
         const _LongitudeInput(),
+        const GapWidget(size: 16.0),
         const _AddressInput(),
         const _LocalitySelector(),
       ],
@@ -140,24 +156,26 @@ class _LocationPickerButton extends GetView<PotholeFormController> {
     }
   }
 
+  void _onPressed() async {
+    final currentLat = double.tryParse(controller.latitude.value.value);
+    final currentLng = double.tryParse(controller.longitude.value.value);
+    final currentLatLng = currentLat != null && currentLng != null
+        ? LatLng(currentLat, currentLng)
+        : null;
+    Get.to(() => LocationPickerScreen(
+          onChanged: _onLocationChanged,
+          currentLatLng: currentLatLng,
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: OutlinedButton(
-        child: const Text('Seleccionar ubicación'),
-        onPressed: () async {
-          final currentLat = double.tryParse(controller.latitude.value.value);
-          final currentLng = double.tryParse(controller.longitude.value.value);
-          final currentLatLng = currentLat != null && currentLng != null
-              ? LatLng(currentLat, currentLng)
-              : null;
-
-          Get.to(() => LocationPickerScreen(
-                onChanged: _onLocationChanged,
-                currentLatLng: currentLatLng,
-              ));
-        },
+      child: OutlinedButtonIconWidget(
+        onPressed: _onPressed,
+        label: 'Seleccionar ubicación',
+        icon: Icons.location_on,
       ),
     );
   }
@@ -222,9 +240,11 @@ class _ImageViewer extends GetView<PotholeFormController> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(minHeight: 250, maxHeight: 500),
-      child: Obx(() => ImageViewerWidget(controller.image.value.value.path)),
+    return Center(
+      child: Container(
+        constraints: const BoxConstraints(minHeight: 250, maxHeight: 500),
+        child: Obx(() => ImageViewerWidget(controller.image.value.value.path)),
+      ),
     );
   }
 }
@@ -240,7 +260,7 @@ class _UploadPhotoButton extends GetView<PotholeFormController> {
 
   @override
   Widget build(BuildContext context) {
-    return IconButtonWidget(
+    return OutlinedButtonIconWidget(
       onPressed: onPressed,
       label: 'Seleccionar foto',
       icon: Icons.photo,
@@ -260,7 +280,7 @@ class _TakePhotoButton extends GetView<PotholeFormController> {
 
   @override
   Widget build(BuildContext context) {
-    return IconButtonWidget(
+    return OutlinedButtonIconWidget(
       onPressed: onPressed,
       label: 'Tomar foto',
       icon: Icons.camera_alt,

@@ -20,6 +20,13 @@ class IconButtonWidget extends StatelessWidget {
         onPressed: onPressed,
         label: Text(label),
         icon: Icon(icon),
+        style: ButtonStyle(
+          shape: WidgetStateProperty.all(
+            const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+            ),
+          ),
+        ),
       ),
     );
   }
