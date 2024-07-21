@@ -35,13 +35,8 @@ class SessionController extends GetxController {
 
   void resetErrorMessage() => _errorMessage.value = '';
 
-  @override
-  void onInit() {
-    super.onInit();
-    validateSession();
-  }
-
   Future<bool> validateSession() async {
+    _isLoading.value = true;
     final result = await _validateSessionUseCase.call();
     result.fold(
       (failure) => _errorMessage.value = failure.message,
@@ -50,6 +45,8 @@ class SessionController extends GetxController {
 
     _status.value =
         result.isRight() ? SessionStatus.loggedIn : SessionStatus.loggedOut;
+    
+    _isLoading.value = false;
 
     return result.isRight();
   }

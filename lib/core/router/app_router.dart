@@ -26,7 +26,10 @@ class AppRouter {
           GoRoute(
             path: AppPaths.authCheck,
             name: 'authCheck',
-            builder: (context, state) => const AuthCheckScreen(),
+            builder: (context, state) {
+              Get.find<SessionController>().validateSession();
+              return const AuthCheckScreen();
+            },
           ),
           GoRoute(
             path: AppPaths.login,
