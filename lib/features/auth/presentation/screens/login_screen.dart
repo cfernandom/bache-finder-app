@@ -7,6 +7,11 @@ import 'package:get/get.dart';
 class LoginScreen extends GetView<SessionController> {
   const LoginScreen({super.key});
 
+  void _showSnackbar(BuildContext context, {required String message}) {
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     controller.isLoading.listen((status) {
@@ -14,13 +19,7 @@ class LoginScreen extends GetView<SessionController> {
       if (status == false) {
         if (errorMessage != '') {
           controller.resetErrorMessage();
-          Get.snackbar(
-            'Error',
-            errorMessage,
-            backgroundGradient:
-                LinearGradient(colors: [Colors.red[300]!, Colors.red[100]!]),
-            margin: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
-          );
+          _showSnackbar(context, message: errorMessage);
         }
       }
     });

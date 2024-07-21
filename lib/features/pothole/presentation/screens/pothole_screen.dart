@@ -179,16 +179,18 @@ class _LocationPickerButton extends GetView<PotholeFormController> {
     }
   }
 
-  void _onPressed() async {
+  void _onPressed(BuildContext context) async {
     final currentLat = double.tryParse(controller.latitude.value.value);
     final currentLng = double.tryParse(controller.longitude.value.value);
     final currentLatLng = currentLat != null && currentLng != null
         ? LatLng(currentLat, currentLng)
         : null;
-    Get.to(() => LocationPickerScreen(
-          onChanged: _onLocationChanged,
-          currentLatLng: currentLatLng,
-        ));
+
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => LocationPickerScreen(
+              onChanged: _onLocationChanged,
+              currentLatLng: currentLatLng,
+            )));
   }
 
   @override
@@ -196,7 +198,7 @@ class _LocationPickerButton extends GetView<PotholeFormController> {
     return SizedBox(
       width: double.infinity,
       child: OutlinedButtonIconWidget(
-        onPressed: _onPressed,
+        onPressed: () => _onPressed(context),
         label: 'Seleccionar ubicación',
         icon: Icons.location_on,
       ),

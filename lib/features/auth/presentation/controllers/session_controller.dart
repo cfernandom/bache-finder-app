@@ -10,7 +10,7 @@ enum SessionStatus {
   checking,
 }
 
-class SessionController extends GetxService {
+class SessionController extends GetxController {
   final ValidateSession _validateSessionUseCase;
   final Login _loginUseCase;
   final Logout _logoutUseCase;
@@ -34,6 +34,12 @@ class SessionController extends GetxService {
   String get errorMessage => _errorMessage.value ?? '';
 
   void resetErrorMessage() => _errorMessage.value = '';
+
+  @override
+  void onInit() {
+    super.onInit();
+    validateSession();
+  }
 
   Future<bool> validateSession() async {
     final result = await _validateSessionUseCase.call();

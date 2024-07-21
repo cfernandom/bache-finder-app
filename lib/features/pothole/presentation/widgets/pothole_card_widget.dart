@@ -4,6 +4,7 @@ import 'package:bache_finder_app/features/pothole/presentation/controllers/potho
 import 'package:bache_finder_app/features/shared/presentation/widgets/image_viewer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class PotholeCardWidget extends GetView<PotholesController> {
   final Pothole pothole;
@@ -16,7 +17,7 @@ class PotholeCardWidget extends GetView<PotholesController> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.toNamed(AppPaths.pothole, arguments: {'id': pothole.id}),
+      onTap: () => context.push('${AppPaths.potholes}/${pothole.id}'),
       child: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: const BoxDecoration(

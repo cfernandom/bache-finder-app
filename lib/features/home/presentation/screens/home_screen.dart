@@ -2,6 +2,7 @@ import 'package:bache_finder_app/core/router/app_pages.dart';
 import 'package:bache_finder_app/features/auth/presentation/controllers/session_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends GetView<SessionController> {
   const HomeScreen({super.key});
@@ -18,13 +19,13 @@ class HomeScreen extends GetView<SessionController> {
           children: [
             ElevatedButton(
               onPressed: () {
-                Get.toNamed(AppPaths.potholes);
+                context.push('${AppPaths.potholes}/all');
               },
               child: const Text('Mostrar Baches'),
             ),
             ElevatedButton(
               onPressed: () {
-                Get.toNamed(AppPaths.profile);
+                context.push(AppPaths.profile);
               },
               child: const Text('Ir a mi perfil'),
             ),

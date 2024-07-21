@@ -1,28 +1,66 @@
 import 'package:bache_finder_app/core/constants/enviroment.dart';
-import 'package:bache_finder_app/core/router/app_pages.dart';
-import 'package:bache_finder_app/core/bindings/root_binding.dart';
+import 'package:bache_finder_app/core/router/app_router.dart';
+import 'package:bache_finder_app/features/auth/presentation/bindings/auth_bindings.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 Future<void> main() async {
   await Enviroment.initEnviroment();
-  await RootBinding.setupDependencies();
-  runApp(const MyApp());
+  AuthBindings().dependencies();
+  if (kIsWeb) {
+    GoRouter.optionURLReflectsImperativeAPIs = true;
+    usePathUrlStrategy();
+  }
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  MyApp({super.key});
+  final appRouterNotifier = Get.put(AppRouterNotifier());
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    final appRouterNotifier = Get.find<AppRouterNotifier>();
+
+    return MaterialApp.router(
       title: 'Bache Finder App',
+      routerConfig: AppRouter.createRouter(appRouterNotifier),
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
         useMaterial3: true,
+        pageTransitionsTheme: PageTransitionsTheme(
+        builders: kIsWeb
+            ? {
+                for (final platform in TargetPlatform.values)
+                  platform: const NoTransitionsBuilder(),
+              }
+            : const {},
       ),
-      initialRoute: AppPaths.authCheck,
-      getPages: AppRouter.routes,
+      ),
+
     );
+  }
+}
+
+class NoTransitionsBuilder extends PageTransitionsBuilder {
+  const NoTransitionsBuilder();
+
+  @override
+  Widget buildTransitions<T>(
+    PageRoute<T>? route,
+    BuildContext? context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget? child,
+  ) {
+    return child!;
   }
 }

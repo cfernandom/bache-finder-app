@@ -6,8 +6,12 @@ import 'package:bache_finder_app/features/pothole/presentation/controllers/potho
 import 'package:get/get.dart';
 
 class PotholeBinding extends Bindings {
+  final String potholeId;
+
+  PotholeBinding({required this.potholeId});
+
   @override
-  void dependencies() {
+  void dependencies() async {
     // Get.lazyPut(
     //   () => PotholeRemoteDataSource(
     //     accessToken: Get.find<SessionController>().session?.token ?? '',
@@ -28,7 +32,7 @@ class PotholeBinding extends Bindings {
 
     Get.lazyPut(
       () => PotholeController(
-        Get.arguments['id'],
+        potholeId,
         getPotholeUseCase: Get.find<GetPothole>(),
         savePotholeCallback: Get.find<PotholesController>().savePothole,
       ),
