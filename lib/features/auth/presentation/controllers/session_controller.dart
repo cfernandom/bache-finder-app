@@ -2,6 +2,7 @@ import 'package:bache_finder_app/features/auth/domain/entities/session.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/login.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/logout.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/validate_session.dart';
+import 'package:bache_finder_app/features/auth/infraestructure/errors/failures/token_not_found_failure.dart';
 import 'package:get/get.dart';
 
 enum SessionStatus {
@@ -39,13 +40,14 @@ class SessionController extends GetxController {
     _isLoading.value = true;
     final result = await _validateSessionUseCase.call();
     result.fold(
-      (failure) => _errorMessage.value = failure.message,
+      (failure) => _errorMessage.value =
+          failure is TokenNotFoundFailure ? '' : failure.message,
       (session) => _session.value = session,
     );
 
     _status.value =
         result.isRight() ? SessionStatus.loggedIn : SessionStatus.loggedOut;
-    
+
     _isLoading.value = false;
 
     return result.isRight();
