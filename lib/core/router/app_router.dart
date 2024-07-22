@@ -12,6 +12,7 @@ import 'package:bache_finder_app/features/pothole/presentation/controllers/potho
 import 'package:bache_finder_app/features/pothole/presentation/controllers/potholes_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/screens/pothole_screen.dart';
 import 'package:bache_finder_app/features/pothole/presentation/screens/potholes_screen.dart';
+import 'package:bache_finder_app/features/pothole/presentation/widgets/location_picker_widget.dart';
 import 'package:bache_finder_app/features/user/presentation/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -74,6 +75,17 @@ class AppRouter {
                   .dependencies();
               return const PotholeScreen();
             },
+            routes: [
+              GoRoute(
+                path: AppPaths.locationPicker,
+                name: 'locationPicker',
+                builder: (context, state) => const LocationPickerScreen(),
+                onExit: (context, state) {
+                  Get.delete<LocationPickerController>();
+                  return true;
+                },
+              ),
+            ],
           ),
         ],
         redirect: (context, state) {

@@ -6,5 +6,6 @@ class AppPaths {
   static const String home = '/';
   static const String profile = '/profile';
   static const String potholes = '/potholes';
+  static const String locationPicker = 'locationPicker';
 }
 

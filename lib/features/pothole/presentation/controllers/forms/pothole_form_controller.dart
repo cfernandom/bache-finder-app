@@ -7,6 +7,7 @@ import 'package:bache_finder_app/features/shared/infrastructure/inputs/text_inpu
 import 'package:formz/formz.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:map_location_picker/map_location_picker.dart';
 
 class PotholeFormController extends GetxController {
   final Future<bool> Function(Map<String, dynamic> potholeLike)
@@ -130,6 +131,14 @@ class PotholeFormController extends GetxController {
     ]);
   }
 
+  void onLocationChanged(LatLng? latLng, String address, String? locality) {
+    if (latLng == null) return;
+    onLatitudeChanged(latLng.latitude.toString());
+    onLongitudeChanged(latLng.longitude.toString());
+    onAddressChanged(address);
+    onLocalityChanged(locality);
+  }
+    
   Future<bool> onSubmit() async {
     _isPosted.value = true;
 

@@ -1,7 +1,7 @@
+import 'package:bache_finder_app/core/router/app_pages.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/forms/pothole_form_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/pothole_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/widgets/locality_selector_widget.dart';
-import 'package:bache_finder_app/features/pothole/presentation/widgets/location_picker_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/gap_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/image_viewer_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/outlined_button_icon_widget.dart';
@@ -10,7 +10,7 @@ import 'package:bache_finder_app/features/shared/services/camera_gallery_service
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:map_location_picker/map_location_picker.dart';
+import 'package:go_router/go_router.dart';
 
 class PotholeScreen extends GetView<PotholeController> {
   const PotholeScreen({super.key});
@@ -166,31 +166,9 @@ class _AdditionalFormView extends StatelessWidget {
 class _LocationPickerButton extends GetView<PotholeFormController> {
   const _LocationPickerButton();
 
-  void _onLocationChanged(
-    LatLng? latLng,
-    String address,
-    String? locality,
-  ) {
-    if (latLng != null) {
-      controller.onLatitudeChanged(latLng.latitude.toString());
-      controller.onLongitudeChanged(latLng.longitude.toString());
-      controller.onAddressChanged(address);
-      controller.onLocalityChanged(locality);
-    }
-  }
-
   void _onPressed(BuildContext context) async {
-    final currentLat = double.tryParse(controller.latitude.value.value);
-    final currentLng = double.tryParse(controller.longitude.value.value);
-    final currentLatLng = currentLat != null && currentLng != null
-        ? LatLng(currentLat, currentLng)
-        : null;
-
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => LocationPickerScreen(
-              onChanged: _onLocationChanged,
-              currentLatLng: currentLatLng,
-            )));
+    final currentLocation = GoRouterState.of(context).matchedLocation;  
+    context.push('$currentLocation/${AppPaths.locationPicker}');
   }
 
   @override

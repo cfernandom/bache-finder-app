@@ -1,16 +1,25 @@
 import 'package:bache_finder_app/core/constants/enviroment.dart';
 import 'package:bache_finder_app/core/constants/locations.dart';
+import 'package:bache_finder_app/features/shared/presentation/widgets/snackbar_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 import 'package:get/get.dart';
 
-// Controlador GetX
 class LocationPickerController extends GetxController {
+  final void Function(LatLng? latLng, String address, String? locality)
+      _onLocationChangedCallback;
   final Rx<LatLng?> _currentLatLng;
+  final Rx<String> _address = ''.obs;
+  final Rx<String?> _locality = ''.obs;
   final _isLoading = true.obs;
+  final _warningMessage = ''.obs;
 
-  LocationPickerController({LatLng? currentLatLng})
-      : _currentLatLng = currentLatLng.obs;
+  LocationPickerController({
+    LatLng? currentLatLng,
+    required void Function(LatLng? latLng, String address, String? locality) onLocationChangedCallback,
+  })  : _onLocationChangedCallback = onLocationChangedCallback,
+        _currentLatLng = currentLatLng.obs;
 
   @override
   void onInit() async {
@@ -28,7 +37,8 @@ class LocationPickerController extends GetxController {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       _setDefaultLocation();
-      _showErrorSnackbar('Los servicios de ubicación están deshabilitados.');
+      _warningMessage.value =
+          'Los servicios de ubicación están deshabilitados.';
       return;
     }
 
@@ -37,15 +47,15 @@ class LocationPickerController extends GetxController {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         _setDefaultLocation();
-        _showErrorSnackbar('Los permisos de ubicación están denegados.');
+        _warningMessage.value = 'Los permisos de ubicación están denegados.';
         return;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       _setDefaultLocation();
-      _showErrorSnackbar(
-          'Los permisos de ubicación están denegados permanentemente.');
+      _warningMessage.value =
+          'Los permisos de ubicación están denegados permanentemente.';
       return;
     }
 
@@ -59,54 +69,49 @@ class LocationPickerController extends GetxController {
     _currentLatLng.value = Locations.bogotaLatLng;
   }
 
-  void _showErrorSnackbar(String message) {
-    Get.snackbar(
-      'Aviso',
-      message,
-      snackPosition: SnackPosition.TOP,
-      margin: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
-      backgroundGradient: LinearGradient(
-          colors: [Colors.orangeAccent[400]!, Colors.orange[200]!]),
-      //backgroundColor: Colors.yellowAccent.withOpacity(0.8),
-      colorText: Colors.black,
-    );
+  void onLocationChanged() {
+    _onLocationChangedCallback(_currentLatLng.value, _address.value, _locality.value);
   }
 }
 
-class LocationPickerScreen extends StatelessWidget {
-  final void Function(LatLng?, String, String?) onChanged;
-  final LatLng? currentLatLng;
-
-  const LocationPickerScreen({
-    super.key,
-    required this.onChanged,
-    required this.currentLatLng,
-  });
+class LocationPickerScreen extends GetView<LocationPickerController> {
+  const LocationPickerScreen({ super.key });
 
   @override
   Widget build(BuildContext context) {
-    final controller =
-        Get.put(LocationPickerController(currentLatLng: currentLatLng));
-
-    return Obx(() {
-      return controller._currentLatLng.value == null
-          ? const Center(child: CircularProgressIndicator())
-          : Scaffold(
-              appBar: AppBar(
-                title: const Text('Seleccionar Ubicación'),
-                leading: IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Get.back();
-                  },
+    return PopScope(
+      onPopInvoked: (didPop) {
+        if (didPop) return;
+        context.pop();
+      },
+      child: Obx(() {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (controller._warningMessage.value != '' &&
+              controller._isLoading.value == false) {
+            SnackbarWidget.showSnackbar(context,
+                message: controller._warningMessage.value);
+            controller._warningMessage.value = '';
+          }
+        });
+        return controller._currentLatLng.value == null
+            ? const Center(child: CircularProgressIndicator())
+            : Scaffold(
+                appBar: AppBar(
+                  title: const Text('Seleccionar Ubicación'),
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () {
+                      context.pop();
+                    },
+                  ),
                 ),
-              ),
-              body: _MapLocationPicker(
-                currentLatLng: controller._currentLatLng.value,
-                onChanged: onChanged,
-              ),
-            );
-    });
+                body: _MapLocationPicker(
+                  currentLatLng: controller._currentLatLng.value,
+                  onChanged: controller._onLocationChangedCallback,
+                ),
+              );
+      }),
+    );
   }
 }
 
@@ -138,7 +143,6 @@ class _MapLocationPicker extends StatelessWidget {
       radius: 3000,
       trafficEnabled: false,
       buildingsEnabled: false,
-
       onNext: (GeocodingResult? result) {
         if (result != null) {
           final address = result.formattedAddress ?? '';

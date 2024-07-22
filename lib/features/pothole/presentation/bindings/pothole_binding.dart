@@ -3,7 +3,9 @@ import 'package:bache_finder_app/features/pothole/domain/use_cases/get_pothole.d
 import 'package:bache_finder_app/features/pothole/presentation/controllers/forms/pothole_form_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/pothole_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/potholes_controller.dart';
+import 'package:bache_finder_app/features/pothole/presentation/widgets/location_picker_widget.dart';
 import 'package:get/get.dart';
+import 'package:map_location_picker/map_location_picker.dart';
 
 class PotholeBinding extends Bindings {
   final String potholeId;
@@ -44,5 +46,21 @@ class PotholeBinding extends Bindings {
         onSubmitCallback: Get.find<PotholeController>().savePothole,
       ),
     );
+
+    Get.delete<LocationPickerController>();
+    Get.lazyPut(() {
+      final potholeFormController = Get.find<PotholeFormController>();
+      final currentLat =
+          double.tryParse(potholeFormController.latitude.value.value);
+      final currentLng =
+          double.tryParse(potholeFormController.longitude.value.value);
+      final currentLatLng = currentLat != null && currentLng != null
+          ? LatLng(currentLat, currentLng)
+          : null;
+      return LocationPickerController(
+        currentLatLng: currentLatLng,
+        onLocationChangedCallback: potholeFormController.onLocationChanged,
+      );
+    });
   }
 }
