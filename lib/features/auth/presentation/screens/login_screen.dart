@@ -1,16 +1,12 @@
 import 'package:bache_finder_app/features/auth/presentation/controllers/forms/login_form_controller.dart';
 import 'package:bache_finder_app/features/auth/presentation/controllers/session_controller.dart';
+import 'package:bache_finder_app/features/shared/presentation/widgets/snackbar_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginScreen extends GetView<SessionController> {
   const LoginScreen({super.key});
-
-  void _showSnackbar(BuildContext context, {required String message}) {
-    final snackBar = SnackBar(content: Text(message));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +15,7 @@ class LoginScreen extends GetView<SessionController> {
       if (status == false) {
         if (errorMessage != '') {
           controller.resetErrorMessage();
-          _showSnackbar(context, message: errorMessage);
+          SnackbarWidget.showSnackbar(context, message: errorMessage);
         }
       }
     });

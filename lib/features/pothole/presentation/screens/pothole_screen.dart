@@ -5,6 +5,7 @@ import 'package:bache_finder_app/features/pothole/presentation/widgets/locality_
 import 'package:bache_finder_app/features/shared/presentation/widgets/gap_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/image_viewer_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/outlined_button_icon_widget.dart';
+import 'package:bache_finder_app/features/shared/presentation/widgets/snackbar_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/text_field_rx_widget.dart';
 import 'package:bache_finder_app/features/shared/services/camera_gallery_service_impl.dart';
 import 'package:flutter/foundation.dart';
@@ -41,25 +42,15 @@ class _SaveButton extends GetView<PotholeFormController> {
             ? () async {
                 final result = await controller.onSubmit();
                 if (result) {
-                  Get.snackbar(
-                    'Bache guardado',
-                    'Se ha guardado el bache correctamente',
-                    snackPosition: SnackPosition.TOP,
-                    backgroundGradient: LinearGradient(
-                        colors: [Colors.green[300]!, Colors.green[100]!]),
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 32, horizontal: 16),
-                  );
+                  if (context.mounted) {
+                    SnackbarWidget.showSnackbar(context,
+                        message: 'Bache guardado con éxito');
+                  }
                 } else {
-                  Get.snackbar(
-                    'Error',
-                    'No se ha podido guardar el bache.',
-                    snackPosition: SnackPosition.TOP,
-                    backgroundGradient: LinearGradient(
-                        colors: [Colors.red[300]!, Colors.red[100]!]),
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 32, horizontal: 16),
-                  );
+                  if (context.mounted) {
+                    SnackbarWidget.showSnackbar(context,
+                        message: 'Error al guardar bache');
+                  }
                 }
               }
             : null,
