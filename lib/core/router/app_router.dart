@@ -59,9 +59,12 @@ class AppRouter {
             path: '${AppPaths.potholes}/:potholeId',
             name: 'potholes',
             onExit: (context, state) {
-              Get.delete<PotholesController>();
-              Get.delete<PotholeController>();
-              Get.delete<PotholeFormController>();
+              if (state.pathParameters['potholeId'] == 'all') {
+                Get.delete<PotholesController>();
+              } else {
+                Get.delete<PotholeController>();
+                Get.delete<PotholeFormController>();
+              }
               return true;
             },
             builder: (context, state) {
