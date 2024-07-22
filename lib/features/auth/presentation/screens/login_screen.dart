@@ -15,7 +15,7 @@ class LoginScreen extends GetView<SessionController> {
       if (status == false) {
         if (errorMessage != '') {
           controller.resetErrorMessage();
-          SnackbarWidget.showSnackbar(context, message: errorMessage);
+          SnackbarWidget.show(context, message: errorMessage);
         }
       }
     });

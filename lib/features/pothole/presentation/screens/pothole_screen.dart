@@ -18,21 +18,24 @@ class PotholeScreen extends GetView<PotholeController> {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
+      key: scaffoldKey,
       body: Obx(() => controller.isLoading.value
           ? const Center(child: CircularProgressIndicator())
           : const _MainView()),
       floatingActionButton: Obx(
         () => controller.isLoading.value
             ? const SizedBox.shrink()
-            : const _SaveButton(),
+            : _SaveButton(scaffoldKey),
       ),
     );
   }
 }
 
 class _SaveButton extends GetView<PotholeFormController> {
-  const _SaveButton();
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  const _SaveButton(this.scaffoldKey);
 
   @override
   Widget build(BuildContext context) {
@@ -41,16 +44,15 @@ class _SaveButton extends GetView<PotholeFormController> {
         onPressed: controller.isModifed
             ? () async {
                 final result = await controller.onSubmit();
+
+                if (scaffoldKey.currentContext == null) return;
+
                 if (result) {
-                  if (context.mounted) {
-                    SnackbarWidget.showSnackbar(context,
-                        message: 'Bache guardado con éxito');
-                  }
+                  SnackbarWidget.show(scaffoldKey.currentContext!,
+                      message: 'Bache guardado con éxito');
                 } else {
-                  if (context.mounted) {
-                    SnackbarWidget.showSnackbar(context,
-                        message: 'Error al guardar bache');
-                  }
+                  SnackbarWidget.show(scaffoldKey.currentContext!,
+                      message: 'Error al guardar bache');
                 }
               }
             : null,
@@ -158,7 +160,7 @@ class _LocationPickerButton extends GetView<PotholeFormController> {
   const _LocationPickerButton();
 
   void _onPressed(BuildContext context) async {
-    final currentLocation = GoRouterState.of(context).matchedLocation;  
+    final currentLocation = GoRouterState.of(context).matchedLocation;
     context.push('$currentLocation/${AppPaths.locationPicker}');
   }
 

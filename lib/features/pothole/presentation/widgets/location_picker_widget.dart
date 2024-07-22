@@ -88,7 +88,7 @@ class LocationPickerScreen extends GetView<LocationPickerController> {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (controller._warningMessage.value != '' &&
               controller._isLoading.value == false) {
-            SnackbarWidget.showSnackbar(context,
+            SnackbarWidget.show(context,
                 message: controller._warningMessage.value);
             controller._warningMessage.value = '';
           }
@@ -140,7 +140,6 @@ class _MapLocationPicker extends StatelessWidget {
       searchHintText: 'Buscar ubicación',
       placesBaseUrl: Enviroment.googleMapsApiProxyUrl(),
       geoCodingBaseUrl: Enviroment.googleMapsApiProxyUrl(),
-      radius: 3000,
       trafficEnabled: false,
       buildingsEnabled: false,
       onNext: (GeocodingResult? result) {
