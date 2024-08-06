@@ -1,10 +1,17 @@
+import 'dart:convert';
+
+import 'package:bache_finder_app/core/errors/failures/failure.dart';
 import 'package:bache_finder_app/features/pothole/domain/entities/pothole.dart';
+import 'package:bache_finder_app/features/pothole/domain/entities/pothole_prediction.dart';
+import 'package:bache_finder_app/features/pothole/infrastructure/constants/pothole_constants.dart';
+import 'package:bache_finder_app/features/pothole/infrastructure/inputs/type_input.dart';
 import 'package:bache_finder_app/features/shared/infrastructure/inputs/image_input.dart';
 import 'package:bache_finder_app/features/shared/infrastructure/inputs/latitude_input.dart';
 import 'package:bache_finder_app/features/shared/infrastructure/inputs/locality_input.dart';
 import 'package:bache_finder_app/features/shared/infrastructure/inputs/longitude_input.dart';
 import 'package:bache_finder_app/features/shared/infrastructure/inputs/text_input.dart';
 import 'package:formz/formz.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:map_location_picker/map_location_picker.dart';
@@ -12,6 +19,8 @@ import 'package:map_location_picker/map_location_picker.dart';
 class PotholeFormController extends GetxController {
   final Future<bool> Function(Map<String, dynamic> potholeLike)
       _onSubmitCallback;
+  final Future<Either<Failure, PotholePrediction>> Function()
+      _onPredictCallback;
 
   final Rx<TextInput> _address;
   final Rx<TextInput> _description;
@@ -19,18 +28,26 @@ class PotholeFormController extends GetxController {
   final Rx<LatitudeInput> _latitude;
   final Rx<LongitudeInput> _longitude;
   final Rx<LocalityInput> _locality;
+  final Rx<TypeInput> _type;
+  final RxList<double> _weights;
 
   PotholeFormController(
     Pothole? pothole, {
     required onSubmitCallback,
+    required Future<Either<Failure, PotholePrediction>> Function()
+        onPredictCallback,
   })  : _onSubmitCallback = onSubmitCallback,
+        _onPredictCallback = onPredictCallback,
         _address = TextInput.pure(pothole?.address ?? '').obs,
         _description = TextInput.pure(pothole?.description ?? '').obs,
         _image = ImageInput.pure(XFile(pothole?.image ?? '')).obs,
         _latitude = LatitudeInput.pure(pothole?.latitude.toString() ?? '').obs,
         _longitude =
             LongitudeInput.pure(pothole?.longitude.toString() ?? '').obs,
-        _locality = LocalityInput.pure(pothole?.locality).obs;
+        _locality = LocalityInput.pure(pothole?.locality).obs,
+        _type =
+            TypeInput.pure(pothole?.type ?? PotholeConstants.types.first).obs,
+        _weights = (pothole?.weights ?? []).obs;
 
   final _isPosted = false.obs;
   final _isPosting = false.obs;
@@ -46,6 +63,8 @@ class PotholeFormController extends GetxController {
   Rx<LatitudeInput> get latitude => _latitude;
   Rx<LongitudeInput> get longitude => _longitude;
   Rx<LocalityInput> get locality => _locality;
+  Rx<TypeInput> get type => _type;
+  RxList<double> get weights => _weights;
 
   void onAddressChanged(String value) {
     _isModifed.value = true;
@@ -58,6 +77,7 @@ class PotholeFormController extends GetxController {
       _image.value,
       _latitude.value,
       _longitude.value,
+      _type.value,
     ]);
   }
 
@@ -72,6 +92,7 @@ class PotholeFormController extends GetxController {
       _image.value,
       _latitude.value,
       _longitude.value,
+      _type.value,
     ]);
   }
 
@@ -86,6 +107,7 @@ class PotholeFormController extends GetxController {
       image,
       _latitude.value,
       _longitude.value,
+      _type.value,
     ]);
   }
 
@@ -100,6 +122,7 @@ class PotholeFormController extends GetxController {
       _image.value,
       latitude,
       _longitude.value,
+      _type.value,
     ]);
   }
 
@@ -114,6 +137,7 @@ class PotholeFormController extends GetxController {
       _image.value,
       _latitude.value,
       longitude,
+      _type.value,
     ]);
   }
 
@@ -128,6 +152,22 @@ class PotholeFormController extends GetxController {
       _image.value,
       _latitude.value,
       _longitude.value,
+      _type.value,
+    ]);
+  }
+
+  void onTypeChanged(String value) {
+    _isModifed.value = true;
+    final type = TypeInput.dirty(value);
+    _type.value = type;
+    _isValid.value = Formz.validate([
+      _address.value,
+      _description.value,
+      _locality.value,
+      _image.value,
+      _latitude.value,
+      _longitude.value,
+      type,
     ]);
   }
 
@@ -138,7 +178,22 @@ class PotholeFormController extends GetxController {
     onAddressChanged(address);
     onLocalityChanged(locality);
   }
-    
+
+  Future<bool> onPredict() async {
+    final result = await _onPredictCallback();
+
+    result.fold(
+      (failure) => {},
+      (potholePrediction) {
+        _isModifed.value = true;
+        _weights.value = potholePrediction.weights;
+        _type.value = TypeInput.dirty(potholePrediction.type);
+      },
+    );
+
+    return result.isRight();
+  }
+
   Future<bool> onSubmit() async {
     _isPosted.value = true;
 
@@ -163,10 +218,14 @@ class PotholeFormController extends GetxController {
     if (!_latitude.value.isPure) potholeLike['latitude'] = _latitude.value.value;
     if (!_longitude.value.isPure) potholeLike['longitude'] = _longitude.value.value;
     if (!_locality.value.isPure) potholeLike['locality'] = _locality.value.value;
+    if (!_type.value.isPure) potholeLike['type'] = _type.value.value;
+    potholeLike['predictions'] = jsonEncode(_weights.toList());
 
     _isPosting.value = true;
     try {
-      return await _onSubmitCallback(potholeLike);
+      final result = await _onSubmitCallback(potholeLike);
+      _isModifed.value = false;
+      return result;
     } catch (e) {
       return false;
     } finally {

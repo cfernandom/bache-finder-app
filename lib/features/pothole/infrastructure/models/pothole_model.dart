@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bache_finder_app/features/pothole/domain/entities/pothole.dart';
 
 class PotholeModel extends Pothole {
@@ -14,7 +16,7 @@ class PotholeModel extends Pothole {
     required super.latitude,
     required super.longitude,
     super.description,
-    super.predictions,
+    super.weights,
     super.solutionDescription,
   });
 
@@ -32,8 +34,8 @@ class PotholeModel extends Pothole {
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
       description: json['description'],
-      predictions: json['predictions'] != null
-        ? List<double>.from(json['predictions'])
+      weights: json['weights'] != null
+        ? (jsonDecode(json['predictions']) as List<dynamic>).map((e) => e as double).toList()
         : null,
       solutionDescription: json['solution_description'],
     );

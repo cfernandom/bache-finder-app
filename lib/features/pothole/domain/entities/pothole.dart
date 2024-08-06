@@ -11,7 +11,7 @@ class Pothole {
   final double latitude;
   final double longitude;
   final String? description;
-  final List<double>? predictions;
+  final List<double>? weights;
   final String? solutionDescription;
 
   Pothole({
@@ -27,7 +27,7 @@ class Pothole {
     required this.latitude,
     required this.longitude,
     this.description,
-    this.predictions,
+    this.weights,
     this.solutionDescription,
   });
 }

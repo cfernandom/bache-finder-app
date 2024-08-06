@@ -5,6 +5,7 @@ import 'package:bache_finder_app/core/constants/enviroment.dart';
 import 'package:bache_finder_app/core/errors/api_data_exception.dart';
 import 'package:bache_finder_app/core/errors/dio_error_handler.dart';
 import 'package:bache_finder_app/core/errors/network_exception.dart';
+import 'package:bache_finder_app/features/pothole/domain/entities/pothole_prediction.dart';
 import 'package:bache_finder_app/features/pothole/infrastructure/models/pothole_model.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
@@ -61,27 +62,51 @@ class PotholeRemoteDataSource {
 
     var data = potholeLike;
     try {
-
       if (potholeLike.containsKey('image') && potholeLike['image'].path != '') {
-
         Uint8List image = await (potholeLike['image'] as XFile).readAsBytes();
         final imageBase64 = base64Encode(image);
 
-        data['image'] = imageBase64;     
+        data['image'] = imageBase64;
       } else {
         if (method == 'POST') {
           throw ApiDataException(
               'Error al cargar imagen. La imagen es obligatoria');
         }
       }
-      final response =
-          await _dio.request(url, data: data, options: Options(method: method), );
+      final response = await _dio.request(
+        url,
+        data: data,
+        options: Options(method: method),
+      );
 
       if (response.data['data']['pothole'] == null) {
         throw ApiDataException(
             'Error al recuperar datos. No se encontraron datos del bache.');
       }
       return PotholeModel.fromJson(response.data['data']['pothole']);
+    } on DioException catch (e) {
+      final errorMessage = DioErrorHandler.getErrorMessage(e);
+      throw NetworkException(errorMessage);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<PotholePrediction> predictPothole(String potholeId) async {
+    try {
+      final response = await _dio.post('v1/potholes/$potholeId/predict');
+
+      final data = response.data['data'];
+      if (data == null || data['weights'] == null || data['type'] == null) {
+        throw ApiDataException(
+            'Error al recuperar datos. No se encontraron datos de predicción.');
+      }
+
+      final weights = (data['weights'] as List)
+          .map((item) => item is double ? item : double.parse(item.toString()))
+          .toList();
+      final type = data['type'] as String;
+      return PotholePrediction(weights: weights, type: type);
     } on DioException catch (e) {
       final errorMessage = DioErrorHandler.getErrorMessage(e);
       throw NetworkException(errorMessage);

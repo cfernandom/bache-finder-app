@@ -1,10 +1,12 @@
 import 'package:bache_finder_app/core/router/app_pages.dart';
+import 'package:bache_finder_app/features/pothole/infrastructure/constants/pothole_constants.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/forms/pothole_form_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/pothole_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/widgets/locality_selector_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/gap_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/image_viewer_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/outlined_button_icon_widget.dart';
+import 'package:bache_finder_app/features/shared/presentation/widgets/selector_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/snackbar_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/text_field_rx_widget.dart';
 import 'package:bache_finder_app/features/shared/services/camera_gallery_service_impl.dart';
@@ -151,6 +153,16 @@ class _AdditionalFormView extends StatelessWidget {
         Text('Información adicional',
             style: Theme.of(context).textTheme.titleMedium),
         const GapWidget(size: 8.0),
+        Text('Tipo de bache', style: Theme.of(context).textTheme.titleSmall),
+        const Row(
+          children: [
+            _TypeSelector(),
+            _PredictPotholeButton(),
+          ],
+        ),
+        const GapWidget(size: 8.0),
+        const _PredictionDetails(),
+        const GapWidget(size: 16.0),
       ],
     );
   }
@@ -229,6 +241,21 @@ class _LocalitySelector extends GetView<PotholeFormController> {
   }
 }
 
+class _TypeSelector extends GetView<PotholeFormController> {
+  const _TypeSelector();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => SelectorWidget(
+        onChanged: controller.onTypeChanged,
+        initialValue: controller.type.value.value,
+        items: PotholeConstants.types,
+      ),
+    );
+  }
+}
+
 class _LatitudeInput extends GetView<PotholeFormController> {
   const _LatitudeInput();
 
@@ -261,6 +288,30 @@ class _ImageViewer extends GetView<PotholeFormController> {
         constraints: const BoxConstraints(minHeight: 250, maxHeight: 500),
         child: Obx(() => ImageViewerWidget(controller.image.value.value.path)),
       ),
+    );
+  }
+}
+
+class _PredictionDetails extends GetView<PotholeFormController> {
+  const _PredictionDetails();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () {
+        return ExpansionTile(
+          title: const Text('Ver predicciones'),
+          initiallyExpanded: true,
+          tilePadding: EdgeInsets.zero,
+          expandedAlignment: Alignment.topLeft,
+          expandedCrossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ...controller.weights.map(
+              (weight) => Text(weight.toString()),
+            )
+          ],
+        );
+      },
     );
   }
 }
@@ -300,6 +351,22 @@ class _TakePhotoButton extends GetView<PotholeFormController> {
       onPressed: onPressed,
       label: 'Tomar foto',
       icon: Icons.camera_alt,
+    );
+  }
+}
+
+class _PredictPotholeButton extends GetView<PotholeFormController> {
+  const _PredictPotholeButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 160,
+      child: OutlinedButtonIconWidget(
+        onPressed: controller.onPredict,
+        label: 'Predecir',
+        icon: Icons.insights,
+      ),
     );
   }
 }
