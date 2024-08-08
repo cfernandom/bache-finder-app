@@ -80,15 +80,19 @@ class _MainView extends GetView<PotholeController> {
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Formulario de bache',
-                  style: Theme.of(context).textTheme.titleLarge),
-              const _BasicFormView(),
-              const _AdditionalFormView(),
-              const GapWidget(size: 64.0),
-            ],
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Formulario de bache',
+                    style: Theme.of(context).textTheme.titleLarge),
+                const _BasicFormView(),
+                const _AdditionalFormView(),
+                const GapWidget(size: 64.0),
+              ],
+            ),
           ),
         ),
       ),
@@ -101,42 +105,45 @@ class _BasicFormView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const GapWidget(size: 16.0),
-        Text('Información básica del bache',
-            style: Theme.of(context).textTheme.titleMedium),
-        const GapWidget(size: 8.0),
-        Text('Foto del bache', style: Theme.of(context).textTheme.titleSmall),
-        const GapWidget(size: 8.0),
-        const _ImageViewer(),
-        const GapWidget(size: 8.0),
-        const Row(
-          children: [
-            Expanded(child: _UploadPhotoButton()),
-            if (!kIsWeb) ...[
-              GapWidget(size: 8.0),
-              Expanded(child: _TakePhotoButton()),
+    return Container(
+      constraints: const BoxConstraints(maxWidth: 800),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const GapWidget(size: 16.0),
+          Text('Información básica del bache',
+              style: Theme.of(context).textTheme.titleMedium),
+          const GapWidget(size: 8.0),
+          Text('Foto del bache', style: Theme.of(context).textTheme.titleSmall),
+          const GapWidget(size: 8.0),
+          const _ImageViewer(),
+          const GapWidget(size: 8.0),
+          const Row(
+            children: [
+              Expanded(child: _UploadPhotoButton()),
+              if (!kIsWeb) ...[
+                GapWidget(size: 8.0),
+                Expanded(child: _TakePhotoButton()),
+              ],
             ],
-          ],
-        ),
-        const GapWidget(size: 16.0),
-        Text('Ubicación del bache',
-            style: Theme.of(context).textTheme.titleSmall),
-        const GapWidget(size: 8.0),
-        const _LocationPickerButton(),
-        const _LatitudeInput(),
-        const _LongitudeInput(),
-        const GapWidget(size: 8.0),
-        const _AddressInput(),
-        const _LocalitySelector(),
-        const GapWidget(size: 16.0),
-        Text('Detalles del bache',
-            style: Theme.of(context).textTheme.titleSmall),
-        const GapWidget(size: 8.0),
-        const _DescriptionInput(),
-      ],
+          ),
+          const GapWidget(size: 16.0),
+          Text('Ubicación del bache',
+              style: Theme.of(context).textTheme.titleSmall),
+          const GapWidget(size: 8.0),
+          const _LocationPickerButton(),
+          const _LatitudeInput(),
+          const _LongitudeInput(),
+          const GapWidget(size: 8.0),
+          const _AddressInput(),
+          const _LocalitySelector(),
+          const GapWidget(size: 16.0),
+          Text('Detalles del bache',
+              style: Theme.of(context).textTheme.titleSmall),
+          const GapWidget(size: 8.0),
+          const _DescriptionInput(),
+        ],
+      ),
     );
   }
 }
@@ -146,24 +153,27 @@ class _AdditionalFormView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const GapWidget(size: 16.0),
-        Text('Información adicional',
-            style: Theme.of(context).textTheme.titleMedium),
-        const GapWidget(size: 8.0),
-        Text('Tipo de bache', style: Theme.of(context).textTheme.titleSmall),
-        const Row(
-          children: [
-            _TypeSelector(),
-            _PredictPotholeButton(),
-          ],
-        ),
-        const GapWidget(size: 8.0),
-        const _PredictionDetails(),
-        const GapWidget(size: 16.0),
-      ],
+    return Container(
+      constraints: const BoxConstraints(maxWidth: 800),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const GapWidget(size: 16.0),
+          Text('Información adicional',
+              style: Theme.of(context).textTheme.titleMedium),
+          const GapWidget(size: 8.0),
+          Text('Tipo de bache', style: Theme.of(context).textTheme.titleSmall),
+          const Row(
+            children: [
+              _TypeSelector(),
+              _PredictPotholeButton(),
+            ],
+          ),
+          const GapWidget(size: 8.0),
+          const _PredictionDetails(),
+          const GapWidget(size: 16.0),
+        ],
+      ),
     );
   }
 }
@@ -299,6 +309,7 @@ class _PredictionDetails extends GetView<PotholeFormController> {
   Widget build(BuildContext context) {
     return Obx(
       () {
+        print(controller.weights);
         return ExpansionTile(
           title: const Text('Ver predicciones'),
           initiallyExpanded: true,
