@@ -3,6 +3,8 @@ import 'package:bache_finder_app/core/constants/locations.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/snackbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
+import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 import 'package:get/get.dart';
 
@@ -17,17 +19,28 @@ class LocationPickerController extends GetxController {
 
   LocationPickerController({
     LatLng? currentLatLng,
-    required void Function(LatLng? latLng, String address, String? locality) onLocationChangedCallback,
+    required void Function(LatLng? latLng, String address, String? locality)
+        onLocationChangedCallback,
   })  : _onLocationChangedCallback = onLocationChangedCallback,
         _currentLatLng = currentLatLng.obs;
 
   @override
   void onInit() async {
     super.onInit();
+    _initializeMapRenderer();
     if (_currentLatLng.value == null) {
       await _getCurrentLocation();
     }
     _isLoading.value = false;
+  }
+
+  void _initializeMapRenderer() {
+    // https://stackoverflow.com/questions/78514657/google-maps-flutter-issues-updateacquirefence-did-not-find-frame-expecting
+    final GoogleMapsFlutterPlatform mapsImplementation =
+        GoogleMapsFlutterPlatform.instance;
+    if (mapsImplementation is GoogleMapsFlutterAndroid) {
+      mapsImplementation.useAndroidViewSurface = true;
+    }
   }
 
   Future<void> _getCurrentLocation() async {
@@ -70,12 +83,13 @@ class LocationPickerController extends GetxController {
   }
 
   void onLocationChanged() {
-    _onLocationChangedCallback(_currentLatLng.value, _address.value, _locality.value);
+    _onLocationChangedCallback(
+        _currentLatLng.value, _address.value, _locality.value);
   }
 }
 
 class LocationPickerScreen extends GetView<LocationPickerController> {
-  const LocationPickerScreen({ super.key });
+  const LocationPickerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
