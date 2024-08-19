@@ -26,4 +26,8 @@ export GOOGLE_MAPS_API_KEY=<YOUR_API_KEY>
 ```
 Warning: Despite using a proxy to avoid exposing the API key, the Google Maps script makes requests that may expose the key. It is recommended to configure restrictions for the API key.
 
+Asegúrate de que la variable de entorno `GOOGLE_MAPS_API_KEY` esté exportada en el entorno actual y que el terminal desde el cual estás corriendo el comando de construcción tenga acceso a dicha variable. Si la exportas en un terminal, pero ejecutas el build en otro, la variable no estará disponible.
+
+Si la variable se establece en el terminal pero no es persistente, puedes añadirla al archivo de inicialización de tu shell (`.bashrc`, `.zshrc`, etc.):
+
 En el archivo `.env` de este proyecto, configure la variable de entorno `GOOGLE_MAPS_API_PROXY_URL` para configurar la URL del proxy.

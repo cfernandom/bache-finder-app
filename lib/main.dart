@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Enviroment.initEnviroment();
   AuthBindings().dependencies();
   if (kIsWeb) {
@@ -37,15 +38,14 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
         useMaterial3: true,
         pageTransitionsTheme: PageTransitionsTheme(
-        builders: kIsWeb
-            ? {
-                for (final platform in TargetPlatform.values)
-                  platform: const NoTransitionsBuilder(),
-              }
-            : const {},
+          builders: kIsWeb
+              ? {
+                  for (final platform in TargetPlatform.values)
+                    platform: const NoTransitionsBuilder(),
+                }
+              : const {},
+        ),
       ),
-      ),
-
     );
   }
 }
