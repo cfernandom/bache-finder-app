@@ -88,13 +88,45 @@ class _MainView extends GetView<PotholeController> {
               children: [
                 Text('Formulario de bache',
                     style: Theme.of(context).textTheme.titleLarge),
+                controller.pothole.value != null ? const _BasicInformationView() : 
                 const _BasicFormView(),
-                const _AdditionalFormView(),
+                controller.pothole.value != null
+                    ? const _AdditionalFormView()
+                    : const SizedBox.shrink(),
                 const GapWidget(size: 64.0),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _BasicInformationView extends GetView<PotholeController> {
+  const _BasicInformationView();
+
+  @override
+  Widget build(BuildContext context) {
+    final pothole = controller.pothole.value;
+    return Container(
+      constraints: const BoxConstraints(maxWidth: 800),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const GapWidget(size: 16.0),
+          Text('Foto del bache', style: Theme.of(context).textTheme.titleSmall),
+          const GapWidget(size: 8.0),
+          const _ImageViewer(),
+          const GapWidget(size: 16.0),
+          Text('Ubicación del bache', style: Theme.of(context).textTheme.titleSmall),
+          const GapWidget(size: 8.0),
+          Text('Latitud: ${pothole?.longitude.toString() ?? ''}'),
+          Text('Longitud: ${pothole?.latitude.toString() ?? ''}'),
+          Text('Dirección: ${pothole?.address ?? ''}'),
+          Text('Localidad: ${pothole?.locality ?? ''}'),
+          const GapWidget(size: 8.0),
+        ]
       ),
     );
   }
@@ -159,13 +191,10 @@ class _AdditionalFormView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const GapWidget(size: 16.0),
-          Text('Información adicional',
-              style: Theme.of(context).textTheme.titleMedium),
-          const GapWidget(size: 8.0),
           Text('Tipo de bache', style: Theme.of(context).textTheme.titleSmall),
           const Row(
             children: [
-              _TypeSelector(),
+              Expanded(child: _TypeSelector()),
               _PredictPotholeButton(),
             ],
           ),
@@ -257,10 +286,13 @@ class _TypeSelector extends GetView<PotholeFormController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => SelectorWidget(
-        onChanged: controller.onTypeChanged,
-        initialValue: controller.type.value.value,
-        items: PotholeConstants.types,
+      () => SizedBox(
+        height: 60.0,
+        child: SelectorWidget(
+          onChanged: controller.onTypeChanged,
+          initialValue: controller.type.value.value,
+          items: PotholeConstants.types,
+        ),
       ),
     );
   }
@@ -309,7 +341,6 @@ class _PredictionDetails extends GetView<PotholeFormController> {
   Widget build(BuildContext context) {
     return Obx(
       () {
-        print(controller.weights);
         return ExpansionTile(
           title: const Text('Ver predicciones'),
           initiallyExpanded: true,
@@ -372,7 +403,7 @@ class _PredictPotholeButton extends GetView<PotholeFormController> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 160,
+      width: 140,
       child: OutlinedButtonIconWidget(
         onPressed: controller.onPredict,
         label: 'Predecir',

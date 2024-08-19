@@ -23,6 +23,7 @@ class SelectorWidget extends StatelessWidget {
       return DropdownButton<String>(
         hint: const Text('Selecciona una opción'),
         value: controller.selectedValue.value,
+        isExpanded: true,
         items: items.map((String item) {
           return DropdownMenuItem<String>(
             value: item,
