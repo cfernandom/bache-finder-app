@@ -1,5 +1,6 @@
 import 'package:bache_finder_app/core/constants/enviroment.dart';
 import 'package:bache_finder_app/core/constants/locations.dart';
+import 'package:bache_finder_app/features/shared/presentation/widgets/gap_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/snackbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -72,8 +73,13 @@ class LocationPickerController extends GetxController {
       return;
     }
 
-    Position currentPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    const locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 100,
+    );
+
+    Position currentPosition =
+        await Geolocator.getCurrentPosition(locationSettings: locationSettings);
     _currentLatLng.value =
         LatLng(currentPosition.latitude, currentPosition.longitude);
   }
@@ -94,9 +100,10 @@ class LocationPickerScreen extends GetView<LocationPickerController> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: (didPop) {
-        if (didPop) return;
-        context.pop();
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          context.pop();
+        }
       },
       child: Obx(() {
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -107,23 +114,32 @@ class LocationPickerScreen extends GetView<LocationPickerController> {
             controller._warningMessage.value = '';
           }
         });
-        return controller._currentLatLng.value == null
-            ? const Center(child: CircularProgressIndicator())
-            : Scaffold(
-                appBar: AppBar(
-                  title: const Text('Seleccionar Ubicación'),
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () {
-                      context.pop();
-                    },
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Seleccionar Ubicación'),
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                context.pop();
+              },
+            ),
+          ),
+          body: controller._currentLatLng.value == null
+              ? const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      GapWidget(size: 16.0),
+                      Text('Cargando ubicación cercana...'),
+                    ],
                   ),
-                ),
-                body: _MapLocationPicker(
+                )
+              : _MapLocationPicker(
                   currentLatLng: controller._currentLatLng.value,
                   onChanged: controller._onLocationChangedCallback,
                 ),
-              );
+        );
       }),
     );
   }
