@@ -74,8 +74,8 @@ class LocationPickerController extends GetxController {
     }
 
     const locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
+      accuracy: LocationAccuracy.best,
+      distanceFilter: 1,
     );
 
     Position currentPosition =
@@ -163,7 +163,8 @@ class _MapLocationPicker extends StatelessWidget {
       hideMoreOptions: true,
       hideMapTypeButton: true,
       hideBackButton: true,
-      compassEnabled: true,
+      compassEnabled: false,
+      rotateGesturesEnabled: false,
       popOnNextButtonTaped: true,
       minMaxZoomPreference: const MinMaxZoomPreference(12, 19),
       language: 'es',
