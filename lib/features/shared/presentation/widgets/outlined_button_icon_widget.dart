@@ -16,17 +16,18 @@ class OutlinedButtonIconWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: OutlinedButton.icon(
+      child: FilledButton.icon(
         onPressed: onPressed,
         style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.all(const Color(0xFFB9E1F2)),
           shape: WidgetStateProperty.all(
             const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(16)),
+              borderRadius: BorderRadius.all(Radius.circular(8)),
             ),
           ),
         ),
-        label: Text(label),
-        icon: Icon(icon),
+        label: Text(label, style: Theme.of(context).textTheme.titleSmall!.copyWith(color: const Color(0xFF3D5D67))),
+        icon: Icon(icon, color: const Color(0xFF3D5D67)),
       ),
     );
   }

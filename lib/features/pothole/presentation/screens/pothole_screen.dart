@@ -219,6 +219,7 @@ class _LocationPickerButton extends GetView<PotholeFormController> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
+      height: 48.0,
       child: OutlinedButtonIconWidget(
         onPressed: () => _onPressed(context),
         label: 'Seleccionar ubicación',
@@ -369,10 +370,13 @@ class _UploadPhotoButton extends GetView<PotholeFormController> {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButtonIconWidget(
-      onPressed: onPressed,
-      label: 'Seleccionar foto',
-      icon: Icons.photo,
+    return SizedBox(
+      height: 48,
+      child: OutlinedButtonIconWidget(
+        onPressed: onPressed,
+        label: 'Seleccionar foto',
+        icon: Icons.photo,
+      ),
     );
   }
 }
@@ -389,10 +393,13 @@ class _TakePhotoButton extends GetView<PotholeFormController> {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButtonIconWidget(
-      onPressed: onPressed,
-      label: 'Tomar foto',
-      icon: Icons.camera_alt,
+    return SizedBox(
+      height: 48,
+      child: OutlinedButtonIconWidget(
+        onPressed: onPressed,
+        label: 'Tomar foto',
+        icon: Icons.camera_alt,
+      ),
     );
   }
 }
