@@ -149,7 +149,7 @@ class _MapLocationPicker extends StatelessWidget {
       hideBackButton: true,
       compassEnabled: true,
       popOnNextButtonTaped: true,
-      minMaxZoomPreference: const MinMaxZoomPreference(12, 17),
+      minMaxZoomPreference: const MinMaxZoomPreference(12, 19),
       language: 'es',
       searchHintText: 'Buscar ubicación',
       placesBaseUrl: Enviroment.googleMapsApiProxyUrl(),
