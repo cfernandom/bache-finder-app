@@ -19,22 +19,32 @@ class LocalitySelectorWidget extends StatelessWidget {
 
     controller.selectedLocality.value = initialValue;
 
-    return Obx(() {
-      return DropdownButton<String>(
-        hint: const Text('Selecciona una localidad'),
-        value: controller.selectedLocality.value,
-        items: Locations.bogotaLocalities.map((String locality) {
-          return DropdownMenuItem<String>(
-            value: locality,
-            child: Text(locality),
-          );
-        }).toList(),
-        onChanged: (newValue) {
-          controller.updateLocality(newValue);
-          onChanged(newValue);
-        },
-      );
-    });
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFFFFF),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Obx(() {
+        return DropdownButton<String>(
+          hint: Text('Selecciona una localidad', style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: const Color(0xFFBDBDBD))),
+          dropdownColor: const Color(0xFFFFFFFF),
+          isExpanded: true,
+          value: controller.selectedLocality.value,
+          underline: const SizedBox.shrink(),
+          items: Locations.bogotaLocalities.map((String locality) {
+            return DropdownMenuItem<String>(
+              value: locality,
+              child: Text(locality, style: Theme.of(context).textTheme.bodyMedium),
+            );
+          }).toList(),
+          onChanged: (newValue) {
+            controller.updateLocality(newValue);
+            onChanged(newValue);
+          },
+        );
+      }),
+    );
   }
 }
 
