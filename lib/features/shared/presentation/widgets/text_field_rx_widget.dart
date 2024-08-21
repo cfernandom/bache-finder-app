@@ -77,7 +77,10 @@ class _TextFieldRxWidgetState extends State<TextFieldRxWidget> {
           borderSide: BorderSide(color: Color(0xFFB9E1F2), width: 1.0),
           borderRadius: BorderRadius.all(Radius.circular(8.0)),
         ),
-        enabledBorder: InputBorder.none,
+        enabledBorder: const UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.transparent, width: 0.0),
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        ),
         fillColor: const Color(0xFFFFFFFF),
         filled: true,
       ),
