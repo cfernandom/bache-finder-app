@@ -9,6 +9,7 @@ import 'package:bache_finder_app/features/shared/infrastructure/inputs/image_inp
 import 'package:bache_finder_app/features/shared/infrastructure/inputs/latitude_input.dart';
 import 'package:bache_finder_app/features/shared/infrastructure/inputs/locality_input.dart';
 import 'package:bache_finder_app/features/shared/infrastructure/inputs/longitude_input.dart';
+import 'package:bache_finder_app/features/shared/infrastructure/inputs/text_area_input.dart';
 import 'package:bache_finder_app/features/shared/infrastructure/inputs/text_input.dart';
 import 'package:formz/formz.dart';
 import 'package:fpdart/fpdart.dart';
@@ -23,7 +24,7 @@ class PotholeFormController extends GetxController {
       _onPredictCallback;
 
   final Rx<TextInput> _address;
-  final Rx<TextInput> _description;
+  final Rx<TextAreaInput> _description;
   final Rx<ImageInput> _image;
   final Rx<LatitudeInput> _latitude;
   final Rx<LongitudeInput> _longitude;
@@ -39,11 +40,11 @@ class PotholeFormController extends GetxController {
   })  : _onSubmitCallback = onSubmitCallback,
         _onPredictCallback = onPredictCallback,
         _address = TextInput.pure(pothole?.address ?? '').obs,
-        _description = TextInput.pure(pothole?.description ?? '').obs,
+        _description = TextAreaInput.pure(pothole?.description ?? '').obs,
         _image = ImageInput.pure(XFile(pothole?.image ?? '')).obs,
-        _latitude = LatitudeInput.pure(pothole?.latitude.toString() ?? '').obs,
+        _latitude = LatitudeInput.pure(pothole?.latitude.toString() ?? ' -').obs,
         _longitude =
-            LongitudeInput.pure(pothole?.longitude.toString() ?? '').obs,
+            LongitudeInput.pure(pothole?.longitude.toString() ?? ' -').obs,
         _locality = LocalityInput.pure(pothole?.locality).obs,
         _type =
             TypeInput.pure(pothole?.type ?? PotholeConstants.types.first).obs,
@@ -59,7 +60,7 @@ class PotholeFormController extends GetxController {
   bool get isModifed => _isModifed.value;
   Rx<ImageInput> get image => _image;
   Rx<TextInput> get address => _address;
-  Rx<TextInput> get description => _description;
+  Rx<TextAreaInput> get description => _description;
   Rx<LatitudeInput> get latitude => _latitude;
   Rx<LongitudeInput> get longitude => _longitude;
   Rx<LocalityInput> get locality => _locality;
@@ -143,7 +144,7 @@ class PotholeFormController extends GetxController {
 
   void onDescriptionChanged(String value) {
     _isModifed.value = true;
-    final description = TextInput.dirty(value);
+    final description = TextAreaInput.dirty(value);
     _description.value = description;
     _isValid.value = Formz.validate([
       _address.value,
