@@ -19,23 +19,32 @@ class SelectorWidget extends StatelessWidget {
     
     controller.selectedValue.value = initialValue;
 
-    return Obx(() {
-      return DropdownButton<String>(
-        hint: const Text('Selecciona una opción'),
-        value: controller.selectedValue.value,
-        isExpanded: true,
-        items: items.map((String item) {
-          return DropdownMenuItem<String>(
-            value: item,
-            child: Text(item),
-          );
-        }).toList(),
-        onChanged: (newValue) {
-          controller.updateValue(newValue ?? items.first);
-          onChanged(newValue ?? items.first);
-        },
-      );
-    });
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFFFFF),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Obx(() {
+        return DropdownButton<String>(
+          hint: const Text('Selecciona una opción'),
+          dropdownColor: const Color(0xFFFFFFFF),
+          value: controller.selectedValue.value,
+          isExpanded: true,
+          underline: const SizedBox.shrink(),
+          items: items.map((String item) {
+            return DropdownMenuItem<String>(
+              value: item,
+              child: Text(item, style: Theme.of(context).textTheme.bodyMedium),
+            );
+          }).toList(),
+          onChanged: (newValue) {
+            controller.updateValue(newValue ?? items.first);
+            onChanged(newValue ?? items.first);
+          },
+        );
+      }),
+    );
   }
 }
 
