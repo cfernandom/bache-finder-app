@@ -16,6 +16,8 @@ class ImageViewerWidget extends StatelessWidget {
         child: Image.asset(
           'assets/images/no-image.jpg',
           fit: BoxFit.cover,
+          height: 200.0,
+          width: double.infinity,
         ),
       );
     }
