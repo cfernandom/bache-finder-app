@@ -57,7 +57,7 @@ class PotholeController extends GetxController {
   Future<bool> savePothole(Map<String, dynamic> potholeLike) async {
     _isLoading.value = true;
 
-    final result = await _savePotholeCallback(_potholeId, potholeLike);
+    final result = await _savePotholeCallback(_pothole.value?.id ?? 'new', potholeLike);
 
     result.fold(
       (failure) => _errorMessage = failure.message,
@@ -69,6 +69,9 @@ class PotholeController extends GetxController {
   }
 
   Future<Either<Failure, PotholePrediction>> predictPothole() async {
-    return await _predictPotholeUseCase.call(_potholeId);
+    if (_pothole.value == null) {
+      return left(const Failure('No se puede predecir el bache si no hay un bache cargado'));
+    }
+    return await _predictPotholeUseCase.call(_pothole.value!.id);
   }
 }
