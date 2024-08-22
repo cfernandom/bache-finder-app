@@ -22,6 +22,7 @@ class PotholeScreen extends GetView<PotholeController> {
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
+      backgroundColor: const Color(0xFFE8F5FB),
       key: scaffoldKey,
       body: Obx(() => controller.isLoading.value
           ? const Center(child: CircularProgressIndicator())
@@ -86,14 +87,15 @@ class _MainView extends GetView<PotholeController> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Formulario de bache',
+                Text('Reporte de bache',
                     style: Theme.of(context).textTheme.titleLarge),
-                controller.pothole.value != null ? const _BasicInformationView() : 
-                const _BasicFormView(),
+                controller.pothole.value != null
+                    ? const _BasicInformationView()
+                    : const _BasicFormView(),
                 controller.pothole.value != null
                     ? const _AdditionalFormView()
                     : const SizedBox.shrink(),
-                const GapWidget(size: 64.0),
+                const GapWidget(size: 80.0),
               ],
             ),
           ),
@@ -111,23 +113,25 @@ class _BasicInformationView extends GetView<PotholeController> {
     final pothole = controller.pothole.value;
     return Container(
       constraints: const BoxConstraints(maxWidth: 800),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const GapWidget(size: 16.0),
-          Text('Foto del bache', style: Theme.of(context).textTheme.titleSmall),
-          const GapWidget(size: 8.0),
-          const _ImageViewer(),
-          const GapWidget(size: 16.0),
-          Text('Ubicación del bache', style: Theme.of(context).textTheme.titleSmall),
-          const GapWidget(size: 8.0),
-          Text('Latitud: ${pothole?.longitude.toString() ?? ''}'),
-          Text('Longitud: ${pothole?.latitude.toString() ?? ''}'),
-          Text('Dirección: ${pothole?.address ?? ''}'),
-          Text('Localidad: ${pothole?.locality ?? ''}'),
-          const GapWidget(size: 8.0),
-        ]
-      ),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        const GapWidget(size: 16.0),
+        Text('Foto del bache', style: Theme.of(context).textTheme.titleSmall),
+        const GapWidget(size: 8.0),
+        const _ImageViewer(),
+        const GapWidget(size: 16.0),
+        Text('Ubicación del bache',
+            style: Theme.of(context).textTheme.titleSmall),
+        const GapWidget(size: 8.0),
+        Text('Latitud: ${pothole?.longitude.toString() ?? ''}'),
+        Text('Longitud: ${pothole?.latitude.toString() ?? ''}'),
+        Text('Dirección: ${pothole?.address ?? ''}'),
+        Text('Localidad: ${pothole?.locality ?? ''}'),
+        const GapWidget(size: 8.0),
+        Text('Detalles del bache',
+              style: Theme.of(context).textTheme.titleSmall),
+          const _DescriptionInput(),
+        const GapWidget(size: 16.0),
+      ]),
     );
   }
 }
@@ -143,9 +147,6 @@ class _BasicFormView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const GapWidget(size: 16.0),
-          Text('Información básica del bache',
-              style: Theme.of(context).textTheme.titleMedium),
-          const GapWidget(size: 8.0),
           Text('Foto del bache', style: Theme.of(context).textTheme.titleSmall),
           const GapWidget(size: 8.0),
           const _ImageViewer(),
@@ -168,11 +169,11 @@ class _BasicFormView extends StatelessWidget {
           const _LongitudeInput(),
           const GapWidget(size: 8.0),
           const _AddressInput(),
+          const GapWidget(size: 8.0),
           const _LocalitySelector(),
           const GapWidget(size: 16.0),
           Text('Detalles del bache',
               style: Theme.of(context).textTheme.titleSmall),
-          const GapWidget(size: 8.0),
           const _DescriptionInput(),
         ],
       ),
@@ -195,10 +196,10 @@ class _AdditionalFormView extends StatelessWidget {
           const Row(
             children: [
               Expanded(child: _TypeSelector()),
+              GapWidget(size: 8.0),
               _PredictPotholeButton(),
             ],
           ),
-          const GapWidget(size: 8.0),
           const _PredictionDetails(),
           const GapWidget(size: 16.0),
         ],
@@ -234,14 +235,28 @@ class _AddressInput extends GetView<PotholeFormController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => TextFieldRxWidget(
-        label: 'Dirección*',
-        initialValue: controller.address.value.value,
-        keyboardType: TextInputType.text,
-        onChanged: controller.onAddressChanged,
-        errorMessage:
-            controller.isPosted ? controller.address.value.errorMessage : null,
+    return SizedBox(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Expanded(
+              child: Text('Dirección',
+                  style: Theme.of(context).textTheme.bodyMedium)),
+          Expanded(
+            child: Obx(
+              () => TextFieldRxWidget(
+                label: 'Dirección',
+                maxLines: 2,
+                initialValue: controller.address.value.value,
+                keyboardType: TextInputType.text,
+                onChanged: controller.onAddressChanged,
+                errorMessage: controller.isPosted
+                    ? controller.address.value.errorMessage
+                    : null,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -252,17 +267,24 @@ class _DescriptionInput extends GetView<PotholeFormController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => TextFieldRxWidget(
-        label: 'Descripción*',
-        maxLines: 6,
-        initialValue: controller.description.value.value,
-        keyboardType: TextInputType.text,
-        onChanged: controller.onDescriptionChanged,
-        errorMessage: controller.isPosted
-            ? controller.description.value.errorMessage
-            : null,
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Descripción', style: Theme.of(context).textTheme.bodyMedium),
+        const GapWidget(size: 8.0),
+        Obx(
+          () => TextFieldRxWidget(
+            label: 'Descripción',
+            maxLines: 6,
+            initialValue: controller.description.value.value,
+            keyboardType: TextInputType.text,
+            onChanged: controller.onDescriptionChanged,
+            errorMessage: controller.isPosted
+                ? controller.description.value.errorMessage
+                : null,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -272,10 +294,21 @@ class _LocalitySelector extends GetView<PotholeFormController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => LocalitySelectorWidget(
-        onChanged: controller.onLocalityChanged,
-        initialValue: controller.locality.value.value,
+    return SizedBox(
+      height: 32.0,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Expanded(child: Text('Localidad', style: Theme.of(context).textTheme.bodyMedium)),
+          Expanded(
+            child: Obx(
+              () => LocalitySelectorWidget(
+                onChanged: controller.onLocalityChanged,
+                initialValue: controller.locality.value.value,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -288,7 +321,7 @@ class _TypeSelector extends GetView<PotholeFormController> {
   Widget build(BuildContext context) {
     return Obx(
       () => SizedBox(
-        height: 60.0,
+        height: 40.0,
         child: SelectorWidget(
           onChanged: controller.onTypeChanged,
           initialValue: controller.type.value.value,
@@ -304,8 +337,19 @@ class _LatitudeInput extends GetView<PotholeFormController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Text('Latitud: ${controller.latitude.value.value}'),
+    return SizedBox(
+      height: 32.0,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          const Expanded(child: Text('Latitud')),
+          Expanded(
+            child: Obx(
+              () => Text(controller.latitude.value.value),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -315,8 +359,19 @@ class _LongitudeInput extends GetView<PotholeFormController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Text('Longitud: ${controller.longitude.value.value}'),
+    return SizedBox(
+      height: 32.0,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          const Expanded(child: Text('Longitud')),
+          Expanded(
+            child: Obx(
+              () => Text(controller.longitude.value.value),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -345,9 +400,22 @@ class _PredictionDetails extends GetView<PotholeFormController> {
         return ExpansionTile(
           title: const Text('Ver predicciones'),
           initiallyExpanded: true,
-          tilePadding: EdgeInsets.zero,
+          tilePadding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+          childrenPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+          minTileHeight: 12.0,
           expandedAlignment: Alignment.topLeft,
           expandedCrossAxisAlignment: CrossAxisAlignment.start,
+          backgroundColor: Colors.transparent,
+          dense: true,
+          collapsedBackgroundColor: Colors.transparent,
+          collapsedShape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+            side: BorderSide(color: Colors.transparent),
+          ),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+            side: BorderSide(color: Colors.transparent),
+          ),
           children: [
             ...controller.weights.map(
               (weight) => Text(weight.toString()),
