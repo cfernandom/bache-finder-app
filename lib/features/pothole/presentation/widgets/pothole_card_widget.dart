@@ -1,6 +1,7 @@
 import 'package:bache_finder_app/core/router/app_pages.dart';
 import 'package:bache_finder_app/features/pothole/domain/entities/pothole.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/potholes_controller.dart';
+import 'package:bache_finder_app/features/shared/presentation/widgets/gap_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/image_viewer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,26 +20,27 @@ class PotholeCardWidget extends GetView<PotholesController> {
     return GestureDetector(
       onTap: () => context.push('${AppPaths.potholes}/${pothole.id}'),
       child: Container(
+        margin: const EdgeInsets.only(top: 8.0),
         padding: const EdgeInsets.all(8.0),
         decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: Colors.black,
-            ),
-          ),
+          color: Color(0xFFDFF2FA),
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const GapWidget(size: 8.0),
+                  Text(pothole.type, style: Theme.of(context).textTheme.titleMedium,),
+                  const GapWidget(size: 8.0),
+                  Text(pothole.locality, overflow: TextOverflow.ellipsis),
                   Text(pothole.address, overflow: TextOverflow.ellipsis),
-                  const Text('Ubicación'),
-                  Text('${pothole.latitude}, ${pothole.longitude}'),
-                  const Text('Tipo'),
-                  Text(pothole.type),
+                  const GapWidget(size: 16.0),
+                  Text('${pothole.latitude}, ${pothole.longitude}', style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey),),
                 ],
               ),
             ),
@@ -61,7 +63,7 @@ class _Image extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 100,
+      width: 150,
       height: 150,
       child: ImageViewerWidget(path),
     );
