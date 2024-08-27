@@ -1,5 +1,6 @@
 import 'package:bache_finder_app/features/auth/presentation/controllers/forms/login_form_controller.dart';
 import 'package:bache_finder_app/features/auth/presentation/controllers/session_controller.dart';
+import 'package:bache_finder_app/features/shared/presentation/widgets/gap_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/snackbar_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
@@ -27,13 +28,18 @@ class LoginScreen extends GetView<SessionController> {
       }
     });
 
-    return const Scaffold(
+    return Scaffold(
+      backgroundColor: const Color(0xFFE8F5FB),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Bache Finder'),
-            _LoginForm(),
+            Text('Bache Finder',
+                style: Theme.of(context)
+                    .textTheme
+                    .displayLarge!
+                    .copyWith(color: Theme.of(context).primaryColor)),
+            const _LoginForm(),
           ],
         ),
       ),
@@ -46,18 +52,21 @@ class _LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(16.0),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          Text('Iniciar Sesión'),
-          _EmailField(),
-          _PasswordField(),
-          _RecoveryPassword(),
-          _LoginButton(),
-          SizedBox(height: 8.0),
-          _LoginWithGoogle(),
-          SizedBox(height: 8.0),
+          Text('Iniciar Sesión', style: Theme.of(context).textTheme.titleLarge),
+          const GapWidget(size: 8),
+          const _EmailField(),
+          const GapWidget(size: 8),
+          const _PasswordField(),
+          const _RecoveryPassword(),
+          const SizedBox(height: 32.0),
+          const _LoginButton(),
+          const SizedBox(height: 8.0),
+          const _LoginWithGoogle(),
+          const SizedBox(height: 8.0),
         ],
       ),
     );
@@ -69,13 +78,16 @@ class _EmailField extends GetView<LoginFormController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => TextFieldWidget(
-        label: 'Correo Electrónico',
-        keyboardType: TextInputType.emailAddress,
-        onChanged: controller.onEmailChanged,
-        errorMessage:
-            controller.isPosted ? controller.email.errorMessage : null,
+    return SizedBox(
+      height: 56,
+      child: Obx(
+        () => TextFieldWidget(
+          label: 'Correo Electrónico',
+          keyboardType: TextInputType.emailAddress,
+          onChanged: controller.onEmailChanged,
+          errorMessage:
+              controller.isPosted ? controller.email.errorMessage : null,
+        ),
       ),
     );
   }
@@ -86,14 +98,17 @@ class _PasswordField extends GetView<LoginFormController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => TextFieldWidget(
-        label: 'Contraseña',
-        isObscure: true,
-        keyboardType: TextInputType.visiblePassword,
-        onChanged: controller.onPasswordChanged,
-        errorMessage:
-            controller.isPosted ? controller.password.errorMessage : null,
+    return SizedBox(
+      height: 56,
+      child: Obx(
+        () => TextFieldWidget(
+          label: 'Contraseña',
+          isObscure: true,
+          keyboardType: TextInputType.visiblePassword,
+          onChanged: controller.onPasswordChanged,
+          errorMessage:
+              controller.isPosted ? controller.password.errorMessage : null,
+        ),
       ),
     );
   }
@@ -118,9 +133,16 @@ class _LoginButton extends GetView<LoginFormController> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
+      height: 56,
       child: Obx(
         () => FilledButton(
           onPressed: controller.isPosting ? null : controller.onSubmit,
+          style: ButtonStyle(
+              shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+          )),
           child: const Text('Iniciar Sesión'),
         ),
       ),
@@ -135,8 +157,15 @@ class _LoginWithGoogle extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
+      height: 56,
       child: FilledButton.icon(
         onPressed: () {},
+        style: ButtonStyle(
+            shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+        )),
         label: const Text('Iniciar sesión con Google'),
         icon: const Icon(Icons.login),
       ),
