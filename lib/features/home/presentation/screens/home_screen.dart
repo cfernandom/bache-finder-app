@@ -14,8 +14,25 @@ class HomeScreen extends GetView<SessionController> {
     return Scaffold(
       backgroundColor: const Color(0xFFE8F5FB),
       appBar: AppBar(
-        title: Text('Bache Finder App', style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white)),
+        title: Text('Bache Finder App',
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge!
+                .copyWith(color: Colors.white)),
         backgroundColor: const Color(0xFF2C5461),
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu, color: Colors.white), // Ícono de menú hamburguesa
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
+      ),
+      drawer: const Drawer(
+        child: Center(child: Text('Menu')),
       ),
       body: Center(
         child: Padding(

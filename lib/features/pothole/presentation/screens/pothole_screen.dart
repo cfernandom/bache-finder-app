@@ -21,6 +21,7 @@ class PotholeScreen extends GetView<PotholeController> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
     return Scaffold(
       backgroundColor: const Color(0xFFE8F5FB),
       key: scaffoldKey,
@@ -31,6 +32,21 @@ class PotholeScreen extends GetView<PotholeController> {
         () => controller.isLoading.value
             ? const SizedBox.shrink()
             : _SaveButton(scaffoldKey),
+      ),
+      appBar: AppBar(
+        title: Obx(
+          () {
+            final potholeId = controller.pothole.value?.id ?? 'new';
+            return Text(
+                potholeId != 'new' ? 'Reporte de Bache' : 'Reportar bache',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge!
+                    .copyWith(color: Colors.white));
+          },
+        ),
+        backgroundColor: const Color(0xFF2C5461),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
     );
   }
@@ -87,8 +103,6 @@ class _MainView extends GetView<PotholeController> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Reporte de bache',
-                    style: Theme.of(context).textTheme.titleLarge),
                 controller.pothole.value != null
                     ? const _BasicInformationView()
                     : const _BasicFormView(),
@@ -151,7 +165,6 @@ class _BasicInformationView extends GetView<PotholeController> {
               GapWidget(size: 4.0),
             ],
           ),
-
         ),
         const GapWidget(size: 16.0),
       ]),

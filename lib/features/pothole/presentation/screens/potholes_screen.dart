@@ -10,10 +10,19 @@ class PotholesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: _MainView(),
-      backgroundColor: Color(0xFFE8F5FB),
-      floatingActionButton: _AddPotholeButton(),
+    return Scaffold(
+      body: const _MainView(),
+      backgroundColor: const Color(0xFFE8F5FB),
+      floatingActionButton: const _AddPotholeButton(),
+      appBar: AppBar(
+        title: Text('Baches reportados',
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge!
+                .copyWith(color: Colors.white)),
+        backgroundColor: const Color(0xFF2C5461),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
     );
   }
 }
@@ -53,8 +62,6 @@ class _PotholesView extends GetView<PotholesController> {
       controller: controller.scrollController,
       physics: const BouncingScrollPhysics(),
       slivers: [
-         SliverToBoxAdapter(child: Text('Baches reportados',
-            style: Theme.of(context).textTheme.titleLarge)),
         const _PotholesList(),
         Obx(
           () => controller.isLoading.value
