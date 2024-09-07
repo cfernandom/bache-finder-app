@@ -35,7 +35,7 @@ class PotholeModel extends Pothole {
       updatedAt: json['updated_at'],
       description: json['description'],
       weights: json['predictions'] != null
-        ? (jsonDecode(json['predictions']) as List<dynamic>).map((e) => e as double).toList()
+        ? (jsonDecode(json['predictions']) as List).map((item) => item is double ? item : double.parse(item.toString())).toList()
         : null,
       solutionDescription: json['solution_description'],
     );
