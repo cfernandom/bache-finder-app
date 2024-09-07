@@ -85,7 +85,7 @@ class PotholesController extends GetxController {
             .toList();
         return;
       }
-      _potholes.value = [..._potholes.value, pothole];
+      _potholes.value = [pothole, ..._potholes.value];
     });
     return result;
   }
