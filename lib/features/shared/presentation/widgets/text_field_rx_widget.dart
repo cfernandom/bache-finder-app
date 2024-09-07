@@ -66,8 +66,8 @@ class _TextFieldRxWidgetState extends State<TextFieldRxWidget> {
         suffixText: widget.suffix,
         errorText: widget.errorMessage,
         floatingLabelBehavior: FloatingLabelBehavior.never,
-        contentPadding: const EdgeInsets.fromLTRB(8.0, -8.0, 8.0, 8.0),
-        isDense: true,
+        contentPadding: const EdgeInsets.fromLTRB(8.0, -8.0, 8.0, 16.0),
+        isDense: false,
         label: Text(widget.label,
             style: Theme.of(context)
                 .textTheme
@@ -75,7 +75,7 @@ class _TextFieldRxWidgetState extends State<TextFieldRxWidget> {
                 ?.copyWith(color: const Color(0xFFBDBDBD))),
         border: const UnderlineInputBorder(
           borderSide: BorderSide(color: Color(0xFFB9E1F2), width: 1.0),
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(8.0), topRight: Radius.circular(8.0)),
         ),
         enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.transparent, width: 0.0),
