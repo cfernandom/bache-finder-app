@@ -58,7 +58,7 @@ class PotholeRemoteDataSource {
   Future<PotholeModel> savePotholeById(
       String potholeId, Map<String, dynamic> potholeLike) async {
     final method = potholeId == 'new' ? 'POST' : 'PATCH';
-    final url = potholeId == 'new' ? 'v1/potholes' : 'v1/potholes/$potholeId';
+    final url = potholeId == 'new' ? 'v1/potholes/store-and-predict' : 'v1/potholes/$potholeId';
 
     var data = potholeLike;
     try {

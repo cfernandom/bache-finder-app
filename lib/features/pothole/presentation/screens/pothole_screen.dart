@@ -278,11 +278,11 @@ class _AdditionalFormView extends StatelessWidget {
               Row(
                 children: [
                   Expanded(child: _TypeSelector()),
-                  GapWidget(size: 8.0),
-                  _PredictPotholeButton(),
+                  // GapWidget(size: 8.0),
+                  // _PredictPotholeButton(),
                 ],
               ),
-              _PredictionDetails(),
+              // _PredictionDetails(),
             ]),
           ),
           const GapWidget(size: 16.0),
@@ -400,7 +400,7 @@ class _LocalitySelector extends GetView<PotholeFormController> {
   }
 }
 
-class _TypeSelector extends GetView<PotholeFormController> {
+class _TypeSelector extends GetView<PotholeController> {
   const _TypeSelector();
 
   @override
@@ -409,8 +409,9 @@ class _TypeSelector extends GetView<PotholeFormController> {
       () => SizedBox(
         height: 40.0,
         child: SelectorWidget(
-          onChanged: controller.onTypeChanged,
-          initialValue: controller.type.value.value,
+          onChanged: null,
+          icon: Icons.insights,
+          initialValue: controller.pothole.value?.type ?? '',
           items: PotholeConstants.types,
         ),
       ),
