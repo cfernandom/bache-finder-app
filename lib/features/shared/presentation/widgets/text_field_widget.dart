@@ -34,6 +34,17 @@ class TextFieldWidget extends StatelessWidget {
         prefixText: prefix,
         suffixText: suffix,
         errorText: errorMessage,
+        fillColor: Colors.white,
+        filled: true,
+        hoverColor: Colors.transparent,
+        enabledBorder: const UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.transparent, width: 0.0),
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        ),
+        border: const UnderlineInputBorder(
+          borderSide: BorderSide(color: Color(0xFFB9E1F2), width: 1.0),
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(8.0), topRight: Radius.circular(8.0)),
+        ),
       ),
     );
   }
