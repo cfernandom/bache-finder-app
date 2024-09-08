@@ -33,9 +33,14 @@ class _AddPotholeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
-        onPressed: () => context.push('${AppPaths.potholes}/new'),
-        icon: const Icon(Icons.add),
-        label: const Text('Reportar bache'));
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+      ),
+      onPressed: () => context.push('${AppPaths.potholes}/new'),
+      icon: const Icon(Icons.add),
+      label: const Text('Reportar bache'),
+      backgroundColor: const Color(0xFFB9E1F2),
+    );
   }
 }
 

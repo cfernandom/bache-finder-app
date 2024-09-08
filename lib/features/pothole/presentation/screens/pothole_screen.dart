@@ -60,6 +60,9 @@ class _SaveButton extends GetView<PotholeFormController> {
   Widget build(BuildContext context) {
     return Obx(
       () => FloatingActionButton.extended(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        ),
         onPressed: controller.isModifed
             ? () async {
                 final result = await controller.onSubmit();
@@ -77,12 +80,17 @@ class _SaveButton extends GetView<PotholeFormController> {
             : null,
         icon: controller.isPosting
             ? const CircularProgressIndicator()
-            : const Icon(Icons.save, color: Colors.white),
-        label:
-            const Text('Guardar bache', style: TextStyle(color: Colors.white)),
+            : Icon(Icons.save,
+                color: controller.isModifed ? Colors.white : Colors.black26),
+        disabledElevation: 0,
+        elevation: 4,
+        label: Text('Guardar bache',
+            style: controller.isModifed
+                ? const TextStyle(color: Colors.white)
+                : const TextStyle(color: Colors.black26)),
         backgroundColor: controller.isModifed
             ? Theme.of(context).colorScheme.primary
-            : Colors.grey[300],
+            : Colors.grey[200],
       ),
     );
   }
@@ -379,7 +387,7 @@ class _LocalitySelector extends GetView<PotholeFormController> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 32.0,
+      height: 48.0,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -407,7 +415,7 @@ class _TypeSelector extends GetView<PotholeController> {
   Widget build(BuildContext context) {
     return Obx(
       () => SizedBox(
-        height: 40.0,
+        height: 48.0,
         child: SelectorWidget(
           onChanged: null,
           icon: Icons.insights,

@@ -68,6 +68,7 @@ class _TextFieldRxWidgetState extends State<TextFieldRxWidget> {
         floatingLabelBehavior: FloatingLabelBehavior.never,
         contentPadding: const EdgeInsets.fromLTRB(8.0, -8.0, 8.0, 16.0),
         isDense: false,
+        hoverColor: Colors.transparent,
         label: Text(widget.label,
             style: Theme.of(context)
                 .textTheme
