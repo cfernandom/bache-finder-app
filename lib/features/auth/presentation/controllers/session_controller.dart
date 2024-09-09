@@ -1,6 +1,7 @@
 import 'package:bache_finder_app/features/auth/domain/entities/session.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/login.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/logout.dart';
+import 'package:bache_finder_app/features/auth/domain/use_cases/register_user.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/validate_session.dart';
 import 'package:bache_finder_app/features/auth/infraestructure/errors/failures/token_not_found_failure.dart';
 import 'package:get/get.dart';
@@ -12,17 +13,20 @@ enum SessionStatus {
 }
 
 class SessionController extends GetxController {
-  final ValidateSession _validateSessionUseCase;
   final Login _loginUseCase;
   final Logout _logoutUseCase;
+  final RegisterUser _registerUserUseCase;
+  final ValidateSession _validateSessionUseCase;
 
   SessionController({
-    required ValidateSession validateSessionUseCase,
     required Login loginUseCase,
     required Logout logoutUseCase,
-  })  : _validateSessionUseCase = validateSessionUseCase,
-        _loginUseCase = loginUseCase,
-        _logoutUseCase = logoutUseCase;
+    required ValidateSession validateSessionUseCase,
+    required RegisterUser registerUserUseCase,
+  })  : _loginUseCase = loginUseCase,
+        _logoutUseCase = logoutUseCase,
+        _registerUserUseCase = registerUserUseCase,
+        _validateSessionUseCase = validateSessionUseCase;
 
   final _session = Rxn<Session>();
   final _status = SessionStatus.checking.obs;
@@ -81,5 +85,18 @@ class SessionController extends GetxController {
     _session.value = null;
     _status.value = SessionStatus.loggedOut;
     _isLoading.value = false;
+  }
+
+  Future<bool> register(Map<String, dynamic> registerLike) async {
+    _isLoading.value = true;
+
+    final result = await _registerUserUseCase.call(registerLike);
+
+    result.fold(
+      (failure) => _errorMessage.value = failure.message,
+      (success) => () {},
+    );
+    _isLoading.value = false;
+    return result.isRight();
   }
 }

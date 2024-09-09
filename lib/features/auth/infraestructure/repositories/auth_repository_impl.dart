@@ -53,6 +53,20 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, bool>> register(Map<String, dynamic> registerLike) async {
+    try {
+      final response = await authRemoteDataSource.register(registerLike);
+      return Right(response);
+    } on ApiDataException catch (e) {
+      return Left(ApiDataFailure(e.toString()));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.toString()));
+    } catch (e) {
+      return Left(UnknownFailure(e.toString()));
+    }
+  }
+
+  @override
   Future<Either<Failure, Session>> validateSession() async {
     try {
       final token = await authLocalDataSource.getToken();

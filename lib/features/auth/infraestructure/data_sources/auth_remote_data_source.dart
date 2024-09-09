@@ -62,4 +62,16 @@ class AuthRemoteDataSource {
       throw Exception(e);
     }
   }
+
+  Future<bool> register(Map<String, dynamic> registerLike) async {
+    try {
+      final response = await _dio.post('v1/register', data: registerLike);
+      return response.data['success'] != null && response.data['success'];
+    } on DioException catch (e) {
+      final errorMessage = DioErrorHandler.getErrorMessage(e);
+      throw NetworkException(errorMessage);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

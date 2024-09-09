@@ -1,6 +1,7 @@
 import 'package:bache_finder_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/login.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/logout.dart';
+import 'package:bache_finder_app/features/auth/domain/use_cases/register_user.dart';
 import 'package:bache_finder_app/features/auth/domain/use_cases/validate_session.dart';
 import 'package:bache_finder_app/features/auth/infraestructure/data_sources/auth_local_data_source.dart';
 import 'package:bache_finder_app/features/auth/infraestructure/data_sources/auth_remote_data_source.dart';
@@ -30,9 +31,10 @@ class AuthBindings extends Bindings {
 
     Get.put<SessionController>(
       SessionController(
-        validateSessionUseCase: Get.put(ValidateSession(authRepository)),
         loginUseCase: Get.put(Login(authRepository)),
         logoutUseCase: Get.put(Logout(authRepository)),
+        registerUserUseCase: Get.put(RegisterUser(authRepository)),
+        validateSessionUseCase: Get.put(ValidateSession(authRepository)),
       ),
     );
   }

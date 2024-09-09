@@ -37,6 +37,7 @@ class TextFieldWidget extends StatelessWidget {
         fillColor: Colors.white,
         filled: true,
         hoverColor: Colors.transparent,
+        contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
         enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.transparent, width: 0.0),
           borderRadius: BorderRadius.all(Radius.circular(8.0)),

@@ -1,5 +1,7 @@
 import 'package:bache_finder_app/core/router/app_pages.dart';
 import 'package:bache_finder_app/features/auth/presentation/bindings/login_binding.dart';
+import 'package:bache_finder_app/features/auth/presentation/bindings/register_binding.dart';
+import 'package:bache_finder_app/features/auth/presentation/controllers/forms/register_form_controller.dart';
 import 'package:bache_finder_app/features/auth/presentation/controllers/session_controller.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/auth_check_screen.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/login_screen.dart';
@@ -43,7 +45,14 @@ class AppRouter {
           GoRoute(
             path: AppPaths.register,
             name: 'register',
-            builder: (context, state) => const RegisterScreen(),
+            builder: (context, state) {
+              RegisterBinding().dependencies();
+              return const RegisterScreen();
+            },
+            onExit: (context, state) {
+              Get.delete<RegisterFormController>();
+              return true;
+            },
           ),
           GoRoute(
             path: AppPaths.home,
@@ -74,8 +83,9 @@ class AppRouter {
               }
 
               PotholeBinding(
-                      potholeId: state.pathParameters['potholeId'] ?? 'new')
-                  .dependencies();
+                potholeId: state.pathParameters['potholeId'] ?? 'new',
+              ).dependencies();
+
               return const PotholeScreen();
             },
             routes: [

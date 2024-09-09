@@ -1,10 +1,13 @@
+import 'package:bache_finder_app/core/router/app_pages.dart';
 import 'package:bache_finder_app/features/auth/presentation/controllers/forms/login_form_controller.dart';
 import 'package:bache_finder_app/features/auth/presentation/controllers/session_controller.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/gap_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/snackbar_widget.dart';
+import 'package:bache_finder_app/features/shared/presentation/widgets/text_button_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends GetView<SessionController> {
   const LoginScreen({super.key});
@@ -67,6 +70,7 @@ class _LoginForm extends StatelessWidget {
           const SizedBox(height: 8.0),
           const _LoginWithGoogle(),
           const SizedBox(height: 8.0),
+          const _RegisterButton(),
         ],
       ),
     );
@@ -119,9 +123,9 @@ class _RecoveryPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
+    return TextButtonWidget(
+      'Recuperar contraseña',
       onPressed: () {},
-      child: const Text('Recuperar contraseña'),
     );
   }
 }
@@ -169,6 +173,18 @@ class _LoginWithGoogle extends StatelessWidget {
         label: const Text('Iniciar sesión con Google'),
         icon: const Icon(Icons.login),
       ),
+    );
+  }
+}
+
+class _RegisterButton extends StatelessWidget {
+  const _RegisterButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButtonWidget(
+      'Registrarse',
+      onPressed: () => context.push(AppPaths.register),
     );
   }
 }

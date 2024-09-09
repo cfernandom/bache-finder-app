@@ -5,5 +5,6 @@ import 'package:fpdart/fpdart.dart';
 abstract class AuthRepository {
   Future<Either<Failure, Session>> login(String email, String password);
   Future<Either<Failure, void>> logout();
+  Future<Either<Failure, bool>> register(Map<String, dynamic> registerLike);
   Future<Either<Failure, Session>> validateSession();
 }
