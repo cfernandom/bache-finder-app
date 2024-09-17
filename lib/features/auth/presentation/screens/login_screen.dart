@@ -82,16 +82,13 @@ class _EmailField extends GetView<LoginFormController> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 56,
-      child: Obx(
-        () => TextFieldWidget(
-          label: 'Correo Electrónico',
-          keyboardType: TextInputType.emailAddress,
-          onChanged: controller.onEmailChanged,
-          errorMessage:
-              controller.isPosted ? controller.email.errorMessage : null,
-        ),
+    return Obx(
+      () => TextFieldWidget(
+        label: 'Correo Electrónico',
+        keyboardType: TextInputType.emailAddress,
+        onChanged: controller.onEmailChanged,
+        errorMessage:
+            controller.isPosted ? controller.email.errorMessage : null,
       ),
     );
   }
@@ -102,17 +99,14 @@ class _PasswordField extends GetView<LoginFormController> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 56,
-      child: Obx(
-        () => TextFieldWidget(
-          label: 'Contraseña',
-          isObscure: true,
-          keyboardType: TextInputType.visiblePassword,
-          onChanged: controller.onPasswordChanged,
-          errorMessage:
-              controller.isPosted ? controller.password.errorMessage : null,
-        ),
+    return Obx(
+      () => TextFieldWidget(
+        label: 'Contraseña',
+        isObscure: true,
+        keyboardType: TextInputType.visiblePassword,
+        onChanged: controller.onPasswordChanged,
+        errorMessage:
+            controller.isPosted ? controller.password.errorMessage : null,
       ),
     );
   }
