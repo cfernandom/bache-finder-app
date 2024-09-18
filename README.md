@@ -47,3 +47,12 @@ Despues de hacer esto, ejecutar el comando:
 ```
 flutter pub run flutter_launcher_icons
 ```
+
+### Cambiar Splash Screen
+
+Ajustar configuraciones de la sección flutter_native_splash del archivo pubspec.yaml para cambiar la imagen de la pantalla de carga.
+Despues de hacer esto, ejecutar el comando:
+
+```
+dart run flutter_native_splash:create
+```

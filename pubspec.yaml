@@ -39,6 +39,7 @@ dependencies:
   shared_preferences: ^2.2.3
   formz: ^0.7.0
   fpdart: ^1.1.0
+  flutter_native_splash: ^2.4.1
   dio: ^5.4.3+1
   flutter_dotenv: ^5.1.0
   image_picker: ^1.1.2
@@ -120,3 +121,7 @@ flutter_launcher_icons:
     image_path: "assets/icons/icon2.png"
     background_color: "#F5F5F5"
     theme_color: "#F5F5F5"
+
+flutter_native_splash:
+  color: "#E8F5FB"
+  image: "assets/images/splash.png"
