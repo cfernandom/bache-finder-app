@@ -31,3 +31,10 @@ Asegúrate de que la variable de entorno `GOOGLE_MAPS_API_KEY` esté exportada e
 Si la variable se establece en el terminal pero no es persistente, puedes añadirla al archivo de inicialización de tu shell (`.bashrc`, `.zshrc`, etc.):
 
 En el archivo `.env` de este proyecto, configure la variable de entorno `GOOGLE_MAPS_API_PROXY_URL` para configurar la URL del proxy.
+
+
+### Cambiar el nombre de la aplicación
+
+```
+dart run change_app_package_name:main com.bache_finder.app
+```

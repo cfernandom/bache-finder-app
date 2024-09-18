@@ -1,4 +1,4 @@
-package com.example.bache_finder_app
+package com.bache_finder.app
 
 import io.flutter.embedding.android.FlutterActivity
 
