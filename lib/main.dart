@@ -1,6 +1,7 @@
 import 'package:bache_finder_app/core/constants/enviroment.dart';
 import 'package:bache_finder_app/core/router/app_router.dart';
 import 'package:bache_finder_app/features/auth/presentation/bindings/auth_bindings.dart';
+import 'package:bache_finder_app/features/shared/presentation/widgets/snackbar_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,7 @@ class _MyAppState extends State<MyApp> {
     final appRouterNotifier = Get.find<AppRouterNotifier>();
 
     return MaterialApp.router(
+      scaffoldMessengerKey: GlobalSnackbarWidget.scaffoldMessengerKey,
       title: 'Bache Finder App',
       routerConfig: AppRouter.createRouter(appRouterNotifier),
       theme: ThemeData(

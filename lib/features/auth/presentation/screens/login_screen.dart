@@ -14,19 +14,22 @@ class LoginScreen extends GetView<SessionController> {
 
   @override
   Widget build(BuildContext context) {
-    controller.isLoading.listen((status) {
-      final errorMessage = controller.errorMessage;
-      if (status == false) {
-        if (errorMessage != '') {
-          SnackbarWidget.show(context, message: errorMessage);
-          controller.resetErrorMessage();
-        }
-      }
-    });
-
+    // Usamos WidgetsBinding.instance.addPostFrameCallback para registrarnos en los cambios
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (controller.errorMessage != '') {
-        SnackbarWidget.show(context, message: controller.errorMessage);
+      // Listener para cambios en isLoading
+      ever(controller.isLoading, (status) {
+        if (status == false) {
+          final errorMessage = controller.errorMessage;
+          if (errorMessage.isNotEmpty) {
+            GlobalSnackbarWidget.show(message: errorMessage);
+            controller.resetErrorMessage();
+          }
+        }
+      });
+
+      // Verificar si hay un mensaje de error al iniciar
+      if (controller.errorMessage.isNotEmpty) {
+        GlobalSnackbarWidget.show(message: controller.errorMessage);
         controller.resetErrorMessage();
       }
     });

@@ -47,8 +47,12 @@ class LoginFormController extends GetxController {
 
     if (_isValid.value) {
       _isPosting.value = true;
-      await _loginCallback(_email.value.value, _password.value.value);
-      _isPosting.value = false;
+      try {
+        await _loginCallback(_email.value.value, _password.value.value);
+        _isPosting.value = false;
+      } catch (e) {
+        _isPosting.value = false;
+      }
     }
   }
 }
