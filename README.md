@@ -38,3 +38,12 @@ En el archivo `.env` de este proyecto, configure la variable de entorno `GOOGLE_
 ```
 dart run change_app_package_name:main com.bache_finder.app
 ```
+
+### Cambiar icono de la app
+
+Ajustar configuraciones de la sección flutter_launcher_icons del archivo pubspec.yaml para cambiar el icono de la app.
+Despues de hacer esto, ejecutar el comando:
+
+```
+flutter pub run flutter_launcher_icons
+```
