@@ -35,11 +35,11 @@ class AppRouter {
             path: AppPaths.login,
             name: 'login',
             builder: (context, state) {
+              LoginBinding().removeDependencies();
               LoginBinding().dependencies();
               return const LoginScreen();
             },
             onExit: (context, state) {
-              LoginBinding().removeDependencies();
               return true;
             },
           ),
