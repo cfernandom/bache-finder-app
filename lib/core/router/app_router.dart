@@ -1,7 +1,6 @@
 import 'package:bache_finder_app/core/router/app_pages.dart';
 import 'package:bache_finder_app/features/auth/presentation/bindings/login_binding.dart';
 import 'package:bache_finder_app/features/auth/presentation/bindings/register_binding.dart';
-import 'package:bache_finder_app/features/auth/presentation/controllers/forms/register_form_controller.dart';
 import 'package:bache_finder_app/features/auth/presentation/controllers/session_controller.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/auth_check_screen.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/login_screen.dart';
@@ -9,12 +8,10 @@ import 'package:bache_finder_app/features/auth/presentation/screens/register_scr
 import 'package:bache_finder_app/features/home/presentation/screens/home_screen.dart';
 import 'package:bache_finder_app/features/pothole/presentation/bindings/pothole_binding.dart';
 import 'package:bache_finder_app/features/pothole/presentation/bindings/potholes_binding.dart';
-import 'package:bache_finder_app/features/pothole/presentation/controllers/forms/pothole_form_controller.dart';
-import 'package:bache_finder_app/features/pothole/presentation/controllers/pothole_controller.dart';
-import 'package:bache_finder_app/features/pothole/presentation/controllers/potholes_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/screens/pothole_screen.dart';
 import 'package:bache_finder_app/features/pothole/presentation/screens/potholes_screen.dart';
 import 'package:bache_finder_app/features/pothole/presentation/widgets/location_picker_widget.dart';
+import 'package:bache_finder_app/features/sample/google_maps.dart';
 import 'package:bache_finder_app/features/user/presentation/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -41,6 +38,10 @@ class AppRouter {
               LoginBinding().dependencies();
               return const LoginScreen();
             },
+            onExit: (context, state) {
+              LoginBinding().removeDependencies();
+              return true;
+            },
           ),
           GoRoute(
             path: AppPaths.register,
@@ -50,7 +51,7 @@ class AppRouter {
               return const RegisterScreen();
             },
             onExit: (context, state) {
-              Get.delete<RegisterFormController>();
+              RegisterBinding().removeDependencies();
               return true;
             },
           ),
@@ -69,10 +70,10 @@ class AppRouter {
             name: 'potholes',
             onExit: (context, state) {
               if (state.pathParameters['potholeId'] == 'all') {
-                Get.delete<PotholesController>();
+                PotholesBinding().removeDependencies();
               } else {
-                Get.delete<PotholeController>();
-                Get.delete<PotholeFormController>();
+                PotholeBinding(potholeId: state.pathParameters['potholeId']!)
+                    .removeDependencies();
               }
               return true;
             },

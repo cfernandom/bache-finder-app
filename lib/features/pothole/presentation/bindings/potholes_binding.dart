@@ -41,4 +41,12 @@ class PotholesBinding extends Bindings {
       ),
     );
   }
+
+  void removeDependencies() {
+    Get.delete<PotholesController>();
+    Get.delete<GetPotholes>();
+    Get.delete<SavePothole>();
+    Get.delete<PotholeRepository>();
+    Get.delete<PotholeRemoteDataSource>();
+  }
 }

@@ -12,4 +12,7 @@ class RegisterBinding extends Bindings{
     );
   }
 
+  void removeDependencies() {
+    Get.delete<RegisterFormController>();
+  }
 }

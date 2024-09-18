@@ -11,4 +11,8 @@ class LoginBinding extends Bindings {
       ),
     );
   }
+
+  void removeDependencies() {
+    Get.delete<LoginFormController>();
+  }
 }
