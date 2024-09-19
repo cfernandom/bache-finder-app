@@ -36,18 +36,60 @@ class LoginScreen extends GetView<SessionController> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFE8F5FB),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Bache Finder',
-                style: Theme.of(context)
-                    .textTheme
-                    .displayLarge!
-                    .copyWith(color: Theme.of(context).primaryColor)),
-            const _LoginForm(),
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Center(
+            child: Container(
+              constraints: const BoxConstraints.expand(
+                width: 480,
+                height: 800,
+              ),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GapWidget(size: 24),
+                  _HeaderBanner(),
+                  Expanded(child: SizedBox()),
+                  _LoginForm(),
+                  Expanded(child: SizedBox()),
+                ],
+              ),
+            ),
+          ),
         ),
+      ),
+    );
+  }
+}
+
+class _HeaderBanner extends StatelessWidget {
+  const _HeaderBanner();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16),
+      child: Stack(
+        children: [
+          Image.asset(
+            'assets/images/banner.png',
+            width: double.infinity,
+          ),
+          Positioned(
+            top: 0,
+            right: 0,
+            child: Padding(
+              padding: const EdgeInsets.all(
+                  16), // Opcional, para dar un poco de espacio alrededor del texto
+              child: Text(
+                'Tus ojos en las calles, tu voz en la ciudad',
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      color: const Color(0xFF2C5461),
+                    ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
