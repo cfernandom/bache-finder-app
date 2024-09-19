@@ -316,7 +316,7 @@ class _LocationPickerButton extends GetView<PotholeFormController> {
       child: OutlinedButtonIconWidget(
         onPressed: () => _onPressed(context),
         label: 'Seleccionar ubicación',
-        icon: Icons.location_on,
+        icon: const Icon(Icons.location_on, color: Color(0xFF3D5D67)),
       ),
     );
   }
@@ -540,7 +540,7 @@ class _UploadPhotoButton extends GetView<PotholeFormController> {
       child: OutlinedButtonIconWidget(
         onPressed: onPressed,
         label: 'Seleccionar foto',
-        icon: Icons.photo,
+        icon: const Icon(Icons.photo, color: Color(0xFF3D5D67)),
       ),
     );
   }
@@ -563,7 +563,7 @@ class _TakePhotoButton extends GetView<PotholeFormController> {
       child: OutlinedButtonIconWidget(
         onPressed: onPressed,
         label: 'Tomar foto',
-        icon: Icons.camera_alt,
+        icon: const Icon(Icons.camera_alt, color:Color(0xFF3D5D67)),
       ),
     );
   }
@@ -579,7 +579,7 @@ class _PredictPotholeButton extends GetView<PotholeFormController> {
       child: OutlinedButtonIconWidget(
         onPressed: controller.onPredict,
         label: 'Predecir',
-        icon: Icons.insights,
+        icon: const Icon(Icons.insights, color: Colors.white),
       ),
     );
   }

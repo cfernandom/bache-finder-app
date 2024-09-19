@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class OutlinedButtonIconWidget extends StatelessWidget {
   final VoidCallback? onPressed;
   final String label;
-  final IconData icon;
+  final Widget? icon;
 
   const OutlinedButtonIconWidget({
     super.key,
@@ -27,7 +28,7 @@ class OutlinedButtonIconWidget extends StatelessWidget {
           ),
         ),
         label: Text(label, style: Theme.of(context).textTheme.titleSmall!.copyWith(color: const Color(0xFF3D5D67))),
-        icon: Icon(icon, color: const Color(0xFF3D5D67)),
+        icon: icon,
       ),
     );
   }

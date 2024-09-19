@@ -2,10 +2,12 @@ import 'package:bache_finder_app/core/router/app_pages.dart';
 import 'package:bache_finder_app/features/auth/presentation/controllers/forms/login_form_controller.dart';
 import 'package:bache_finder_app/features/auth/presentation/controllers/session_controller.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/gap_widget.dart';
+import 'package:bache_finder_app/features/shared/presentation/widgets/outlined_button_icon_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/snackbar_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/text_button_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -201,16 +203,10 @@ class _LoginWithGoogle extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       height: 56,
-      child: FilledButton.icon(
+      child: OutlinedButtonIconWidget(
+        label: 'Iniciar Sesión con Google',
+        icon: const FaIcon(FontAwesomeIcons.google, color: Color(0xFF3D5D67)),
         onPressed: () {},
-        style: ButtonStyle(
-            shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-        )),
-        label: const Text('Iniciar sesión con Google'),
-        icon: const Icon(Icons.login),
       ),
     );
   }

@@ -23,7 +23,8 @@ class HomeScreen extends GetView<SessionController> {
         leading: Builder(
           builder: (context) {
             return IconButton(
-              icon: const Icon(Icons.menu, color: Colors.white), // Ícono de menú hamburguesa
+              icon: const Icon(Icons.menu,
+                  color: Colors.white), // Ícono de menú hamburguesa
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },
@@ -54,7 +55,7 @@ class HomeScreen extends GetView<SessionController> {
                     context.push('${AppPaths.potholes}/all');
                   },
                   label: 'Baches reportados',
-                  icon: Icons.list_alt,
+                  icon: const Icon(Icons.list_alt, color: Color(0xFF3D5D67)),
                 ),
               ),
               const GapWidget(size: 8),
@@ -65,7 +66,7 @@ class HomeScreen extends GetView<SessionController> {
                     context.push('${AppPaths.potholes}/new');
                   },
                   label: 'Reportar bache',
-                  icon: Icons.add,
+                  icon: const Icon(Icons.add, color: Color(0xFF3D5D67)),
                 ),
               ),
               const GapWidget(size: 8),
