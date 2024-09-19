@@ -6,6 +6,7 @@ import 'package:bache_finder_app/features/auth/presentation/screens/auth_check_s
 import 'package:bache_finder_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:bache_finder_app/features/home/presentation/screens/home_screen.dart';
+import 'package:bache_finder_app/features/home/presentation/screens/intro_screen.dart';
 import 'package:bache_finder_app/features/pothole/presentation/bindings/pothole_binding.dart';
 import 'package:bache_finder_app/features/pothole/presentation/bindings/potholes_binding.dart';
 import 'package:bache_finder_app/features/pothole/presentation/screens/pothole_screen.dart';
@@ -30,6 +31,13 @@ class AppRouter {
               Get.find<SessionController>().validateSession();
               return const AuthCheckScreen();
             },
+          ),
+          GoRoute(
+            path: AppPaths.intro,
+            name: 'intro',
+            builder: (context, state) {
+              return const IntroScreen();
+            }
           ),
           GoRoute(
             path: AppPaths.login,
@@ -116,16 +124,17 @@ class AppRouter {
           }
 
           if (sessionStatus == SessionStatus.loggedOut) {
-            if (isGoinTo == AppPaths.login || isGoinTo == AppPaths.register) {
+            if (isGoinTo == AppPaths.login || isGoinTo == AppPaths.register || isGoinTo == AppPaths.intro) {
               return null;
             }
-            return AppPaths.login;
+            return AppPaths.intro;
           }
 
           if (sessionStatus == SessionStatus.loggedIn) {
             if (isGoinTo == AppPaths.login ||
                 isGoinTo == AppPaths.register ||
-                isGoinTo == AppPaths.authCheck) {
+                isGoinTo == AppPaths.authCheck ||
+                isGoinTo == AppPaths.intro) {
               return AppPaths.home;
             }
             return null;
