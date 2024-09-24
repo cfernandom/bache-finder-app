@@ -5,6 +5,7 @@ import 'package:bache_finder_app/features/auth/presentation/controllers/session_
 import 'package:bache_finder_app/features/auth/presentation/screens/auth_check_screen.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:bache_finder_app/features/auth/presentation/screens/register_screen.dart';
+import 'package:bache_finder_app/features/home/presentation/screens/about_screen.dart';
 import 'package:bache_finder_app/features/home/presentation/screens/home_screen.dart';
 import 'package:bache_finder_app/features/home/presentation/screens/intro_screen.dart';
 import 'package:bache_finder_app/features/pothole/presentation/bindings/pothole_binding.dart';
@@ -38,7 +39,14 @@ class AppRouter {
             name: 'intro',
             builder: (context, state) {
               return const IntroScreen();
-            }
+            },
+          ),
+          GoRoute(
+            path: AppPaths.about,
+            name: 'about',
+            builder: (context, state) {
+              return const AboutScreen();
+            },
           ),
           GoRoute(
             path: AppPaths.login,

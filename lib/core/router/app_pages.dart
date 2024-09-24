@@ -8,5 +8,6 @@ class AppPaths {
   static const String profile = '/profile';
   static const String potholes = '/potholes';
   static const String locationPicker = 'locationPicker';
+  static const String about = '/about';
 }
 
