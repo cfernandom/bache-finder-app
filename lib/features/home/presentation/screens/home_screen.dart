@@ -35,56 +35,167 @@ class HomeScreen extends GetView<SessionController> {
       drawer: const Drawer(
         child: Center(child: Text('Menu')),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              // ElevatedButton(
-              //   onPressed: () {
-              //     context.push(AppPaths.profile);
-              //   },
-              //   child: const Text('Ir a mi perfil'),
-              // ),
-              const GapWidget(size: 8),
-              SizedBox(
-                height: 48,
-                child: OutlinedButtonIconWidget(
-                  onPressed: () {
-                    context.push('${AppPaths.potholes}/all');
-                  },
-                  label: 'Baches reportados',
-                  icon: const Icon(Icons.list_alt, color: Color(0xFF3D5D67)),
-                ),
-              ),
-              const GapWidget(size: 8),
-              SizedBox(
-                height: 48,
-                child: OutlinedButtonIconWidget(
-                  onPressed: () {
-                    context.push('${AppPaths.potholes}/new');
-                  },
-                  label: 'Reportar bache',
-                  icon: const Icon(Icons.add, color: Color(0xFF3D5D67)),
-                ),
-              ),
-              const GapWidget(size: 8),
-              ElevatedButtonWidget(
-                onPressed: () {
-                  controller.logout();
-                },
-                label: 'Cerrar sesión',
-              ),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     context.go(AppPaths.maps);
-              //   },
-              //   child: const Text('Ir a Maps'),
-              // ),
-            ],
-          ),
+      body: const _MainView(),
+    );
+  }
+}
+
+class _MainView extends StatelessWidget {
+  const _MainView();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 800),
+        padding: const EdgeInsets.all(16.0),
+        child: const Column(
+          children: [
+            _WelcomeText(),
+            GapWidget(size: 16.0),
+            Expanded(child: _FeaturedImage()),
+            GapWidget(size: 16.0),
+            _DescriptionText(),
+            GapWidget(size: 16.0),
+            _Buttons(),
+          ],
         ),
+      ),
+    );
+  }
+}
+
+class _WelcomeText extends StatelessWidget {
+  const _WelcomeText();
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'Bienvenido',
+      style: Theme.of(context)
+          .textTheme
+          .displayMedium!
+          .copyWith(color: Theme.of(context).primaryColor),
+    );
+  }
+}
+
+class _FeaturedImage extends StatelessWidget {
+  const _FeaturedImage();
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      'assets/images/splash_blue.png',
+      width: double.infinity,
+    );
+  }
+}
+
+class _DescriptionText extends StatelessWidget {
+  const _DescriptionText();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          'Reporta un defecto vial',
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge!
+              .copyWith(color: const Color(0xFF2C5461)),
+        ),
+        const GapWidget(size: 8.0),
+        Text(
+          'Las vías urbanas y rurales son fundamentales en nuestras actividades diarias. Los defectos en estas pueden generar accidentes, pérdidas de mercancías, y daños a vehículos, entre otros.',
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(color: const Color(0xFF2C5461)),
+        ),
+        const GapWidget(size: 8.0),
+        RichText(
+          text: TextSpan(
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(color: const Color(0xFF2C5461)),
+              children: const [
+                TextSpan(
+                  text: 'BACHE FINDER:',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Color(0xFF2C5461)),
+                ),
+                TextSpan(
+                  text:
+                      ' Te ayuda a identificar y reportar los defectos viales en tu sector, contribuyendo a mejorar la seguridad y el bienestar de tu comunidad.',
+                ),
+              ]),
+        )
+      ],
+    );
+  }
+}
+
+class _Buttons extends GetView<SessionController> {
+  const _Buttons();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          // ElevatedButton(
+          //   onPressed: () {
+          //     context.push(AppPaths.profile);
+          //   },
+          //   child: const Text('Ir a mi perfil'),
+          // ),
+          const GapWidget(size: 8),
+          SizedBox(
+            height: 48,
+            width: double.infinity,
+            child: FilledButton.icon(
+              onPressed: () {
+                context.push('${AppPaths.potholes}/new');
+              },
+              style: ButtonStyle(
+                  shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              )),
+              label: const Text('Reportar bache'),
+              icon: const Icon(Icons.add),
+            ),
+          ),
+          const GapWidget(size: 8),
+          SizedBox(
+            height: 48,
+            child: OutlinedButtonIconWidget(
+              onPressed: () {
+                context.push('${AppPaths.potholes}/all');
+              },
+              label: 'Baches reportados',
+              icon: const Icon(Icons.list_alt, color: Color(0xFF3D5D67)),
+            ),
+          ),
+          const GapWidget(size: 8),
+          // ElevatedButtonWidget(
+          //   onPressed: () {
+          //     controller.logout();
+          //   },
+          //   label: 'Cerrar sesión',
+          // ),
+          // ElevatedButton(
+          //   onPressed: () {
+          //     context.go(AppPaths.maps);
+          //   },
+          //   child: const Text('Ir a Maps'),
+          // ),
+        ],
       ),
     );
   }
