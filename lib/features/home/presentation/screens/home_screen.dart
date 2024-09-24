@@ -1,5 +1,6 @@
 import 'package:bache_finder_app/core/router/app_pages.dart';
 import 'package:bache_finder_app/features/auth/presentation/controllers/session_controller.dart';
+import 'package:bache_finder_app/features/home/presentation/widgets/home_drawer_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/gap_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/outlined_button_icon_widget.dart';
 import 'package:flutter/material.dart';
@@ -32,9 +33,7 @@ class HomeScreen extends GetView<SessionController> {
           },
         ),
       ),
-      drawer: const Drawer(
-        child: Center(child: Text('Menu')),
-      ),
+      drawer: const HomeDrawerWidget(),
       body: const _MainView(),
     );
   }
