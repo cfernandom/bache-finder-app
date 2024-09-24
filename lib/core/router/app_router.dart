@@ -9,6 +9,7 @@ import 'package:bache_finder_app/features/home/presentation/screens/home_screen.
 import 'package:bache_finder_app/features/home/presentation/screens/intro_screen.dart';
 import 'package:bache_finder_app/features/pothole/presentation/bindings/pothole_binding.dart';
 import 'package:bache_finder_app/features/pothole/presentation/bindings/potholes_binding.dart';
+import 'package:bache_finder_app/features/pothole/presentation/controllers/potholes_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/screens/pothole_screen.dart';
 import 'package:bache_finder_app/features/pothole/presentation/screens/potholes_screen.dart';
 import 'package:bache_finder_app/features/pothole/presentation/widgets/location_picker_widget.dart';
@@ -79,6 +80,7 @@ class AppRouter {
             onExit: (context, state) {
               if (state.pathParameters['potholeId'] == 'all') {
                 PotholesBinding().removeDependencies();
+                // TODO: fix: Al ingresar directamente a realizar un reporte, no se estan eliminando los bindings de los potholes
               } else {
                 PotholeBinding(potholeId: state.pathParameters['potholeId']!)
                     .removeDependencies();
@@ -89,11 +91,14 @@ class AppRouter {
               if (state.pathParameters['potholeId'] == 'all') {
                 PotholesBinding().dependencies();
                 return const PotholesScreen();
+              } else {
+                if (!Get.isRegistered<PotholesController>()) {
+                  PotholesBinding().dependencies();
+                }
+                PotholeBinding(
+                  potholeId: state.pathParameters['potholeId'] ?? 'new',
+                ).dependencies();
               }
-
-              PotholeBinding(
-                potholeId: state.pathParameters['potholeId'] ?? 'new',
-              ).dependencies();
 
               return const PotholeScreen();
             },
