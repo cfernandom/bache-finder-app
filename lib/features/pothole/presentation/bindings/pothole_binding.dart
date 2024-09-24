@@ -78,6 +78,5 @@ class PotholeBinding extends Bindings {
     Get.delete<PotholeController>();
     Get.delete<GetPothole>();
     Get.delete<PredictPothole>();
-    Get.delete<PotholeRepository>();   
   }
 }
