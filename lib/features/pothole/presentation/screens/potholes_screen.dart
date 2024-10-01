@@ -12,7 +12,7 @@ class PotholesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: const _MainView(),
-      backgroundColor: const Color(0xFFE8F5FB),
+      backgroundColor: const Color(0xFFF4FAFD),
       floatingActionButton: const _AddPotholeButton(),
       appBar: AppBar(
         title: Text('Baches reportados',

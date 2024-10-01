@@ -23,7 +23,7 @@ class PotholeScreen extends GetView<PotholeController> {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFE8F5FB),
+      backgroundColor: const Color(0xFFF4FAFD),
       key: scaffoldKey,
       body: Obx(() => controller.isLoading.value
           ? const Center(child: CircularProgressIndicator())

@@ -13,7 +13,7 @@ class HomeScreen extends GetView<SessionController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFE8F5FB),
+      backgroundColor: const Color(0xFFF4FAFD),
       appBar: AppBar(
         title: Text('Bache Finder App',
             style: Theme.of(context)
