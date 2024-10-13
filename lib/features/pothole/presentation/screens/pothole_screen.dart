@@ -2,6 +2,7 @@ import 'package:bache_finder_app/core/router/app_pages.dart';
 import 'package:bache_finder_app/features/pothole/infrastructure/constants/pothole_constants.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/forms/pothole_form_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/pothole_controller.dart';
+import 'package:bache_finder_app/features/pothole/presentation/widgets/container_form_widget.dart';
 import 'package:bache_finder_app/features/pothole/presentation/widgets/locality_selector_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/gap_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/image_viewer_widget.dart';
@@ -207,32 +208,32 @@ class _BasicFormView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const GapWidget(size: 16.0),
-          Text('Foto del bache', style: Theme.of(context).textTheme.titleSmall),
+          Text('Foto del bache',
+              style: Theme.of(context).textTheme.titleMedium),
           const GapWidget(size: 8.0),
-          const _ImageViewer(),
-          const GapWidget(size: 8.0),
-          const Row(
-            children: [
-              Expanded(child: _UploadPhotoButton()),
-              if (!kIsWeb) ...[
-                GapWidget(size: 8.0),
-                Expanded(child: _TakePhotoButton()),
-              ],
-            ],
+          const ContainerFormWidget(
+            child: Column(children: [
+              _ImageViewer(),
+              GapWidget(size: 16.0),
+              Row(
+                children: [
+                  Expanded(child: _UploadPhotoButton()),
+                  if (!kIsWeb) ...[
+                    GapWidget(size: 8.0),
+                    Expanded(child: _TakePhotoButton()),
+                  ],
+                ],
+              ),
+            ]),
           ),
-          const GapWidget(size: 16.0),
+          const GapWidget(size: 24.0),
           Text('Ubicación del bache',
-              style: Theme.of(context).textTheme.titleSmall),
+              style: Theme.of(context).textTheme.titleMedium),
           const GapWidget(size: 8.0),
-          const _LocationPickerButton(),
-          const GapWidget(size: 8.0),
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
-              color: const Color(0xFFDFF2FA),
-            ),
-            child: const Column(children: [
+          const ContainerFormWidget(
+            child: Column(children: [
+              _LocationPickerButton(),
+              GapWidget(size: 16.0),
               _LatitudeInput(),
               _LongitudeInput(),
               GapWidget(size: 8.0),
@@ -242,17 +243,13 @@ class _BasicFormView extends StatelessWidget {
               GapWidget(size: 4.0),
             ]),
           ),
-          const GapWidget(size: 16.0),
+          const GapWidget(size: 24.0),
           Text('Detalles del bache',
-              style: Theme.of(context).textTheme.titleSmall),
+              style: Theme.of(context).textTheme.titleMedium),
           const GapWidget(size: 8.0),
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
-              color: const Color(0xFFDFF2FA),
-            ),
-            child: const Column(children: [
+          const ContainerFormWidget(
+            child: Column(children: [
+              GapWidget(size: 4.0),
               _DescriptionInput(),
               GapWidget(size: 4.0),
             ]),
@@ -332,8 +329,11 @@ class _AddressInput extends GetView<PotholeFormController> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
-              child: Text('Dirección',
-                  style: Theme.of(context).textTheme.bodyMedium)),
+            child: Text(
+              'Dirección',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+          ),
           Expanded(
             child: Obx(
               () => TextFieldRxWidget(
@@ -362,7 +362,10 @@ class _DescriptionInput extends GetView<PotholeFormController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Descripción', style: Theme.of(context).textTheme.bodyMedium),
+        Text(
+          'Descripción',
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
         const GapWidget(size: 8.0),
         Obx(
           () => TextFieldRxWidget(
@@ -392,8 +395,11 @@ class _LocalitySelector extends GetView<PotholeFormController> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
-              child: Text('Localidad',
-                  style: Theme.of(context).textTheme.bodyMedium)),
+            child: Text(
+              'Localidad',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+          ),
           Expanded(
             child: Obx(
               () => LocalitySelectorWidget(
@@ -437,7 +443,12 @@ class _LatitudeInput extends GetView<PotholeFormController> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Expanded(child: Text('Latitud')),
+          Expanded(
+            child: Text(
+              'Latitud',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+          ),
           Expanded(
             child: Obx(
               () => Text(controller.latitude.value.value),
@@ -459,7 +470,12 @@ class _LongitudeInput extends GetView<PotholeFormController> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Expanded(child: Text('Longitud')),
+          Expanded(
+            child: Text(
+              'Longitud',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+          ),
           Expanded(
             child: Obx(
               () => Text(controller.longitude.value.value),
@@ -563,7 +579,7 @@ class _TakePhotoButton extends GetView<PotholeFormController> {
       child: OutlinedButtonIconWidget(
         onPressed: onPressed,
         label: 'Tomar foto',
-        icon: const Icon(Icons.camera_alt, color:Color(0xFF3D5D67)),
+        icon: const Icon(Icons.camera_alt, color: Color(0xFF3D5D67)),
       ),
     );
   }

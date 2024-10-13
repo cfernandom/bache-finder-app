@@ -1,5 +1,6 @@
 import 'package:bache_finder_app/core/constants/enviroment.dart';
 import 'package:bache_finder_app/core/router/app_router.dart';
+import 'package:bache_finder_app/core/theme/app_theme.dart';
 import 'package:bache_finder_app/features/auth/presentation/bindings/auth_bindings.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/snackbar_widget.dart';
 import 'package:flutter/foundation.dart';
@@ -36,18 +37,7 @@ class _MyAppState extends State<MyApp> {
       scaffoldMessengerKey: GlobalSnackbarWidget.scaffoldMessengerKey,
       title: 'Bache Finder App',
       routerConfig: AppRouter.createRouter(appRouterNotifier),
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
-        useMaterial3: true,
-        pageTransitionsTheme: PageTransitionsTheme(
-          builders: kIsWeb
-              ? {
-                  for (final platform in TargetPlatform.values)
-                    platform: const NoTransitionsBuilder(),
-                }
-              : const {},
-        ),
-      ),
+      theme: AppTheme().getTheme(),
     );
   }
 }
