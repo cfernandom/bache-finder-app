@@ -4,7 +4,6 @@ import 'package:bache_finder_app/features/auth/presentation/controllers/session_
 import 'package:bache_finder_app/features/home/presentation/widgets/home_drawer_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/filled_button_icon_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/gap_widget.dart';
-import 'package:bache_finder_app/features/shared/presentation/widgets/outlined_button_icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
