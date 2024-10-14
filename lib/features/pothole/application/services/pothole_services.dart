@@ -10,10 +10,10 @@ import 'package:bache_finder_app/features/pothole/domain/repositories/pothole_re
 import 'package:bache_finder_app/features/pothole/infrastructure/data_sources/pothole_remote_data_source.dart';
 import 'package:fpdart/fpdart.dart';
 
-class PotholeRepositoryImpl implements PotholeRepository {
+class PotholeSevices implements PotholeRepository {
   final PotholeRemoteDataSource potholeRemoteDataSource;
 
-  PotholeRepositoryImpl({required this.potholeRemoteDataSource});
+  PotholeSevices({required this.potholeRemoteDataSource});
 
   @override
   Future<Either<Failure, Pothole>> getPotholeById(String potholeId) async {

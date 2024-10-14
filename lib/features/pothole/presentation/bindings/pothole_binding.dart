@@ -1,6 +1,6 @@
 import 'package:bache_finder_app/features/pothole/domain/repositories/pothole_repository.dart';
-import 'package:bache_finder_app/features/pothole/domain/use_cases/get_pothole.dart';
-import 'package:bache_finder_app/features/pothole/domain/use_cases/predict_pothole.dart';
+import 'package:bache_finder_app/features/pothole/application/use_cases/get_pothole.dart';
+import 'package:bache_finder_app/features/pothole/application/use_cases/predict_pothole.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/forms/pothole_form_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/pothole_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/potholes_controller.dart';

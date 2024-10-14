@@ -1,7 +1,7 @@
 import 'package:bache_finder_app/core/errors/failures/failure.dart';
 import 'package:bache_finder_app/features/pothole/domain/entities/pothole.dart';
-import 'package:bache_finder_app/features/pothole/domain/use_cases/get_potholes.dart';
-import 'package:bache_finder_app/features/pothole/domain/use_cases/save_pothole.dart';
+import 'package:bache_finder_app/features/pothole/application/use_cases/get_potholes.dart';
+import 'package:bache_finder_app/features/pothole/application/use_cases/save_pothole.dart';
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
