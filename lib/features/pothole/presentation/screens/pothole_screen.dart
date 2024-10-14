@@ -1,9 +1,11 @@
+import 'package:bache_finder_app/core/constants/app_colors.dart';
 import 'package:bache_finder_app/core/router/app_pages.dart';
 import 'package:bache_finder_app/features/pothole/infrastructure/constants/pothole_constants.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/forms/pothole_form_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/pothole_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/widgets/container_form_widget.dart';
 import 'package:bache_finder_app/features/pothole/presentation/widgets/locality_selector_widget.dart';
+import 'package:bache_finder_app/features/shared/presentation/widgets/filled_button_icon_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/gap_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/image_viewer_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/outlined_button_icon_widget.dart';
@@ -215,7 +217,7 @@ class _BasicFormView extends StatelessWidget {
           const ContainerFormWidget(
             child: Column(children: [
               _ImageViewer(),
-              GapWidget(size: 16.0),
+              GapWidget(size: 8.0),
               Row(
                 children: [
                   Expanded(child: _UploadPhotoButton()),
@@ -303,14 +305,12 @@ class _LocationPickerButton extends GetView<PotholeFormController> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 48.0,
-      child: OutlinedButtonIconWidget(
-        onPressed: () => _onPressed(context),
-        label: 'Seleccionar ubicación',
-        icon: const Icon(Icons.location_on, color: Color(0xFF3D5D67)),
-      ),
+    return FilledButtonIconWidget(
+      label: 'Seleccionar ubicación',
+      icon: Icons.location_on,
+      onPressed: () => _onPressed(context),
+      color: AppColors.anakiwa,
+      contentColor: AppColors.blumine,
     );
   }
 }
@@ -547,13 +547,12 @@ class _UploadPhotoButton extends GetView<PotholeFormController> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 48,
-      child: OutlinedButtonIconWidget(
-        onPressed: onPressed,
-        label: 'Seleccionar foto',
-        icon: const Icon(Icons.photo, color: Color(0xFF3D5D67)),
-      ),
+    return FilledButtonIconWidget(
+      label: 'Seleccionar foto',
+      icon: Icons.photo,
+      onPressed: onPressed,
+      color: AppColors.anakiwa,
+      contentColor: AppColors.blumine,
     );
   }
 }

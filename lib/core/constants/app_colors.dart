@@ -5,4 +5,5 @@ class AppColors {
   static const blumine = Color(0xFF195470);
   static const bahamaBlue = Color(0xFF006290);
   static const aquaSqueeze = Color(0xFFdff0f0);
+  static const anakiwa = Color(0xFFADE1FF);
 }

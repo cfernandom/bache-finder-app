@@ -1,6 +1,8 @@
+import 'package:bache_finder_app/core/constants/app_colors.dart';
 import 'package:bache_finder_app/core/router/app_pages.dart';
 import 'package:bache_finder_app/features/auth/presentation/controllers/session_controller.dart';
 import 'package:bache_finder_app/features/home/presentation/widgets/home_drawer_widget.dart';
+import 'package:bache_finder_app/features/shared/presentation/widgets/filled_button_icon_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/gap_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/outlined_button_icon_widget.dart';
 import 'package:flutter/material.dart';
@@ -153,47 +155,24 @@ class _Buttons extends GetView<SessionController> {
           //   child: const Text('Ir a mi perfil'),
           // ),
           const GapWidget(size: 8),
-          SizedBox(
-            height: 48,
-            width: double.infinity,
-            child: FilledButton.icon(
-              onPressed: () {
-                context.push('${AppPaths.potholes}/new');
-              },
-              style: ButtonStyle(
-                  shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              )),
-              label: const Text('Reportar bache'),
-              icon: const Icon(Icons.add),
-            ),
+          FilledButtonIconWidget(
+            onPressed: () {
+              context.push('${AppPaths.potholes}/new');
+            },
+            label: 'Reportar bache',
+            icon: Icons.add,
           ),
           const GapWidget(size: 8),
-          SizedBox(
-            height: 48,
-            child: OutlinedButtonIconWidget(
-              onPressed: () {
-                context.push('${AppPaths.potholes}/all');
-              },
-              label: 'Baches reportados',
-              icon: const Icon(Icons.list_alt, color: Color(0xFF3D5D67)),
-            ),
+          FilledButtonIconWidget(
+            onPressed: () {
+              context.push('${AppPaths.potholes}/all');
+            },
+            label: 'Baches reportados',
+            icon: Icons.list_alt,
+            color: AppColors.anakiwa,
+            contentColor: AppColors.blumine,
           ),
           const GapWidget(size: 8),
-          // ElevatedButtonWidget(
-          //   onPressed: () {
-          //     controller.logout();
-          //   },
-          //   label: 'Cerrar sesión',
-          // ),
-          // ElevatedButton(
-          //   onPressed: () {
-          //     context.go(AppPaths.maps);
-          //   },
-          //   child: const Text('Ir a Maps'),
-          // ),
         ],
       ),
     );
