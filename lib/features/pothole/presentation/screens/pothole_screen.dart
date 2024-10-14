@@ -115,9 +115,9 @@ class _MainView extends GetView<PotholeController> {
                 controller.pothole.value != null
                     ? const _BasicInformationView()
                     : const _BasicFormView(),
-                controller.pothole.value != null
-                    ? const _AdditionalFormView()
-                    : const SizedBox.shrink(),
+                // controller.pothole.value != null
+                //     ? const _AdditionalFormView()
+                //     : const SizedBox.shrink(),
                 const GapWidget(size: 80.0),
               ],
             ),
@@ -138,19 +138,22 @@ class _BasicInformationView extends GetView<PotholeController> {
       constraints: const BoxConstraints(maxWidth: 800),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         const GapWidget(size: 16.0),
-        Text('Foto del bache', style: Theme.of(context).textTheme.titleSmall),
+        Text('Foto del bache', style: Theme.of(context).textTheme.titleMedium),
         const GapWidget(size: 8.0),
-        const _ImageViewer(),
+        const ContainerFormWidget(
+          child: _ImageViewer(),
+        ),
+        const GapWidget(size: 8.0),
+        ContainerFormWidget(
+          child: Column(children: [
+            ExpandText('Tipo de bache', controller.pothole.value?.type ?? ''),
+          ]),
+        ),
         const GapWidget(size: 16.0),
         Text('Ubicación del bache',
-            style: Theme.of(context).textTheme.titleSmall),
+            style: Theme.of(context).textTheme.titleMedium),
         const GapWidget(size: 8.0),
-        Container(
-          padding: const EdgeInsets.all(8.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-            color: const Color(0xFFDFF2FA),
-          ),
+        ContainerFormWidget(
           child: Column(children: [
             ExpandText('Latitud ', pothole?.latitude.toString() ?? ''),
             ExpandText('Longitud ', pothole?.longitude.toString() ?? ''),
@@ -158,17 +161,12 @@ class _BasicInformationView extends GetView<PotholeController> {
             ExpandText('Localidad ', pothole?.locality ?? ''),
           ]),
         ),
-        const GapWidget(size: 8.0),
+        const GapWidget(size: 16.0),
         Text('Detalles del bache',
-            style: Theme.of(context).textTheme.titleSmall),
+            style: Theme.of(context).textTheme.titleMedium),
         const GapWidget(size: 8.0),
-        Container(
-          padding: const EdgeInsets.all(8.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-            color: const Color(0xFFDFF2FA),
-          ),
-          child: const Column(
+        const ContainerFormWidget(
+          child: Column(
             children: [
               _DescriptionInput(),
               GapWidget(size: 4.0),
@@ -189,8 +187,11 @@ class ExpandText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(child: Text(leftText)),
+        Expanded(
+            child:
+                Text(leftText, style: Theme.of(context).textTheme.titleSmall)),
         Expanded(child: Text(rightText)),
       ],
     );
@@ -273,13 +274,8 @@ class _AdditionalFormView extends StatelessWidget {
           const GapWidget(size: 16.0),
           Text('Tipo de bache', style: Theme.of(context).textTheme.titleSmall),
           const GapWidget(size: 8.0),
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
-              color: const Color(0xFFDFF2FA),
-            ),
-            child: const Column(children: [
+          const ContainerFormWidget(
+            child: Column(children: [
               Row(
                 children: [
                   Expanded(child: _TypeSelector()),
