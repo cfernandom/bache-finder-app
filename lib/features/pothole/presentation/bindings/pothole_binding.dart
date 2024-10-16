@@ -45,6 +45,7 @@ class PotholeBinding extends Bindings {
         getPotholeUseCase: Get.find<GetPothole>(),
         predictPotholeUseCase: Get.find<PredictPothole>(),
         savePotholeCallback: Get.find<PotholesController>().savePothole,
+        deletePotholeCallback: Get.find<PotholesController>().deletePothole,
       ),
     );
 

@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 class PotholeController extends GetxController {
   final Future<Either<Failure, Pothole>> Function(
       String potholeId, Map<String, dynamic> potholeLike) _savePotholeCallback;
+  final Future<Either<Failure, void>> Function(String potholeId) _deletePotholeCallback;
   final String _potholeId;
   final GetPothole _getPotholeUseCase;
   final PredictPothole _predictPotholeUseCase;
@@ -16,9 +17,11 @@ class PotholeController extends GetxController {
   PotholeController(
     this._potholeId, {
     required savePotholeCallback,
+    required deletePotholeCallback,
     required GetPothole getPotholeUseCase,
     required PredictPothole predictPotholeUseCase,
   })  : _savePotholeCallback = savePotholeCallback,
+        _deletePotholeCallback = deletePotholeCallback,
         _getPotholeUseCase = getPotholeUseCase,
         _predictPotholeUseCase = predictPotholeUseCase;
 
@@ -57,7 +60,8 @@ class PotholeController extends GetxController {
   Future<bool> savePothole(Map<String, dynamic> potholeLike) async {
     _isLoading.value = true;
 
-    final result = await _savePotholeCallback(_pothole.value?.id ?? 'new', potholeLike);
+    final result =
+        await _savePotholeCallback(_pothole.value?.id ?? 'new', potholeLike);
 
     result.fold(
       (failure) => _errorMessage = failure.message,
@@ -68,9 +72,26 @@ class PotholeController extends GetxController {
     return result.isRight();
   }
 
+  Future<bool> deletePothole() async {
+    _isLoading.value = true;
+    final result = await _deletePotholeCallback(_pothole.value!.id);
+
+    result.fold(
+      (failure) => _errorMessage = failure.message,
+      (success) {
+        _pothole.value = null;
+        _errorMessage = '';
+      },
+    );
+
+    _isLoading.value = false;
+    return result.isRight();
+  }
+
   Future<Either<Failure, PotholePrediction>> predictPothole() async {
     if (_pothole.value == null) {
-      return left(const Failure('No se puede predecir el bache si no hay un bache cargado'));
+      return left(const Failure(
+          'No se puede predecir el bache si no hay un bache cargado'));
     }
     return await _predictPotholeUseCase.call(_pothole.value!.id);
   }

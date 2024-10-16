@@ -1,4 +1,5 @@
 import 'package:bache_finder_app/features/auth/presentation/controllers/session_controller.dart';
+import 'package:bache_finder_app/features/pothole/application/use_cases/delete_pothole.dart';
 import 'package:bache_finder_app/features/pothole/domain/repositories/pothole_repository.dart';
 import 'package:bache_finder_app/features/pothole/application/use_cases/get_potholes.dart';
 import 'package:bache_finder_app/features/pothole/application/use_cases/save_pothole.dart';
@@ -35,9 +36,16 @@ class PotholesBinding extends Bindings {
     );
 
     Get.lazyPut(
+      () => DeletePothole(
+        Get.find<PotholeRepository>(),
+      ),
+    );
+
+    Get.lazyPut(
       () => PotholesController(
         getPotholesUseCase: Get.find<GetPotholes>(),
         savePotholeUseCase: Get.find<SavePothole>(),
+        deletePothole: Get.find<DeletePothole>(),
       ),
     );
   }

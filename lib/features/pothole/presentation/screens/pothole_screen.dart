@@ -13,97 +13,118 @@ import 'package:bache_finder_app/features/shared/presentation/widgets/selector_w
 import 'package:bache_finder_app/features/shared/presentation/widgets/snackbar_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/text_field_rx_widget.dart';
 import 'package:bache_finder_app/features/shared/services/camera_gallery_service_impl.dart';
+import 'package:bache_finder_app/features/user/presentation/controllers/user_controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-class PotholeScreen extends GetView<PotholeController> {
+class PotholeScreen extends StatelessWidget {
   const PotholeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF4FAFD),
-      key: scaffoldKey,
-      body: Obx(() => controller.isLoading.value
-          ? const Center(child: CircularProgressIndicator())
-          : const _MainView()),
-      floatingActionButton: Obx(
-        () => controller.isLoading.value
-            ? const SizedBox.shrink()
-            : _SaveButton(scaffoldKey),
-      ),
-      appBar: AppBar(
-        title: Obx(
-          () {
-            final potholeId = controller.pothole.value?.id ?? 'new';
-            return Text(
-                potholeId != 'new' ? 'Reporte de Bache' : 'Reportar bache',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge!
-                    .copyWith(color: Colors.white));
-          },
-        ),
-        backgroundColor: const Color(0xFF2C5461),
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-    );
+    final potholeController = Get.isRegistered<PotholeController>()
+        ? Get.find<PotholeController>()
+        : null;
+
+    return potholeController == null
+        ? const SizedBox.shrink()
+        : Scaffold(
+            backgroundColor: const Color(0xFFF4FAFD),
+            key: scaffoldKey,
+            body: Obx(() => potholeController.isLoading.value
+                ? const Center(child: CircularProgressIndicator())
+                : _MainView(scaffoldKey)),
+            floatingActionButton: Obx(
+              () => potholeController.isLoading.value
+                  ? const SizedBox.shrink()
+                  : _SaveButton(scaffoldKey),
+            ),
+            appBar: AppBar(
+              title: Obx(
+                () {
+                  final potholeId =
+                      potholeController.pothole.value?.id ?? 'new';
+                  return Text(
+                      potholeId != 'new'
+                          ? 'Reporte de Bache'
+                          : 'Reportar bache',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge!
+                          .copyWith(color: Colors.white));
+                },
+              ),
+              backgroundColor: const Color(0xFF2C5461),
+              iconTheme: const IconThemeData(color: Colors.white),
+            ),
+          );
   }
 }
 
-class _SaveButton extends GetView<PotholeFormController> {
+class _SaveButton extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
   const _SaveButton(this.scaffoldKey);
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => FloatingActionButton.extended(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-        ),
-        onPressed: controller.isModifed
-            ? () async {
-                final result = await controller.onSubmit();
+    final potholeFormController = Get.isRegistered<PotholeFormController>()
+        ? Get.find<PotholeFormController>()
+        : null;
+    return potholeFormController == null
+        ? const SizedBox()
+        : Obx(
+            () => FloatingActionButton.extended(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+              ),
+              onPressed: potholeFormController.isModifed == true
+                  ? () async {
+                      final result = await potholeFormController.onSubmit();
 
-                if (scaffoldKey.currentContext == null) return;
+                      if (scaffoldKey.currentContext == null) return;
 
-                if (result) {
-                  SnackbarWidget.show(scaffoldKey.currentContext!,
-                      message: 'Bache guardado con éxito');
-                } else {
-                  SnackbarWidget.show(scaffoldKey.currentContext!,
-                      message: 'Error al guardar bache');
-                }
-              }
-            : null,
-        icon: controller.isPosting
-            ? const CircularProgressIndicator()
-            : Icon(Icons.save,
-                color: controller.isModifed ? Colors.white : Colors.black26),
-        disabledElevation: 0,
-        elevation: 4,
-        label: Text('Guardar bache',
-            style: controller.isModifed
-                ? const TextStyle(color: Colors.white)
-                : const TextStyle(color: Colors.black26)),
-        backgroundColor: controller.isModifed
-            ? Theme.of(context).colorScheme.primary
-            : Colors.grey[200],
-      ),
-    );
+                      if (result == true) {
+                        SnackbarWidget.show(scaffoldKey.currentContext!,
+                            message: 'Bache guardado con éxito');
+                      } else {
+                        SnackbarWidget.show(scaffoldKey.currentContext!,
+                            message: 'Error al guardar bache');
+                      }
+                    }
+                  : null,
+              icon: potholeFormController.isPosting == true
+                  ? const CircularProgressIndicator()
+                  : Icon(Icons.save,
+                      color: potholeFormController.isModifed == true
+                          ? Colors.white
+                          : Colors.black26),
+              disabledElevation: 0,
+              elevation: 4,
+              label: Text('Guardar bache',
+                  style: potholeFormController.isModifed == true
+                      ? const TextStyle(color: Colors.white)
+                      : const TextStyle(color: Colors.black26)),
+              backgroundColor: potholeFormController.isModifed == true
+                  ? Theme.of(context).colorScheme.primary
+                  : Colors.grey[200],
+            ),
+          );
   }
 }
 
-class _MainView extends GetView<PotholeController> {
-  const _MainView();
+class _MainView extends StatelessWidget {
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  const _MainView(this.scaffoldKey);
 
   @override
   Widget build(BuildContext context) {
+    final potholeController = Get.isRegistered<PotholeController>()
+        ? Get.find<PotholeController>()
+        : null;
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
@@ -114,8 +135,8 @@ class _MainView extends GetView<PotholeController> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                controller.pothole.value != null
-                    ? const _BasicInformationView()
+                potholeController?.pothole.value != null
+                    ? _ContentView(scaffoldKey)
                     : const _BasicFormView(),
                 // controller.pothole.value != null
                 //     ? const _AdditionalFormView()
@@ -130,12 +151,98 @@ class _MainView extends GetView<PotholeController> {
   }
 }
 
-class _BasicInformationView extends GetView<PotholeController> {
+class _ContentView extends StatelessWidget {
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  const _ContentView(this.scaffoldKey);
+
+  @override
+  Widget build(BuildContext context) {
+    final userController = Get.find<UserController>();
+    final potholeController = Get.isRegistered<PotholeController>()
+        ? Get.find<PotholeController>()
+        : null;
+
+    return Column(
+      children: [
+        const _BasicInformationView(),
+        Obx(() {
+          final isOwner = potholeController?.pothole.value?.userId ==
+              userController.currentUser.value?.id;
+          final canDeletePothole =
+              userController.currentUser.value?.canDeletePothole() ?? false;
+          return canDeletePothole || isOwner
+              ? _DeletePotholeButton(scaffoldKey)
+              : const SizedBox.shrink();
+        }),
+      ],
+    );
+  }
+}
+
+class _DeletePotholeButton extends StatelessWidget {
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  const _DeletePotholeButton(this.scaffoldKey);
+
+  void _onPressed(BuildContext context, PotholeController? controller) async {
+    final confirmed = await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Eliminar reporte de bache'),
+            content:
+                const Text('El reporte de bache se eliminará permanentemente'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('Cancelar'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('Eliminar'),
+              ),
+            ],
+          );
+        });
+    if (confirmed) {
+      if (controller == null) return;
+      final success = await controller.deletePothole();
+
+      if (scaffoldKey.currentContext != null) {
+        if (success) {
+          SnackbarWidget.show(scaffoldKey.currentContext!,
+              message: 'Reporte eliminado con éxito');
+          Navigator.of(scaffoldKey.currentContext!).pop();
+        } else {
+          SnackbarWidget.show(scaffoldKey.currentContext!,
+              message: 'Error al eliminar el reporte');
+        }
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final potholeController = Get.isRegistered<PotholeController>()
+        ? Get.find<PotholeController>()
+        : null;
+    return FilledButtonIconWidget(
+      label: 'Eliminar reporte',
+      icon: Icons.delete,
+      color: Colors.redAccent[400]!,
+      onPressed: () => _onPressed(context, potholeController),
+    );
+  }
+}
+
+class _BasicInformationView extends StatelessWidget {
   const _BasicInformationView();
 
   @override
   Widget build(BuildContext context) {
-    final pothole = controller.pothole.value;
+    final potholeController = Get.isRegistered<PotholeController>()
+        ? Get.find<PotholeController>()
+        : null;
+    final pothole = potholeController?.pothole.value;
     return Container(
       constraints: const BoxConstraints(maxWidth: 800),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -148,7 +255,8 @@ class _BasicInformationView extends GetView<PotholeController> {
         const GapWidget(size: 8.0),
         ContainerFormWidget(
           child: Column(children: [
-            ExpandText('Tipo de bache', controller.pothole.value?.type ?? ''),
+            ExpandText(
+                'Tipo de bache', potholeController?.pothole.value?.type ?? ''),
           ]),
         ),
         const GapWidget(size: 16.0),
@@ -295,7 +403,7 @@ class _AdditionalFormView extends StatelessWidget {
   }
 }
 
-class _LocationPickerButton extends GetView<PotholeFormController> {
+class _LocationPickerButton extends StatelessWidget {
   const _LocationPickerButton();
 
   void _onPressed(BuildContext context) async {
@@ -315,98 +423,113 @@ class _LocationPickerButton extends GetView<PotholeFormController> {
   }
 }
 
-class _AddressInput extends GetView<PotholeFormController> {
+class _AddressInput extends StatelessWidget {
   const _AddressInput();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Text(
-              'Dirección',
-              style: Theme.of(context).textTheme.titleSmall,
+    final potholeFormController = Get.isRegistered<PotholeFormController>()
+        ? Get.find<PotholeFormController>()
+        : null;
+    return potholeFormController == null
+        ? const SizedBox()
+        : SizedBox(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    'Dirección',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                ),
+                Expanded(
+                  child: Obx(
+                    () => TextFieldRxWidget(
+                      label: 'Dirección',
+                      maxLines: 2,
+                      initialValue: potholeFormController.address.value.value,
+                      keyboardType: TextInputType.text,
+                      onChanged: potholeFormController.onAddressChanged,
+                      errorMessage: potholeFormController.isPosted
+                          ? potholeFormController.address.value.errorMessage
+                          : null,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Expanded(
-            child: Obx(
-              () => TextFieldRxWidget(
-                label: 'Dirección',
-                maxLines: 2,
-                initialValue: controller.address.value.value,
-                keyboardType: TextInputType.text,
-                onChanged: controller.onAddressChanged,
-                errorMessage: controller.isPosted
-                    ? controller.address.value.errorMessage
-                    : null,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 }
 
-class _DescriptionInput extends GetView<PotholeFormController> {
+class _DescriptionInput extends StatelessWidget {
   const _DescriptionInput();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Descripción',
-          style: Theme.of(context).textTheme.titleSmall,
-        ),
-        const GapWidget(size: 8.0),
-        Obx(
-          () => TextFieldRxWidget(
-            label: 'Descripción',
-            maxLines: 6,
-            initialValue: controller.description.value.value,
-            keyboardType: TextInputType.text,
-            onChanged: controller.onDescriptionChanged,
-            errorMessage: controller.isPosted
-                ? controller.description.value.errorMessage
-                : null,
-          ),
-        ),
-      ],
-    );
+    final potholeFormController = Get.isRegistered<PotholeFormController>()
+        ? Get.find<PotholeFormController>()
+        : null;
+    return potholeFormController == null
+        ? const SizedBox()
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Descripción',
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+              const GapWidget(size: 8.0),
+              Obx(
+                () => TextFieldRxWidget(
+                  label: 'Descripción',
+                  maxLines: 6,
+                  initialValue: potholeFormController.description.value.value,
+                  keyboardType: TextInputType.text,
+                  onChanged: potholeFormController.onDescriptionChanged,
+                  errorMessage: potholeFormController.isPosted
+                      ? potholeFormController.description.value.errorMessage
+                      : null,
+                ),
+              ),
+            ],
+          );
   }
 }
 
-class _LocalitySelector extends GetView<PotholeFormController> {
+class _LocalitySelector extends StatelessWidget {
   const _LocalitySelector();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 48.0,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Text(
-              'Localidad',
-              style: Theme.of(context).textTheme.titleSmall,
+    final potholeFormController = Get.isRegistered<PotholeFormController>()
+        ? Get.find<PotholeFormController>()
+        : null;
+    return potholeFormController == null
+        ? const SizedBox()
+        : SizedBox(
+            height: 48.0,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    'Localidad',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                ),
+                Expanded(
+                  child: Obx(
+                    () => LocalitySelectorWidget(
+                      onChanged: potholeFormController.onLocalityChanged,
+                      initialValue: potholeFormController.locality.value.value,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Expanded(
-            child: Obx(
-              () => LocalitySelectorWidget(
-                onChanged: controller.onLocalityChanged,
-                initialValue: controller.locality.value.value,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 }
 
@@ -415,164 +538,196 @@ class _TypeSelector extends GetView<PotholeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => SizedBox(
-        height: 48.0,
-        child: SelectorWidget(
-          onChanged: null,
-          icon: Icons.insights,
-          initialValue: controller.pothole.value?.type ?? '',
-          items: PotholeConstants.types,
-        ),
-      ),
-    );
+    final potholeController = Get.isRegistered<PotholeController>()
+        ? Get.find<PotholeController>()
+        : null;
+    return potholeController == null
+        ? const SizedBox()
+        : Obx(
+            () => SizedBox(
+              height: 48.0,
+              child: SelectorWidget(
+                onChanged: null,
+                icon: Icons.insights,
+                initialValue: controller.pothole.value?.type ?? '',
+                items: PotholeConstants.types,
+              ),
+            ),
+          );
   }
 }
 
-class _LatitudeInput extends GetView<PotholeFormController> {
+class _LatitudeInput extends StatelessWidget {
   const _LatitudeInput();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 32.0,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Text(
-              'Latitud',
-              style: Theme.of(context).textTheme.titleSmall,
+    final potholeFormController = Get.isRegistered<PotholeFormController>()
+        ? Get.find<PotholeFormController>()
+        : null;
+    return potholeFormController == null
+        ? const SizedBox()
+        : SizedBox(
+            height: 32.0,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    'Latitud',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                ),
+                Expanded(
+                  child: Obx(
+                    () => Text(potholeFormController.latitude.value.value),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Expanded(
-            child: Obx(
-              () => Text(controller.latitude.value.value),
-            ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 }
 
-class _LongitudeInput extends GetView<PotholeFormController> {
+class _LongitudeInput extends StatelessWidget {
   const _LongitudeInput();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 32.0,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Text(
-              'Longitud',
-              style: Theme.of(context).textTheme.titleSmall,
+    final potholeFormController = Get.isRegistered<PotholeFormController>()
+        ? Get.find<PotholeFormController>()
+        : null;
+    return potholeFormController == null
+        ? const SizedBox()
+        : SizedBox(
+            height: 32.0,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    'Longitud',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                ),
+                Expanded(
+                  child: Obx(
+                    () => Text(potholeFormController.longitude.value.value),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Expanded(
-            child: Obx(
-              () => Text(controller.longitude.value.value),
-            ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 }
 
-class _ImageViewer extends GetView<PotholeFormController> {
+class _ImageViewer extends StatelessWidget {
   const _ImageViewer();
 
   @override
   Widget build(BuildContext context) {
+    final potholeFormController = Get.isRegistered<PotholeFormController>()
+        ? Get.find<PotholeFormController>()
+        : null;
     return Center(
       child: Container(
         constraints: const BoxConstraints(minHeight: 250, maxHeight: 500),
-        child: Obx(() => ImageViewerWidget(controller.image.value.value.path)),
+        child: potholeFormController == null
+            ? const SizedBox()
+            : Obx(() => ImageViewerWidget(
+                potholeFormController.image.value.value.path)),
       ),
     );
   }
 }
 
-class _PredictionDetails extends GetView<PotholeFormController> {
+class _PredictionDetails extends StatelessWidget {
   const _PredictionDetails();
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () {
-        return ExpansionTile(
-          title: const Text('Ver predicciones'),
-          initiallyExpanded: false,
-          tilePadding:
-              const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
-          childrenPadding:
-              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-          minTileHeight: 12.0,
-          expandedAlignment: Alignment.topLeft,
-          expandedCrossAxisAlignment: CrossAxisAlignment.start,
-          backgroundColor: Colors.transparent,
-          dense: true,
-          collapsedBackgroundColor: Colors.transparent,
-          collapsedShape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(8.0)),
-            side: BorderSide(color: Colors.transparent),
-          ),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(8.0)),
-            side: BorderSide(color: Colors.transparent),
-          ),
-          children: [
-            ...controller.weights.map(
-              (weight) => Text(weight.toString()),
-            )
-          ],
-        );
-      },
-    );
+    final potholeFormController = Get.isRegistered<PotholeFormController>()
+        ? Get.find<PotholeFormController>()
+        : null;
+    return potholeFormController == null
+        ? const SizedBox()
+        : Obx(
+            () {
+              return ExpansionTile(
+                title: const Text('Ver predicciones'),
+                initiallyExpanded: false,
+                tilePadding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+                childrenPadding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+                minTileHeight: 12.0,
+                expandedAlignment: Alignment.topLeft,
+                expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                backgroundColor: Colors.transparent,
+                dense: true,
+                collapsedBackgroundColor: Colors.transparent,
+                collapsedShape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                  side: BorderSide(color: Colors.transparent),
+                ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                  side: BorderSide(color: Colors.transparent),
+                ),
+                children: [
+                  ...potholeFormController.weights.map(
+                    (weight) => Text(weight.toString()),
+                  ),
+                ],
+              );
+            },
+          );
   }
 }
 
-class _UploadPhotoButton extends GetView<PotholeFormController> {
+class _UploadPhotoButton extends StatelessWidget {
   const _UploadPhotoButton();
 
-  void onPressed() async {
+  void onPressed(PotholeFormController? potholeFormController) async {
     final photo = await CameraGalleryServiceImpl().selectPhoto();
     if (photo == null) return;
-    controller.onImageChanged(photo);
+    potholeFormController?.onImageChanged(photo);
   }
 
   @override
   Widget build(BuildContext context) {
+    final potholeFormController = Get.isRegistered<PotholeFormController>()
+        ? Get.find<PotholeFormController>()
+        : null;
     return FilledButtonIconWidget(
       label: 'Seleccionar foto',
       icon: Icons.photo,
-      onPressed: onPressed,
+      onPressed: () => onPressed(potholeFormController),
       color: AppColors.anakiwa,
       contentColor: AppColors.blumine,
     );
   }
 }
 
-class _TakePhotoButton extends GetView<PotholeFormController> {
+class _TakePhotoButton extends StatelessWidget {
   const _TakePhotoButton();
 
-  void onPressed() async {
+  void onPressed(PotholeFormController? potholeFormController) async {
     final photo = await CameraGalleryServiceImpl().takePhoto();
     if (photo == null) return;
 
-    controller.onImageChanged(photo);
+    potholeFormController?.onImageChanged(photo);
   }
 
   @override
   Widget build(BuildContext context) {
+    final potholeFormController = Get.isRegistered<PotholeFormController>()
+        ? Get.find<PotholeFormController>()
+        : null;
     return SizedBox(
       height: 48,
       child: OutlinedButtonIconWidget(
-        onPressed: onPressed,
+        onPressed: () => onPressed(potholeFormController),
         label: 'Tomar foto',
         icon: const Icon(Icons.camera_alt, color: Color(0xFF3D5D67)),
       ),
@@ -580,15 +735,18 @@ class _TakePhotoButton extends GetView<PotholeFormController> {
   }
 }
 
-class _PredictPotholeButton extends GetView<PotholeFormController> {
+class _PredictPotholeButton extends StatelessWidget {
   const _PredictPotholeButton();
 
   @override
   Widget build(BuildContext context) {
+    final potholeFormController = Get.isRegistered<PotholeFormController>()
+        ? Get.find<PotholeFormController>()
+        : null;
     return SizedBox(
       width: 140,
       child: OutlinedButtonIconWidget(
-        onPressed: controller.onPredict,
+        onPressed: potholeFormController?.onPredict,
         label: 'Predecir',
         icon: const Icon(Icons.insights, color: Colors.white),
       ),
@@ -596,7 +754,7 @@ class _PredictPotholeButton extends GetView<PotholeFormController> {
   }
 }
 
-// class _SubmitButton extends GetView<PotholeFormController> {
+// class _SubmitButton extends StatelessWidget {
 //   const _SubmitButton();
 
 //   @override

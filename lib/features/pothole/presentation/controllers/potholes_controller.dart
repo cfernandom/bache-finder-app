@@ -1,4 +1,5 @@
 import 'package:bache_finder_app/core/errors/failures/failure.dart';
+import 'package:bache_finder_app/features/pothole/application/use_cases/delete_pothole.dart';
 import 'package:bache_finder_app/features/pothole/domain/entities/pothole.dart';
 import 'package:bache_finder_app/features/pothole/application/use_cases/get_potholes.dart';
 import 'package:bache_finder_app/features/pothole/application/use_cases/save_pothole.dart';
@@ -9,6 +10,7 @@ import 'package:get/get.dart';
 class PotholesController extends GetxController {
   final GetPotholes _getPotholesUseCase;
   final SavePothole _savePotholeUseCase;
+  final DeletePothole _deletePotholeUC;
 
   final _scrollController = ScrollController();
   final _potholes = Rx<List<Pothole>>([]);
@@ -25,8 +27,10 @@ class PotholesController extends GetxController {
   PotholesController({
     required getPotholesUseCase,
     required savePotholeUseCase,
+    required deletePothole,
   })  : _getPotholesUseCase = getPotholesUseCase,
-        _savePotholeUseCase = savePotholeUseCase {
+        _savePotholeUseCase = savePotholeUseCase,
+        _deletePotholeUC = deletePothole {
     _scrollController.addListener(() async {
       final scrollPosition = _scrollController.position;
 
@@ -87,6 +91,28 @@ class PotholesController extends GetxController {
       }
       _potholes.value = [pothole, ..._potholes.value];
     });
+    return result;
+  }
+
+  Future<Either<Failure, void>> deletePothole(String potholeId) async {
+    final isPotholeInList =
+        _potholes.value.any((element) => element.id == potholeId);
+
+    final result = await _deletePotholeUC.call(potholeId);
+
+    result.fold(
+      (failure) {
+        _errorMessage = failure.message;
+      },
+      (pothole) {
+        if (isPotholeInList) {
+          _potholes.value = _potholes.value
+              .where((element) => element.id != potholeId)
+              .toList();
+          return;
+        }
+      },
+    );
     return result;
   }
 }
