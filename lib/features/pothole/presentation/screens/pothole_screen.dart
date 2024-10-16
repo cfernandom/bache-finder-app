@@ -5,6 +5,7 @@ import 'package:bache_finder_app/features/pothole/presentation/controllers/forms
 import 'package:bache_finder_app/features/pothole/presentation/controllers/pothole_controller.dart';
 import 'package:bache_finder_app/features/pothole/presentation/widgets/container_form_widget.dart';
 import 'package:bache_finder_app/features/pothole/presentation/widgets/locality_selector_widget.dart';
+import 'package:bache_finder_app/features/shared/presentation/widgets/dual_text_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/filled_button_icon_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/gap_widget.dart';
 import 'package:bache_finder_app/features/shared/presentation/widgets/image_viewer_widget.dart';
@@ -255,8 +256,10 @@ class _BasicInformationView extends StatelessWidget {
         const GapWidget(size: 8.0),
         ContainerFormWidget(
           child: Column(children: [
-            ExpandText(
-                'Tipo de bache', potholeController?.pothole.value?.type ?? ''),
+            DualTextWidget(
+              leftText: 'Tipo de bache',
+              rightText: potholeController?.pothole.value?.type ?? '',
+            ),
           ]),
         ),
         const GapWidget(size: 16.0),
@@ -265,10 +268,22 @@ class _BasicInformationView extends StatelessWidget {
         const GapWidget(size: 8.0),
         ContainerFormWidget(
           child: Column(children: [
-            ExpandText('Latitud ', pothole?.latitude.toString() ?? ''),
-            ExpandText('Longitud ', pothole?.longitude.toString() ?? ''),
-            ExpandText('Dirección ', pothole?.address ?? ''),
-            ExpandText('Localidad ', pothole?.locality ?? ''),
+            DualTextWidget(
+              leftText: 'Latitud ',
+              rightText: pothole?.latitude.toString() ?? '',
+            ),
+            DualTextWidget(
+              leftText: 'Longitud ',
+              rightText: pothole?.longitude.toString() ?? '',
+            ),
+            DualTextWidget(
+              leftText: 'Dirección ',
+              rightText: pothole?.address ?? '',
+            ),
+            DualTextWidget(
+              leftText: 'Localidad ',
+              rightText: pothole?.locality ?? '',
+            ),
           ]),
         ),
         const GapWidget(size: 16.0),
@@ -285,25 +300,6 @@ class _BasicInformationView extends StatelessWidget {
         ),
         const GapWidget(size: 16.0),
       ]),
-    );
-  }
-}
-
-class ExpandText extends StatelessWidget {
-  const ExpandText(this.leftText, this.rightText, {super.key});
-  final String leftText;
-  final String rightText;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-            child:
-                Text(leftText, style: Theme.of(context).textTheme.titleSmall)),
-        Expanded(child: Text(rightText)),
-      ],
     );
   }
 }
