@@ -8,4 +8,5 @@ abstract class PotholeRepository {
   Future<Either<Failure, Pothole>> getPotholeById(String potholeId);
   Future<Either<Failure, Pothole>> savePotholeById(String potholeId, Map<String, dynamic> potholeLike);
   Future<Either<Failure, PotholePrediction>> predictPotholeById(String potholeId);
+  Future<Either<Failure, bool>> deletePothole(String potholeId);
 }

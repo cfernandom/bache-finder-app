@@ -114,4 +114,9 @@ class PotholeRemoteDataSource {
       throw Exception(e);
     }
   }
+
+  Future<bool> deletePothole(String potholeId) async {
+    final response = await _dio.delete('v1/potholes/$potholeId');
+    return response.data['success'];
+  }
 }

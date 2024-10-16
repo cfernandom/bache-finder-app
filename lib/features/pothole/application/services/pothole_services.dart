@@ -70,4 +70,14 @@ class PotholeSevices implements PotholeRepository {
       return Left(UnknownFailure(e.toString()));
     }
   }
+  
+  @override
+  Future<Either<Failure, bool>> deletePothole(String potholeId) async{
+    try {
+      final success = await potholeRemoteDataSource.deletePothole(potholeId);
+      return Right(success);
+    } catch (e) {
+      return Left(UnknownFailure(e.toString()));
+    }
+  }
 }
