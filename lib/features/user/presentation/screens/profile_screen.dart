@@ -68,20 +68,25 @@ class _ProfileInfoView extends StatelessWidget {
   Widget build(BuildContext context) {
     final userController = Get.find<UserController>();
     return ContainerWidget(
-      child: Column(children: [
-        DualTextWidget(
-          leftText: 'Nombre',
-          rightText: userController.currentUser.value?.name ?? '',
+      child: Obx(
+        () => Column(
+          children: [
+            DualTextWidget(
+              leftText: 'Nombre',
+              rightText: userController.currentUser.value?.name ?? '',
+            ),
+            DualTextWidget(
+              leftText: 'Email',
+              rightText: userController.currentUser.value?.email ?? '',
+            ),
+            DualTextWidget(
+              leftText: 'Roles',
+              rightText:
+                  userController.currentUser.value?.roles?.join(', ') ?? '',
+            ),
+          ],
         ),
-        DualTextWidget(
-          leftText: 'Email',
-          rightText: userController.currentUser.value?.email ?? '',
-        ),
-        DualTextWidget(
-          leftText: 'Roles',
-          rightText: userController.currentUser.value?.roles?.join(', ') ?? '',
-        ),
-      ]),
+      ),
     );
   }
 }
