@@ -163,19 +163,22 @@ class _ContentView extends StatelessWidget {
         ? Get.find<PotholeController>()
         : null;
 
-    return Column(
-      children: [
-        const _BasicInformationView(),
-        Obx(() {
-          final isOwner = potholeController?.pothole.value?.userId ==
-              userController.currentUser.value?.id;
-          final canDeletePothole =
-              userController.currentUser.value?.canDeletePothole() ?? false;
-          return canDeletePothole || isOwner
-              ? _DeletePotholeButton(scaffoldKey)
-              : const SizedBox.shrink();
-        }),
-      ],
+    return Container(
+      constraints: const BoxConstraints(maxWidth: 800),
+      child: Column(
+        children: [
+          const _BasicInformationView(),
+          Obx(() {
+            final isOwner = potholeController?.pothole.value?.userId ==
+                userController.currentUser.value?.id;
+            final canDeletePothole =
+                userController.currentUser.value?.canDeletePothole() ?? false;
+            return canDeletePothole || isOwner
+                ? _DeletePotholeButton(scaffoldKey)
+                : const SizedBox.shrink();
+          }),
+        ],
+      ),
     );
   }
 }
@@ -244,9 +247,9 @@ class _BasicInformationView extends StatelessWidget {
         ? Get.find<PotholeController>()
         : null;
     final pothole = potholeController?.pothole.value;
-    return Container(
-      constraints: const BoxConstraints(maxWidth: 800),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
         const GapWidget(size: 16.0),
         Text('Foto del bache', style: Theme.of(context).textTheme.titleMedium),
         const GapWidget(size: 8.0),
@@ -299,7 +302,7 @@ class _BasicInformationView extends StatelessWidget {
           ),
         ),
         const GapWidget(size: 16.0),
-      ]),
+      ],
     );
   }
 }
