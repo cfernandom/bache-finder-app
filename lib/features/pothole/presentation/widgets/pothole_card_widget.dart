@@ -1,3 +1,4 @@
+import 'package:bache_finder_app/core/constants/app_colors.dart';
 import 'package:bache_finder_app/core/router/app_pages.dart';
 import 'package:bache_finder_app/features/pothole/domain/entities/pothole.dart';
 import 'package:bache_finder_app/features/pothole/presentation/controllers/potholes_controller.dart';
@@ -23,7 +24,7 @@ class PotholeCardWidget extends GetView<PotholesController> {
         margin: const EdgeInsets.only(top: 8.0),
         padding: const EdgeInsets.all(8.0),
         decoration: const BoxDecoration(
-          color: Color(0xFFDFF2FA),
+          color: AppColors.aquaSqueeze,
           borderRadius: BorderRadius.all(Radius.circular(8.0)),
         ),
         child: Row(
