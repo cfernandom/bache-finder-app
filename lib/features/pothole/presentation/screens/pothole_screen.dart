@@ -711,7 +711,6 @@ class _TakePhotoButton extends StatelessWidget {
   void onPressed(PotholeFormController? potholeFormController) async {
     final photo = await CameraGalleryServiceImpl().takePhoto();
     if (photo == null) return;
-
     potholeFormController?.onImageChanged(photo);
   }
 
@@ -720,13 +719,12 @@ class _TakePhotoButton extends StatelessWidget {
     final potholeFormController = Get.isRegistered<PotholeFormController>()
         ? Get.find<PotholeFormController>()
         : null;
-    return SizedBox(
-      height: 48,
-      child: OutlinedButtonIconWidget(
-        onPressed: () => onPressed(potholeFormController),
-        label: 'Tomar foto',
-        icon: const Icon(Icons.camera_alt, color: Color(0xFF3D5D67)),
-      ),
+    return FilledButtonIconWidget(
+      onPressed: () => onPressed(potholeFormController),
+      label: 'Tomar foto',
+      icon: Icons.camera_alt,
+      color: AppColors.anakiwa,
+      contentColor: AppColors.blumine,
     );
   }
 }
